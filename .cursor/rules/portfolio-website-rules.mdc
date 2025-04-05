@@ -1,0 +1,148 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Portfolio Website Rulebook – Enhanced for a Product Manager Experience
+Overview
+This website must deliver an immersive, interactive, and gamified experience while showcasing the creator’s skills, projects, and personality as a Product Manager (PM). Every design, animation, interaction, and piece of content should embody the modern, dynamic, and cross-functional life of a PM—fun, beautiful, analytical, and full of empathy.
+
+1. Immersive 3D Experience
+Three.js Integration:
+
+Use three.js to craft 3D scenes that represent the world of product management—think user journeys, funnels, analytics dashboards, agile boards, and cross-functional teams floating or orbiting around the PM!
+
+Integrate interactive 3D models that visualize PM tasks like stakeholder alignment, roadmap planning, user feedback loops, and product delivery pipelines.
+
+PM visual metaphors:
+
+A funnel showcasing conversion metrics.
+
+A rotating product roadmap.
+
+A Kanban board in space.
+
+Or even a cute little “PM spaceship” juggling features, bugs, and stakeholders.
+
+2. Theme and Aesthetics
+Sleek, Modern, Fun, and PM-centric:
+
+Use a minimalist, professional visual design with vibrant micro-interactions and animations.
+
+The design should reflect a Product Manager's personality—organized yet playful, analytical yet human, strategic yet empathetic.
+
+Pretty, Interactive, and Engaging Interactions:
+
+Every action should feel delightful:
+
+Buttons should press with a smooth bounce.
+
+Resume downloads should trigger a mini celebration.
+
+Scrolling through timelines should feel like time-travel with animations.
+
+PM Easter Eggs: Add small surprises—clicking a “Feature Request” icon triggers an animation of a chaotic backlog getting sorted.
+
+3. Technology Stack
+Frameworks & Libraries:
+
+Next.js for robust SSR and routing.
+
+Shadcn UI + Tailwind CSS for clean, elegant components and quick styling.
+
+Use modern dev tools like 21st.dev to enhance performance and DX.
+
+Coding Best Practices:
+
+Clean, documented, modular code that mimics how a PM would want dev handoffs: organized, thoughtful, and clear.
+
+Strong focus on performance, accessibility, and SEO to maximize product reach and impact.
+
+4. Gamified Experience
+Gamification with a PM Twist:
+
+Interactive quizzes on product decisions ("What would you do if..."), rewards for exploring case studies or completing mini-missions on the site.
+
+A gamified product journey—from idea → research → MVP → feedback → success!
+
+Badges like “MVP Shipped 🚀”, “Feature Freeze ❄️”, “Stakeholder Whisperer 🧙‍♂️”.
+
+5. Website Structure & Pages
+Resume Page:
+
+Animated career timeline showing roles and responsibilities.
+
+Clickable job titles that open up case-study-style breakdowns.
+
+Download resume with a PM-themed animation (e.g., a “project wrap-up” confetti).
+
+Contact Page:
+
+Conversational contact form (“Let’s ship something together!”).
+
+Optional AI assistant that routes messages to appropriate “departments”—design/dev/legal (playful metaphor).
+
+Case Studies Page:
+
+Deep dives into product challenges, solutions, user impact.
+
+Animated charts, flows, and impact metrics using three.js or chart libraries.
+
+Blogs Page:
+
+PM thoughts, decision frameworks, user empathy stories.
+
+Dynamic categorization: Product | Design | Analytics | Life Lessons.
+
+6. AI Integration
+RAG Chatbot:
+
+A chatbot powered by Retrieval-Augmented Generation that knows the ins and outs of your resume.
+
+Ask it “What projects has Jay worked on with data analytics?” and get contextual answers.
+
+Smart Personalization:
+
+AI-based resume analytics—“Which skills stand out most?”, “Which industries align with your experience?”
+
+Interactive recommendations: “If you like this case study, check out XYZ project.”
+
+7. Enhanced Gamified & Interactive PM Experiences
+Showcasing PM Life:
+
+Animated Funnels: Represent user journeys, AARRR metrics, and drop-offs.
+
+Cross-functional Galaxy: Visualize the PM's ecosystem—floating avatars for users, designers, devs, QA, marketing, legal—all orbiting the product center.
+
+Feature Priority Matrix: Interactive tool showing how you prioritized features.
+
+Clickable Skills & Tools:
+
+Click on “Mixpanel” or “Figma” to launch a small 3D interactive demo or mini-story of how you used it.
+
+Dynamic Timeline:
+
+Experience a beautiful scrollable timeline where each milestone has subtle animations: user feedback flowing in, dev sprints completing, features launching.
+
+8. Cross-Cutting Concerns
+Responsiveness & Compatibility:
+
+Must look stunning on mobile, tablet, and desktop. No breakpoints forgotten.
+
+Performance Optimization:
+
+Three.js assets lazy-loaded. Code splitting. Animations optimized for GPU.
+
+Maintainability:
+
+Just like a well-managed sprint board: modular, consistent, and scalable code.
+
+Final Note
+This isn’t just a portfolio. It’s an interactive PM storybook, told in elegant code and clever UI. Every decision should be intentional—just like in product management.
+
+Want to showcase creativity? Make it fun.
+Want to show strategy? Make it clear.
+Want to highlight empathy? Make it feel human.
+
+Let’s build a portfolio that doesn’t just show you're a product manager.
+Let’s build one that feels like one.
