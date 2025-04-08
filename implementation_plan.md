@@ -10,24 +10,24 @@
     *   Initialize Next.js project
     *   Install core dependencies: `three.js`, `@react-three/fiber`, `@react-three/drei`, `tailwindcss`, `shadcn/ui`
     *   Configure Tailwind CSS & shadcn/ui
-    *   Set up basic project structure (folders: `app`, `components`, `lib`, `styles`, `public`)
+    *   Set up basic project structure 
     *   *Status:* Not Started
 
 2.  **Basic Layout & Styling:**
-    *   Create main layout component (`app/layout.tsx`)
+    *   Create main layout component 
     *   Implement basic Header and Footer components
     *   Apply base styles reflecting the sleek, modern theme using Tailwind
     *   Ensure basic responsiveness
     *   *Status:* Not Started
 
 3.  **Home Page:**
-    *   Create the main landing page (`app/page.tsx`)
+    *   Create the main landing page 
     *   Integrate a basic `three.js` canvas using `@react-three/fiber` for background/initial visual
     *   Add introductory text/elements
     *   *Status:* Not Started
 
 4.  **Resume Page (Static):**
-    *   Create the Resume page component (`app/resume/page.tsx`)
+    *   Create the Resume page component 
     *   Fetch/parse content from `resume.md` (or convert to JSON/structured data)
     *   Display resume sections (Summary, Experience, Education, Skills) using React components
     *   Style according to the theme
@@ -35,7 +35,7 @@
     *   *Status:* Not Started
 
 5.  **Placeholder Pages:**
-    *   Create basic page structures for Contact Me (`app/contact/page.tsx`), Case Studies (`app/case-studies/page.tsx`), and Blogs (`app/blogs/page.tsx`)
+    *   Create basic page structures for Contact Me , Case Studies, and Blogs 
     *   Add simple placeholder content
     *   *Status:* Not Started
 
@@ -52,7 +52,7 @@
 7.  **Contact Me Page:**
     *   Build the contact form using `shadcn/ui` components (Input, Textarea, Button)
     *   Implement basic client-side validation
-    *   Set up API route (`app/api/contact/route.ts`) for form submission
+    *   Set up API route for form submission
     *   Add conversational elements ("Let's ship something together!")
     *   *Status:* Not Started
 
@@ -81,7 +81,7 @@
 
 11. **Blogs Page:**
     *   Design components for blog post previews and individual blog post views
-    *   Set up dynamic routing for blog posts (e.g., `app/blogs/[slug]/page.tsx`)
+    *   Set up dynamic routing for blog posts 
     *   Implement Markdown rendering for blog content
     *   Create dynamic categorization: Product | Design | Analytics | Life Lessons
     *   *Status:* Not Started
