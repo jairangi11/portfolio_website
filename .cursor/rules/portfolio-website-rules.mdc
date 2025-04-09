@@ -23,7 +23,7 @@ Design Toolkit: 21st.dev for web-native UX elements
 
 AI Tools:
 
-RAG Chatbot with Jay's resume as vector DB
+RAG Chatbot with Jay's resume using Gemini 2.0 Flash
 
 Additional AI tools as plugins or serverless functions
 
@@ -44,7 +44,7 @@ Use 3D backgrounds or objects (three.js) on landing and detail pages
 Maintain a clean layout with soft shadows, neumorphism, or glassmorphism where appropriate
 
 Fonts & Aesthetics
-Use readable, modern fonts like Inter, Plus Jakarta Sans, or Satoshi
+Use readable, modern fonts like Inter
 
 Prioritize contrast and accessibility (WCAG AA)
 
@@ -100,7 +100,7 @@ Fun form (like a quest item submission)
 
 Gamified validation messages ("Message successfully delivered via cyber hawk 🦅")
 
-Include LinkedIn, GitHub, Twitter, Email with fun hover effects
+Include LinkedIn, Email with fun hover effects
 
 4. Case Studies
 Timeline or Quest-like unlockable case studies
@@ -118,7 +118,7 @@ Gamified reader journey (XP for reading 3 blogs, badges for reading across categ
 
 AI Features (Flex your AI Skills)
 Core
-RAG Chatbot: Feed vector-embedded resume & case studies
+RAG Chatbot: Feed resume & case studies
 
 Users can “Ask Jay’s AI Assistant” about his skills, projects, etc.
 
@@ -136,8 +136,6 @@ Sprint Planning Simulator: Users drag & drop tasks into sprints, and get fun fee
 Product Roadmap as a Game Map: Navigate through PM milestones
 
 Easter Eggs: Trigger hidden effects (e.g., clicking a particular word unlocks a hidden case study)
-
-AR/VR Placeholder: Option to explore Jay's workspace or projects in VR (placeholder or low-fidelity mock)
 
 Dev & Code Standards
 Strict modular file structure: components/, lib/, app/, hooks/, utils/, config/
