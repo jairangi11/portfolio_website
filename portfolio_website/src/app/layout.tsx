@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { inter } from "@/lib/fonts";
 import "./globals.css";
 import { themeConfig } from "@/config/theme";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
   title: themeConfig.name,
@@ -16,7 +17,15 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} font-sans antialiased`}>
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          forcedTheme="light"
+          enableSystem={false}
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

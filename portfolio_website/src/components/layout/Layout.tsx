@@ -2,7 +2,7 @@
 
 import { ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Navbar from "./Navbar";
+import Header from "./Header";
 import Footer from "./Footer";
 
 interface LayoutProps {
@@ -11,11 +11,11 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   return (
-    <div className="flex flex-col min-h-screen">
-      <Navbar />
+    <div className="flex flex-col min-h-screen bg-background text-foreground">
+      <Header />
       <AnimatePresence mode="wait">
         <motion.main 
-          className="flex-grow pt-16"
+          className="flex-grow pt-24 md:pt-28"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}

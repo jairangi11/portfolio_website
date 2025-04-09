@@ -2,18 +2,18 @@ export const themeConfig = {
   name: "Jay Rangi Portfolio",
   description: "Product Manager specializing in AI-powered solutions",
   colors: {
-    primary: "neutral",
+    primary: "purple",
     background: {
-      light: "#ffffff",
-      dark: "#09090b"
+      light: "#f6f7fe", // Very light purple/blue tint
+      dark: "#121420"    // Dark blue-gray
     },
     text: {
-      light: "#09090b",
-      dark: "#ffffff"
+      light: "#1a1b25", // Dark blue-gray for text
+      dark: "#f6f7fe"   // Light purple/blue for dark mode text
     },
     accent: {
-      main: "#6366f1", // Indigo for accent
-      secondary: "#ec4899" // Pink for secondary accent
+      main: "#7c3aed", // Purple for main accent
+      secondary: "#c084fc" // Lighter purple for secondary accent
     }
   },
   fonts: {
@@ -45,7 +45,11 @@ export const themeConfig = {
     lg: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)"
   },
   neumorphism: {
-    light: "20px 20px 60px #d9d9d9, -20px -20px 60px #ffffff",
-    dark: "20px 20px 60px #080808, -20px -20px 60px #0a0a0a"
+    light: "12px 12px 24px #e0e1f0, -12px -12px 24px #fcfdff",
+    dark: "12px 12px 24px #0c0e16, -12px -12px 24px #181a2a"
+  },
+  glassmorphism: {
+    light: "rgba(255, 255, 255, 0.15)",
+    dark: "rgba(20, 20, 30, 0.7)"
   }
 }; 

@@ -15,9 +15,7 @@ export interface Education {
 
 export interface Skill {
   name: string;
-  level: number; // 1-10
-  category: string;
-  color: string;
+  type: string;
 }
 
 export interface Certification {
@@ -112,43 +110,43 @@ export const resumeData = {
   
   skills: [
     // Technical Skills
-    { name: "Python", level: 8, category: "Technical", color: "#6366f1" },
-    { name: "SQL", level: 9, category: "Technical", color: "#6366f1" },
-    { name: "Power BI", level: 7, category: "Technical", color: "#6366f1" },
-    { name: "Tableau", level: 8, category: "Technical", color: "#6366f1" },
-    { name: "Mixpanel", level: 9, category: "Technical", color: "#6366f1" },
-    { name: "CleverTap", level: 8, category: "Technical", color: "#6366f1" },
-    { name: "Adobe Analytics", level: 7, category: "Technical", color: "#6366f1" },
-    { name: "Figma", level: 6, category: "Technical", color: "#6366f1" },
-    { name: "JIRA", level: 9, category: "Technical", color: "#6366f1" },
-    { name: "API Integrations", level: 7, category: "Technical", color: "#6366f1" },
+    { name: "Python", type: "frontend" },
+    { name: "SQL", type: "database" },
+    { name: "Power BI", type: "tools" },
+    { name: "Tableau", type: "tools" },
+    { name: "Mixpanel", type: "tools" },
+    { name: "CleverTap", type: "tools" },
+    { name: "Adobe Analytics", type: "tools" },
+    { name: "Figma", type: "design" },
+    { name: "JIRA", type: "tools" },
+    { name: "API Integrations", type: "backend" },
     
     // Product Management
-    { name: "Product Strategy", level: 9, category: "Product", color: "#10b981" },
-    { name: "Product Roadmap", level: 9, category: "Product", color: "#10b981" },
-    { name: "Backlog Management", level: 8, category: "Product", color: "#10b981" },
-    { name: "Agile", level: 9, category: "Product", color: "#10b981" },
-    { name: "Go-to-Market", level: 8, category: "Product", color: "#10b981" },
-    { name: "Stakeholder Management", level: 9, category: "Product", color: "#10b981" },
-    { name: "Data-Driven Decisions", level: 10, category: "Product", color: "#10b981" },
-    { name: "Growth Metrics", level: 8, category: "Product", color: "#10b981" },
+    { name: "Product Strategy", type: "product" },
+    { name: "Product Roadmap", type: "product" },
+    { name: "Backlog Management", type: "product" },
+    { name: "Agile", type: "devops" },
+    { name: "Go-to-Market", type: "product" },
+    { name: "Stakeholder Management", type: "product" },
+    { name: "Data-Driven Decisions", type: "product" },
+    { name: "Growth Metrics", type: "product" },
     
     // AI & Data Science
-    { name: "NLP", level: 7, category: "AI", color: "#ec4899" },
-    { name: "Prediction", level: 8, category: "AI", color: "#ec4899" },
-    { name: "Classification", level: 8, category: "AI", color: "#ec4899" },
-    { name: "Forecasting", level: 7, category: "AI", color: "#ec4899" },
-    { name: "Clustering", level: 6, category: "AI", color: "#ec4899" },
-    { name: "Recommendation Systems", level: 7, category: "AI", color: "#ec4899" },
-    { name: "Generative AI", level: 8, category: "AI", color: "#ec4899" },
-    { name: "KPIs", level: 9, category: "AI", color: "#ec4899" },
+    { name: "NLP", type: "ai" },
+    { name: "Prediction", type: "ai" },
+    { name: "Classification", type: "ai" },
+    { name: "Forecasting", type: "ai" },
+    { name: "Clustering", type: "ai" },
+    { name: "Recommendation Systems", type: "ai" },
+    { name: "Generative AI", type: "ai" },
+    { name: "KPIs", type: "product" },
     
     // Industry
-    { name: "SaaS", level: 8, category: "Industry", color: "#0ea5e9" },
-    { name: "Fintech", level: 7, category: "Industry", color: "#0ea5e9" },
-    { name: "PropTech", level: 9, category: "Industry", color: "#0ea5e9" },
-    { name: "E-commerce", level: 6, category: "Industry", color: "#0ea5e9" },
-    { name: "Cloud", level: 7, category: "Industry", color: "#0ea5e9" }
+    { name: "SaaS", type: "industry" },
+    { name: "Fintech", type: "industry" },
+    { name: "PropTech", type: "industry" },
+    { name: "E-commerce", type: "industry" },
+    { name: "Cloud", type: "industry" }
   ],
   
   certifications: [] // To be populated
