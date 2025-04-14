@@ -52,6 +52,15 @@ export default {
         sans: ["var(--font-sans)", "Inter", "sans-serif"],
         heading: ["Inter", "sans-serif"],
       },
+      perspectiveOrigin: {
+        'center': 'center',
+      },
+      perspective: {
+        'none': 'none',
+        '500': '500px',
+        '1000': '1000px',
+        '2000': '2000px',
+      }
     },
   },
 } 

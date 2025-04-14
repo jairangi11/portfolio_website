@@ -4,11 +4,12 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import Layout from "@/components/layout/Layout";
-import HeroScene from "@/components/3d/HeroScene";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { FiArrowRight, FiCode, FiLayers, FiCpu, FiGrid } from "react-icons/fi";
+import { ProfileCard } from "@/components/ui/profile-card";
+import { resumeData } from "@/data/resumeData";
 
 export default function Home() {
   const expertiseItems = [
@@ -36,70 +37,89 @@ export default function Home() {
 
   return (
     <Layout>
-      {/* Hero Section with 3D Background */}
-      <section className="relative h-[90vh] overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <HeroScene />
+      {/* Hero Section with matching header background */}
+      <section className="relative h-[90vh] overflow-hidden bg-background">
+        {/* Simple background elements */}
+        <div className="absolute inset-0 z-0 opacity-15">
+          <div className="absolute top-1/4 left-1/4 w-32 h-32 rounded-full bg-primary/10 blur-3xl"></div>
+          <div className="absolute bottom-1/3 right-1/3 w-40 h-40 rounded-full bg-secondary/10 blur-3xl"></div>
+          <div className="absolute top-2/3 right-1/4 w-24 h-24 rounded-full bg-primary/10 blur-2xl"></div>
         </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-background/0 via-background/0 to-background z-10" />
         
-        <div className="relative z-20 h-full flex flex-col items-center justify-center text-center px-4 container mx-auto">
+        <div className="relative z-20 h-full container mx-auto px-4 flex flex-col md:flex-row items-center justify-center">
+          <div className="flex-1 text-center md:text-left mb-10 md:mb-0">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="space-y-2 mb-2"
+            >
+              <Badge className="mb-4 px-4 py-1.5 text-sm bg-primary/10 text-primary border-primary/20">
+                Product Manager
+              </Badge>
+            </motion.div>
+            
+            <motion.h1 
+              className="text-5xl md:text-7xl font-bold text-foreground tracking-tight"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              <span className="text-primary">Jay</span> Rangi
+            </motion.h1>
+            
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="h-1 w-12 bg-primary my-6 mx-auto md:mx-0 rounded-full"
+            />
+            
+            <motion.h2 
+              className="text-xl md:text-2xl text-foreground/80 mt-4 max-w-2xl leading-relaxed"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
+              Specializing in <span className="text-primary font-medium">AI-powered solutions</span>, 
+              <span className="text-primary font-medium"> Machine Learning</span>, 
+              <span className="text-primary font-medium"> SaaS</span>, and 
+              <span className="text-primary font-medium"> B2B PropTech</span>
+            </motion.h2>
+            
+            <motion.div 
+              className="mt-10 flex flex-col sm:flex-row gap-4 justify-center md:justify-start"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+            >
+              <Button asChild size="lg" className="group">
+                <Link href="/resume">
+                  View Resume
+                  <FiArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="lg">
+                <Link href="/case-studies">
+                  Explore Case Studies
+                </Link>
+              </Button>
+            </motion.div>
+          </div>
+          
+          {/* Profile Card */}
           <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="space-y-2 mb-2"
-          >
-            <Badge className="mb-4 px-4 py-1.5 text-sm bg-primary/10 text-primary border-primary/20">
-              Product Manager
-            </Badge>
-          </motion.div>
-          
-          <motion.h1 
-            className="text-5xl md:text-7xl font-bold text-foreground tracking-tight"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            <span className="text-primary">Jay</span> Rangi
-          </motion.h1>
-          
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            className="w-full md:w-auto h-[420px] md:h-auto"
+            initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="h-1 w-12 bg-primary my-6 mx-auto rounded-full"
-          />
-          
-          <motion.h2 
-            className="text-xl md:text-2xl text-foreground/80 mt-4 max-w-2xl leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
+            transition={{ duration: 0.7, delay: 0.7 }}
           >
-            Specializing in <span className="text-primary font-medium">AI-powered solutions</span>, 
-            <span className="text-primary font-medium"> Machine Learning</span>, 
-            <span className="text-primary font-medium"> SaaS</span>, and 
-            <span className="text-primary font-medium"> B2B PropTech</span>
-          </motion.h2>
-          
-          <motion.div 
-            className="mt-10 flex flex-col sm:flex-row gap-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-          >
-            <Button asChild size="lg" className="group">
-              <Link href="/resume">
-                View Resume
-                <FiArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </Button>
-            <Button asChild variant="outline" size="lg">
-              <Link href="/case-studies">
-                Explore Case Studies
-              </Link>
-            </Button>
+            <ProfileCard 
+              name={resumeData.name}
+              title={resumeData.title}
+              subtitle="AI & PropTech Specialist"
+              cardNumber="PM 4323 7645 2828 0713"
+            />
           </motion.div>
           
           <motion.div
