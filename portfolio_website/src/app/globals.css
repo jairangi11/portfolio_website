@@ -237,3 +237,13 @@
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
+
+/* Shine effect animation for buttons */
+@keyframes shine {
+  from {
+    left: -40%;
+  }
+  to {
+    left: 140%;
+  }
+}
