@@ -79,6 +79,84 @@
   --sidebar-ring: oklch(0.6 0.18 265);
 }
 
+/* Modern Black & White Theme */
+.theme-monochrome {
+  --radius: 0.5rem;
+  /* Modern monochrome theme colors */
+  --background: #ffffff; /* Pure white background */
+  --foreground: #111111; /* Near black text */
+  --card: #f9f9f9; /* Slightly off-white for cards */
+  --card-foreground: #111111; /* Near black text */
+  --popover: #ffffff;
+  --popover-foreground: #111111;
+  --primary: #000000; /* Pure black for primary */
+  --primary-foreground: #ffffff;
+  --secondary: #f0f0f0; /* Light gray */
+  --secondary-foreground: #111111;
+  --muted: #f5f5f5;
+  --muted-foreground: #666666; /* Medium gray */
+  --accent: #333333; /* Dark gray accent */
+  --accent-foreground: #ffffff;
+  --destructive: #ff3333; /* Bright red */
+  --border: #e0e0e0;
+  --input: #e0e0e0;
+  --ring: #000000;
+  /* Chart colors */
+  --chart-1: #000000;
+  --chart-2: #333333;
+  --chart-3: #666666;
+  --chart-4: #999999;
+  --chart-5: #cccccc;
+  /* Sidebar */
+  --sidebar: #f9f9f9;
+  --sidebar-foreground: #111111;
+  --sidebar-primary: #000000;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f0f0f0;
+  --sidebar-accent-foreground: #111111;
+  --sidebar-border: #e0e0e0;
+  --sidebar-ring: #000000;
+}
+
+/* Dark Modern Theme */
+.theme-dark {
+  --radius: 0.5rem;
+  /* Dark modern theme colors */
+  --background: #121212; /* Dark background */
+  --foreground: #f8f8f8; /* Off-white text */
+  --card: #1e1e1e; /* Slightly lighter dark for cards */
+  --card-foreground: #f8f8f8; /* Off-white text */
+  --popover: #1e1e1e;
+  --popover-foreground: #f8f8f8;
+  --primary: #ffffff; /* White for primary */
+  --primary-foreground: #121212;
+  --secondary: #2a2a2a; /* Dark gray */
+  --secondary-foreground: #f8f8f8;
+  --muted: #2a2a2a;
+  --muted-foreground: #a0a0a0; /* Medium gray */
+  --accent: #e0e0e0; /* Light gray accent */
+  --accent-foreground: #121212;
+  --destructive: #ff4444; /* Bright red */
+  --border: #2a2a2a;
+  --input: #2a2a2a;
+  --ring: #ffffff;
+  /* Chart colors */
+  --chart-1: #ffffff;
+  --chart-2: #cccccc;
+  --chart-3: #999999;
+  --chart-4: #666666;
+  --chart-5: #333333;
+  /* Sidebar */
+  --sidebar: #1a1a1a;
+  --sidebar-foreground: #f8f8f8;
+  --sidebar-primary: #ffffff;
+  --sidebar-primary-foreground: #121212;
+  --sidebar-accent: #2a2a2a;
+  --sidebar-accent-foreground: #f8f8f8;
+  --sidebar-border: #2a2a2a;
+  --sidebar-ring: #ffffff;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -128,6 +206,13 @@
   box-shadow: 
     8px 8px 16px rgba(174, 174, 192, 0.4),
     -8px -8px 16px rgba(255, 255, 255, 0.8);
+}
+
+/* Modern neumorphism style - more subtle */
+.neumorphic-modern {
+  box-shadow: 
+    5px 5px 10px rgba(0, 0, 0, 0.05),
+    -5px -5px 10px rgba(255, 255, 255, 0.8);
 }
 
 /* Perspective utilities */
