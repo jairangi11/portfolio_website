@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive relative overflow-hidden group",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive relative overflow-hidden",
   {
     variants: {
       variant: {
@@ -46,33 +46,78 @@ function Button({
     asChild?: boolean
   }) {
   const Comp = asChild ? Slot : "button"
+  
+  // Use a ref to access the wrapper div
+  const buttonWrapperRef = React.useRef<HTMLDivElement>(null);
+  
+  // Add mouseenter and mouseleave event handlers
+  React.useEffect(() => {
+    const wrapper = buttonWrapperRef.current;
+    if (!wrapper) return;
+    
+    const shineElement = wrapper.querySelector('.shine-effect') as HTMLElement;
+    if (!shineElement) return;
+    
+    // Flag to track if animation is in progress
+    let isAnimating = false;
+    
+    const handleMouseEnter = () => {
+      // If already animating, return
+      if (isAnimating) return;
+      
+      // Reset position before starting new animation
+      shineElement.style.transition = 'none';
+      shineElement.style.transform = 'translateX(-100%) skewX(-12deg)';
+      shineElement.style.opacity = '1';
+      
+      // Force reflow to ensure the reset takes effect immediately
+      void shineElement.offsetWidth;
+      
+      // Start animation
+      isAnimating = true;
+      shineElement.style.transition = 'transform 0.8s ease, opacity 0.1s ease 0.7s';
+      shineElement.style.transform = 'translateX(250%) skewX(-12deg)';
+      shineElement.style.opacity = '0';
+      
+      // Reset animation flag and position after animation completes
+      setTimeout(() => {
+        isAnimating = false;
+        // Ensure the element is completely hidden
+        shineElement.style.transition = 'none';
+        shineElement.style.transform = 'translateX(-100%) skewX(-12deg)';
+      }, 800);
+    };
+    
+    const handleMouseLeave = () => {
+      // No immediate action needed on mouse leave
+      // The animation will complete its cycle and the flag will be reset
+    };
+    
+    wrapper.addEventListener('mouseenter', handleMouseEnter);
+    wrapper.addEventListener('mouseleave', handleMouseLeave);
+    
+    return () => {
+      wrapper.removeEventListener('mouseenter', handleMouseEnter);
+      wrapper.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, []);
 
-  // The shine effect element
-  const shineEffect = (
-    <span className="absolute inset-0 pointer-events-none overflow-hidden rounded-md">
-      <span className="absolute left-[-40%] top-0 h-full w-[60%] bg-gradient-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 translate-x-[-100%] group-hover:animate-[shine_0.8s_ease_forwards]"></span>
-    </span>
-  )
-
-  if (asChild) {
-    return (
+  return (
+    <div className="relative inline-block" ref={buttonWrapperRef}>
       <Comp
         data-slot="button"
         className={cn(buttonVariants({ variant, size, className }))}
         {...props}
-      />
-    )
-  }
-
-  return (
-    <Comp
-      data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }))}
-      {...props}
-    >
-      {props.children}
-      {shineEffect}
-    </Comp>
+      >
+        {props.children}
+      </Comp>
+      <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-md">
+        <div 
+          className="shine-effect absolute top-0 h-full w-[60%] bg-gradient-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 translate-x-[-100%]"
+          style={{ opacity: 0 }}
+        ></div>
+      </div>
+    </div>
   )
 }
 
