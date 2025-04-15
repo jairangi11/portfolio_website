@@ -10,7 +10,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { FiArrowRight, FiCode, FiLayers, FiCpu, FiGrid } from "react-icons/fi";
 import { ProfileCard } from "@/components/ui/profile-card";
 import { resumeData } from "@/data/resumeData";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import React from "react";
 
 export default function Home() {
@@ -41,17 +41,148 @@ export default function Home() {
   const skills = ["AI-powered solutions", "Machine Learning", "SaaS", "B2B PropTech"];
   const [currentSkillIndex, setCurrentSkillIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [timerProgress, setTimerProgress] = useState(0);
+  const timerProgressRef = useRef(0); // For direct updates without re-renders
+  const animationFrameIdRef = useRef<number | null>(null);
+  const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
+  
+  // Scroll position state for scroll indicator
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const scrollThreshold = 100; // Show scroll indicator only when scroll position is less than this value
 
+  // Handle timer animation
   useEffect(() => {
-    const interval = setInterval(() => {
-      setIsAnimating(true);
-      setTimeout(() => {
-        setCurrentSkillIndex((prevIndex) => (prevIndex + 1) % skills.length);
-        setIsAnimating(false);
-      }, 500); // Half of the interval for smooth transition
-    }, 3000);
-
-    return () => clearInterval(interval);
+    let startTime: number;
+    
+    // Function to stop all animations immediately
+    const stopAllAnimations = () => {
+      if (animationFrameIdRef.current !== null) {
+        cancelAnimationFrame(animationFrameIdRef.current);
+        animationFrameIdRef.current = null;
+      }
+      
+      if (intervalIdRef.current !== null) {
+        clearInterval(intervalIdRef.current);
+        intervalIdRef.current = null;
+      }
+    };
+    
+    // Function to start timer animation
+    const startTimerAnimation = () => {
+      startTime = performance.now();
+      
+      const animateTimer = (timestamp: number) => {
+        if (document.hidden) {
+          // Don't animate when page is not visible
+          animationFrameIdRef.current = requestAnimationFrame(animateTimer);
+          return;
+        }
+        
+        const elapsed = timestamp - startTime;
+        const progress = Math.min(elapsed / 3000, 1);
+        
+        // Use ref for direct updates without re-renders
+        timerProgressRef.current = progress;
+        // Only update state at a reasonable rate to avoid excessive re-renders
+        setTimerProgress(progress);
+        
+        if (progress < 1 && animationFrameIdRef.current !== null) {
+          animationFrameIdRef.current = requestAnimationFrame(animateTimer);
+        }
+      };
+      
+      animationFrameIdRef.current = requestAnimationFrame(animateTimer);
+    };
+    
+    // Main interval for skill rotation
+    const setupSkillRotation = () => {
+      // Clear any existing interval
+      if (intervalIdRef.current !== null) {
+        clearInterval(intervalIdRef.current);
+      }
+      
+      intervalIdRef.current = setInterval(() => {
+        setIsAnimating(true);
+        timerProgressRef.current = 0;
+        setTimerProgress(0);
+        
+        setTimeout(() => {
+          setCurrentSkillIndex((prevIndex) => (prevIndex + 1) % skills.length);
+          setIsAnimating(false);
+          
+          // Reset and start timer animation
+          if (animationFrameIdRef.current !== null) {
+            cancelAnimationFrame(animationFrameIdRef.current);
+          }
+          startTimerAnimation();
+        }, 500);
+      }, 3000);
+    };
+    
+    // Initialize animations
+    setupSkillRotation();
+    startTimerAnimation();
+    
+    // Setup event listeners for visibility changes and navigation attempts
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        // Page is not visible, pause animations to save resources
+        if (animationFrameIdRef.current !== null) {
+          cancelAnimationFrame(animationFrameIdRef.current);
+        }
+      } else {
+        // Page is visible again, restart animations
+        startTime = performance.now() - (timerProgressRef.current * 3000);
+        startTimerAnimation();
+      }
+    };
+    
+    // Handle navigation attempts
+    const handleBeforeUnload = () => {
+      stopAllAnimations();
+    };
+    
+    // Handle clicks on links that might navigate away
+    const handleLinkClick = () => {
+      stopAllAnimations();
+    };
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    document.addEventListener('click', (e) => {
+      // Check if click was on a link or button
+      if (e.target instanceof HTMLAnchorElement || 
+          e.target instanceof HTMLButtonElement ||
+          (e.target as HTMLElement).closest('a') ||
+          (e.target as HTMLElement).closest('button')) {
+        handleLinkClick();
+      }
+    });
+    
+    // Cleanup
+    return () => {
+      stopAllAnimations();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+  
+  // Track scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollPosition(window.scrollY);
+    };
+    
+    // Initial position
+    setScrollPosition(window.scrollY);
+    
+    // Add scroll event listener
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   return (
@@ -100,18 +231,28 @@ export default function Home() {
                 />
               </span>
               <span className="text-foreground/80 font-normal"> specializing in </span>
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={currentSkillIndex}
-                  className="text-primary font-medium inline-block min-w-[180px]"
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: -20, opacity: 0 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {skills[currentSkillIndex]}
-                </motion.span>
-              </AnimatePresence>
+              <span className="relative">
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={currentSkillIndex}
+                    className="text-primary font-medium inline-block min-w-[180px]"
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -20, opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {skills[currentSkillIndex]}
+                  </motion.span>
+                </AnimatePresence>
+                
+                {/* Timer animation */}
+                <div className="absolute -bottom-4 left-0 w-full h-[2px] bg-zinc-800/30 overflow-hidden rounded-full">
+                  <div 
+                    className="h-full bg-primary/30 transition-none"
+                    style={{ width: `${timerProgress * 100}%` }}
+                  />
+                </div>
+              </span>
             </motion.h2>
             
             <motion.div 
@@ -155,41 +296,46 @@ export default function Home() {
             />
           </motion.div>
           
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 1.2 }}
-            className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
-          >
-            <div className="flex flex-col items-center gap-2 text-sm text-foreground/60 group cursor-pointer">
-              <span className="font-medium tracking-wide">Scroll Down</span>
-              <div className="relative h-10 w-6 border-2 border-foreground/30 rounded-full flex justify-center p-1">
-                <motion.div 
-                  className="w-1.5 h-1.5 bg-primary rounded-full"
-                  animate={{ 
-                    y: [0, 12, 0],
-                  }}
-                  transition={{ 
-                    repeat: Infinity, 
-                    duration: 2,
-                    ease: "easeInOut"
-                  }}
-                />
-              </div>
-              <motion.div 
-                className="absolute h-12 w-12 rounded-full border border-foreground/10"
-                animate={{ 
-                  scale: [1, 1.1, 1],
-                  opacity: [0.2, 0.5, 0.2],
-                }}
-                transition={{ 
-                  repeat: Infinity, 
-                  duration: 3,
-                  ease: "easeInOut"
-                }}
-              />
-            </div>
-          </motion.div>
+          <AnimatePresence>
+            {scrollPosition < scrollThreshold && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4 }}
+                className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
+              >
+                <div className="flex flex-col items-center gap-2 text-sm text-foreground/60 group cursor-pointer">
+                  <span className="font-medium tracking-wide">Scroll Down</span>
+                  <div className="relative h-10 w-6 border-2 border-foreground/30 rounded-full flex justify-center p-1">
+                    <motion.div 
+                      className="w-1.5 h-1.5 bg-primary rounded-full"
+                      animate={{ 
+                        y: [0, 12, 0],
+                      }}
+                      transition={{ 
+                        repeat: Infinity, 
+                        duration: 2,
+                        ease: "easeInOut"
+                      }}
+                    />
+                  </div>
+                  <motion.div 
+                    className="absolute h-12 w-12 rounded-full border border-foreground/10"
+                    animate={{ 
+                      scale: [1, 1.1, 1],
+                      opacity: [0.2, 0.5, 0.2],
+                    }}
+                    transition={{ 
+                      repeat: Infinity, 
+                      duration: 3,
+                      ease: "easeInOut"
+                    }}
+                  />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </section>
 

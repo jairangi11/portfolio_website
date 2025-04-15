@@ -77,9 +77,12 @@ export function ProfileCard({
       // Calculate shine position (0-100%)
       const shineX = ((e.clientX - rect.left) / rect.width) * 100;
       
-      setRotateX(rotateXValue);
-      setRotateY(rotateYValue);
-      setShinePosition(shineX);
+      // Use requestAnimationFrame for smoother updates during mouse movement
+      requestAnimationFrame(() => {
+        setRotateX(rotateXValue);
+        setRotateY(rotateYValue);
+        setShinePosition(shineX);
+      });
     };
     
     // Add initial tilt when component mounts
@@ -93,7 +96,7 @@ export function ProfileCard({
   return (
     <div className="relative flex justify-center items-center w-full h-full perspective-1000" ref={cardRef}>
       <motion.div
-        className="relative w-[500px] h-[700px] rounded-2xl overflow-hidden"
+        className="relative w-[500px] h-[700px] rounded-2xl overflow-visible"
         style={{
           transformStyle: "preserve-3d",
           willChange: "transform",
@@ -104,41 +107,42 @@ export function ProfileCard({
           rotateZ: -1
         }}
         transition={{
-          type: "spring",
-          stiffness: 80,
-          damping: 30
+          type: "tween",
+          duration: 0.1,
+          ease: "linear"
         }}
       >
-        {/* Shiny Black Background */}
-        <div className="absolute inset-0 bg-black rounded-2xl backdrop-blur-xl border border-zinc-800" />
+        {/* Shiny Black Background - using pure black */}
+        <div className="absolute inset-0 bg-black rounded-2xl backdrop-blur-xl border border-zinc-800 z-10" />
         
         {/* Shiny Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 via-black to-zinc-900 opacity-80 rounded-2xl" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(60,60,60,0.3),rgba(0,0,0,0))] rounded-2xl" />
+        <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 via-black to-zinc-900 opacity-80 rounded-2xl z-20" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(60,60,60,0.3),rgba(0,0,0,0))] rounded-2xl z-30" />
         
         {/* Accent Design Elements */}
-        <div className="absolute top-0 right-0 w-60 h-60 bg-zinc-500/10 rounded-full blur-3xl -translate-y-12 translate-x-12 opacity-40" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-zinc-400/10 rounded-full blur-3xl translate-y-8 -translate-x-8 opacity-40" />
+        <div className="absolute top-0 right-0 w-60 h-60 bg-zinc-500/10 rounded-full blur-3xl -translate-y-12 translate-x-12 opacity-40 z-40" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-zinc-400/10 rounded-full blur-3xl translate-y-8 -translate-x-8 opacity-40 z-40" />
         
         {/* Enhanced Shine effect */}
         <motion.div 
-          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent w-full h-full"
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent w-full h-full z-40"
           style={{
             backgroundSize: "200% 100%",
             transformStyle: "preserve-3d",
+            pointerEvents: "none", // Ensures shine doesn't capture clicks
           }}
           animate={{
             x: `${shinePosition}%`,
           }}
           transition={{
-            type: "spring",
-            stiffness: 80,
-            damping: 30
+            type: "tween",
+            duration: 0.1,
+            ease: "linear"
           }}
         />
         
         {/* Card Content */}
-        <div className="relative w-full h-full p-9 flex flex-col text-white">
+        <div className="relative w-full h-full p-9 flex flex-col text-white z-50">
           {/* Header */}
           <div className="flex justify-between items-start mb-12">
             <div>
