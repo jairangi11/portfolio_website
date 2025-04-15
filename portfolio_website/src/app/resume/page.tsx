@@ -1,22 +1,232 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Layout from "@/components/layout/Layout";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { resumeData, type Education, type Certification } from "@/data/resumeData";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { FiDownload, FiArrowRight, FiBriefcase, FiBook, FiAward, FiStar, FiCpu } from "react-icons/fi";
+import { FiDownload, FiArrowRight, FiBriefcase, FiBook, FiAward, FiStar, FiCpu, FiCalendar, FiMapPin } from "react-icons/fi";
 
-// Tab types
-type ResumeTab = "summary" | "experience" | "education" | "skills" | "certifications";
+// Sample certification data
+const sampleCertifications: Certification[] = [
+  {
+    name: "AI Product Management",
+    issuer: "Product School",
+    date: "2023",
+    url: "https://example.com/cert1"
+  },
+  {
+    name: "Machine Learning Specialization",
+    issuer: "Stanford Online",
+    date: "2022",
+    url: "https://example.com/cert2"
+  },
+  {
+    name: "Product Analytics Certification",
+    issuer: "Mixpanel University",
+    date: "2021",
+    url: "https://example.com/cert3"
+  }
+];
+
+// Timeline item component
+const TimelineItem = ({ 
+  children, 
+  isLast = false,
+  position = "right" 
+}: { 
+  children: React.ReactNode; 
+  isLast?: boolean;
+  position?: "left" | "right";
+}) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: false, margin: "-100px 0px" });
+  
+  return (
+    <div ref={ref} className={`relative mb-20 flex items-start ${position === "left" ? "flex-row-reverse" : "flex-row"}`}>
+      {/* Line */}
+      {!isLast && (
+        <div className="absolute left-1/2 top-10 -translate-x-1/2 w-0.5 h-[calc(100%+5rem)] bg-gradient-to-b from-primary/80 to-primary/20 dark:from-primary/60 dark:to-primary/5" />
+      )}
+      
+      {/* Center dot */}
+      <div className="absolute left-1/2 top-3 -translate-x-1/2 flex items-center justify-center w-6 h-6 z-10">
+        <motion.div 
+          initial={{ scale: 0, opacity: 0 }} 
+          animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
+          transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.1 }}
+          className="w-3 h-3 rounded-full bg-primary shadow-glow"
+        />
+      </div>
+      
+      {/* Content */}
+      <motion.div
+        initial={{ opacity: 0, x: position === "left" ? 20 : -20 }}
+        animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: position === "left" ? 20 : -20 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className={`w-[calc(50%-2rem)] mx-8 ${position === "left" ? "text-left" : "text-left"}`}
+      >
+        {children}
+      </motion.div>
+    </div>
+  );
+};
+
+// Skills section component
+const SkillsSection = () => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: false, margin: "-100px 0px" });
+  
+  // Define skill categories
+  const skillCategories = {
+    technical: {
+      title: "Technical",
+      skills: resumeData.skills.filter(skill => 
+        ["frontend", "backend", "database", "tools", "design"].includes(skill.type)
+      ),
+      icon: <FiCpu className="h-5 w-5 text-primary" />
+    },
+    product: {
+      title: "Product Management",
+      skills: resumeData.skills.filter(skill => skill.type === "product" || skill.type === "devops"),
+      icon: <FiBriefcase className="h-5 w-5 text-primary" />
+    },
+    ai: {
+      title: "AI & Data Science",
+      skills: resumeData.skills.filter(skill => skill.type === "ai"),
+      icon: <FiStar className="h-5 w-5 text-primary" />
+    },
+    industry: {
+      title: "Industry Knowledge",
+      skills: resumeData.skills.filter(skill => skill.type === "industry"),
+      icon: <FiBook className="h-5 w-5 text-primary" />
+    }
+  };
+  
+  return (
+    <motion.div 
+      ref={ref}
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+      transition={{ duration: 0.5 }}
+      className="mt-32 mb-24"
+    >
+      <div className="mb-12 text-center">
+        <h2 className="text-3xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70">
+          Professional Skills
+        </h2>
+      </div>
+      
+      <Card className="border border-border/50 bg-card/50 backdrop-blur-sm shadow-lg overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50 pointer-events-none" />
+        <CardContent className="pt-8 pb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            {Object.entries(skillCategories).map(([key, category], categoryIndex) => (
+              <motion.div 
+                key={key}
+                initial={{ opacity: 0, y: 15 }}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
+                transition={{ duration: 0.5, delay: 0.1 * categoryIndex }}
+              >
+                <div className="mb-5">
+                  <h3 className="text-xl font-medium mb-4 flex items-center gap-2 pb-2 border-b border-border/50">
+                    {category.icon}
+                    {category.title}
+                  </h3>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {category.skills.map((skill, skillIndex) => (
+                    <motion.div
+                      key={skill.name}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.3, delay: 0.05 * skillIndex }}
+                      whileHover={{ y: -3, scale: 1.05, transition: { duration: 0.2 } }}
+                    >
+                      <Badge 
+                        className="px-3 py-1.5 text-sm font-medium bg-card hover:bg-card/80 border-border hover:border-primary/30 transition-colors shadow-sm"
+                        variant="outline"
+                      >
+                        {skill.name}
+                      </Badge>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+};
+
+// Certifications section component
+const CertificationsSection = () => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: false, margin: "-100px 0px" });
+  
+  // Use sample certifications if resumeData certifications are empty
+  const certifications = resumeData.certifications.length > 0 
+    ? resumeData.certifications as Certification[]
+    : sampleCertifications;
+  
+  return (
+    <motion.div 
+      ref={ref}
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+      transition={{ duration: 0.5 }}
+      className="mb-24"
+    >
+      <div className="mb-12 text-center">
+        <h2 className="text-3xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70">
+          Certifications & Achievements
+        </h2>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {certifications.map((cert, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.4, delay: 0.1 * index }}
+          >
+            <Card className="h-full border border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50 pointer-events-none" />
+              <CardHeader>
+                <CardTitle className="text-xl font-bold">{cert.name}</CardTitle>
+                <CardDescription className="text-base flex items-center gap-1 mt-1">
+                  <span className="font-medium">{cert.issuer}</span>
+                  <span className="mx-1">•</span>
+                  <div className="flex items-center gap-1 text-muted-foreground">
+                    <FiCalendar className="h-3 w-3" />
+                    <span>{cert.date}</span>
+                  </div>
+                </CardDescription>
+              </CardHeader>
+              {cert.url && (
+                <CardFooter>
+                  <Button asChild variant="outline" className="group gap-2 border-primary/20 hover:bg-primary/10 transition-colors">
+                    <a href={cert.url} target="_blank" rel="noopener noreferrer">
+                      View Certificate
+                      <FiArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    </a>
+                  </Button>
+                </CardFooter>
+              )}
+            </Card>
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
+  );
+};
 
 export default function ResumePage() {
-  const [activeTab, setActiveTab] = useState<ResumeTab>("summary");
-
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
     visible: { 
@@ -25,335 +235,139 @@ export default function ResumePage() {
       transition: { duration: 0.5 }
     }
   };
-  
-  const stagger = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  // Define skill categories
-  const skillCategories = {
-    technical: {
-      title: "Technical",
-      skills: resumeData.skills.filter(skill => 
-        ["frontend", "backend", "database", "tools", "design"].includes(skill.type)
-      )
-    },
-    product: {
-      title: "Product Management",
-      skills: resumeData.skills.filter(skill => skill.type === "product" || skill.type === "devops")
-    },
-    ai: {
-      title: "AI & Data Science",
-      skills: resumeData.skills.filter(skill => skill.type === "ai")
-    },
-    industry: {
-      title: "Industry Knowledge",
-      skills: resumeData.skills.filter(skill => skill.type === "industry")
-    }
-  };
 
   return (
     <Layout>
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-4xl mx-auto">
-          <div className="mb-12 text-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              className="inline-block mb-3"
-            >
-              <Badge className="px-3 py-1 text-sm bg-primary/10 text-primary border-primary/10">
-                Product Manager
-              </Badge>
-            </motion.div>
-            
-            <motion.h1 
-              className="text-4xl md:text-5xl font-bold mb-4"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              Resume
-            </motion.h1>
-            
-            <motion.p 
-              className="text-xl text-muted-foreground max-w-2xl mx-auto"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              Specializing in AI-powered solutions, Machine Learning, SaaS, and B2B PropTech
-            </motion.p>
+      <div className="container max-w-5xl mx-auto px-4 py-16 relative overflow-hidden">
+        {/* Background elements */}
+        <div className="absolute inset-0 -z-10 opacity-50">
+          <div className="absolute top-20 right-20 w-64 h-64 rounded-full bg-primary/5 blur-3xl" />
+          <div className="absolute bottom-40 left-10 w-72 h-72 rounded-full bg-primary/10 blur-3xl" />
+        </div>
+        
+        {/* Download Resume Button */}
+        <motion.div 
+          className="mb-16 flex justify-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
+          <Button asChild className="group relative overflow-hidden bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary shadow-md hover:shadow-lg transition-all duration-300">
+            <a href="/resume/Jay_Rangi_Resume.pdf" download className="px-6 py-6 flex items-center gap-2">
+              <FiDownload className="mr-2 h-4 w-4 group-hover:translate-y-0.5 transition-transform" />
+              <span>Download Resume PDF</span>
+              <span className="absolute inset-0 -z-10 bg-gradient-to-r from-primary/10 to-primary/5 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500"></span>
+            </a>
+          </Button>
+        </motion.div>
+        
+        {/* Timeline - Experience Section */}
+        <div className="relative">
+          <div className="mb-10 text-center">
+            <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70">
+              Experience
+            </h2>
           </div>
           
-          {/* Download Resume Button */}
-          <motion.div 
-            className="mb-12 flex justify-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            <Button asChild className="group">
-              <a href="/resume/Jay_Rangi_Resume.pdf" download>
-                <FiDownload className="mr-2 h-4 w-4 group-hover:translate-y-0.5 transition-transform" />
-                Download Resume PDF
-              </a>
-            </Button>
-          </motion.div>
-          
-          {/* Resume Tabs */}
-          <Tabs defaultValue="summary" className="w-full" onValueChange={(value) => setActiveTab(value as ResumeTab)}>
-            <TabsList className="grid w-full grid-cols-5 mb-12">
-              <TabsTrigger 
-                value="summary" 
-                className="group flex flex-col items-center justify-center gap-2 py-4 data-[state=active]:text-primary transition-all duration-200"
-              >
-                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 group-data-[state=active]:bg-primary/20 transition-colors">
-                  <FiStar className="h-4 w-4 text-primary group-data-[state=active]:scale-110 transition-transform" />
-                </div>
-                <span className="text-sm font-medium text-muted-foreground group-data-[state=active]:text-foreground">Summary</span>
-              </TabsTrigger>
-              <TabsTrigger 
-                value="experience" 
-                className="group flex flex-col items-center justify-center gap-2 py-4 data-[state=active]:text-primary transition-all duration-200"
-              >
-                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 group-data-[state=active]:bg-primary/20 transition-colors">
-                  <FiBriefcase className="h-4 w-4 text-primary group-data-[state=active]:scale-110 transition-transform" />
-                </div>
-                <span className="text-sm font-medium text-muted-foreground group-data-[state=active]:text-foreground">Experience</span>
-              </TabsTrigger>
-              <TabsTrigger 
-                value="education" 
-                className="group flex flex-col items-center justify-center gap-2 py-4 data-[state=active]:text-primary transition-all duration-200"
-              >
-                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 group-data-[state=active]:bg-primary/20 transition-colors">
-                  <FiBook className="h-4 w-4 text-primary group-data-[state=active]:scale-110 transition-transform" />
-                </div>
-                <span className="text-sm font-medium text-muted-foreground group-data-[state=active]:text-foreground">Education</span>
-              </TabsTrigger>
-              <TabsTrigger 
-                value="skills" 
-                className="group flex flex-col items-center justify-center gap-2 py-4 data-[state=active]:text-primary transition-all duration-200"
-              >
-                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 group-data-[state=active]:bg-primary/20 transition-colors">
-                  <FiCpu className="h-4 w-4 text-primary group-data-[state=active]:scale-110 transition-transform" />
-                </div>
-                <span className="text-sm font-medium text-muted-foreground group-data-[state=active]:text-foreground">Skills</span>
-              </TabsTrigger>
-              <TabsTrigger 
-                value="certifications" 
-                className="group flex flex-col items-center justify-center gap-2 py-4 data-[state=active]:text-primary transition-all duration-200"
-              >
-                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 group-data-[state=active]:bg-primary/20 transition-colors">
-                  <FiAward className="h-4 w-4 text-primary group-data-[state=active]:scale-110 transition-transform" />
-                </div>
-                <span className="text-sm font-medium text-muted-foreground group-data-[state=active]:text-foreground">Certifications</span>
-              </TabsTrigger>
-            </TabsList>
-            
-            <div className="mt-8 min-h-[600px] mb-12">
-              <TabsContent value="summary" className="mt-0">
-                <motion.div
-                  initial="hidden"
-                  animate="visible"
-                  variants={fadeInUp}
-                  className="space-y-6"
-                >
-                  <Card className="border border-border/50 bg-card/50 backdrop-blur-sm shadow-sm">
-                    <CardContent className="pt-6">
-                      {resumeData.summary.map((paragraph, index) => (
-                        <motion.p 
-                          key={index}
-                          variants={fadeInUp} 
-                          className="mb-4 text-muted-foreground leading-relaxed"
-                        >
-                          {paragraph}
-                        </motion.p>
-                      ))}
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              </TabsContent>
-              
-              <TabsContent value="experience" className="mt-0">
-                <motion.div
-                  initial="hidden"
-                  animate="visible"
-                  variants={stagger}
-                  className="space-y-6"
-                >
-                  {resumeData.experience.map((exp, index) => (
-                    <motion.div key={index} variants={fadeInUp}>
-                      <Card className="border border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
-                        <CardHeader className="pb-3">
-                          <div className="flex justify-between items-start flex-wrap gap-2">
-                            <div>
-                              <CardTitle className="text-xl font-bold">{exp.title}</CardTitle>
-                              <CardDescription className="text-muted-foreground">
-                                {exp.company} · {exp.location}
-                              </CardDescription>
-                            </div>
-                            <Badge variant="outline" className="bg-primary/5 text-primary border-primary/10">
-                              {exp.period}
-                            </Badge>
-                          </div>
-                        </CardHeader>
-                        <CardContent className="pb-6">
-                          <ul className="space-y-2">
-                            {exp.description.map((item, i) => (
-                              <li key={i} className="flex items-start gap-2 text-muted-foreground">
-                                <FiArrowRight className="h-4 w-4 mt-1 text-primary flex-shrink-0" />
-                                <span>{item}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              </TabsContent>
-              
-              <TabsContent value="education" className="mt-0">
-                <motion.div
-                  initial="hidden"
-                  animate="visible"
-                  variants={stagger}
-                  className="space-y-6"
-                >
-                  {(resumeData.education as Education[]).map((edu, index) => (
-                    <motion.div key={index} variants={fadeInUp}>
-                      <Card className="border border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
-                        <CardHeader className="pb-3">
-                          <div className="flex justify-between items-start flex-wrap gap-2">
-                            <div>
-                              <CardTitle className="text-xl font-bold">{edu.degree}</CardTitle>
-                              <CardDescription className="text-muted-foreground">
-                                {edu.institution}
-                              </CardDescription>
-                            </div>
-                            <Badge variant="outline" className="bg-primary/5 text-primary border-primary/10">
-                              {edu.period}
-                            </Badge>
-                          </div>
-                        </CardHeader>
-                        {edu.description && (
-                          <CardContent className="pb-6 text-muted-foreground">
-                            {edu.description}
-                          </CardContent>
-                        )}
-                      </Card>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              </TabsContent>
-              
-              <TabsContent value="skills" className="mt-0">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="space-y-8"
-                >
-                  <Card className="border border-border/50 bg-card/50 backdrop-blur-sm shadow-sm">
-                    <CardHeader className="pb-3">
-                      <CardTitle>Professional Skills</CardTitle>
-                      <CardDescription>My technical expertise and professional capabilities</CardDescription>
-                    </CardHeader>
-                    <CardContent className="pt-2 pb-6">
-                      <div className="space-y-10">
-                        {Object.entries(skillCategories).map(([key, category], categoryIndex) => (
-                          <motion.div 
-                            key={key}
-                            initial={{ opacity: 0, y: 15 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.4, delay: 0.1 * categoryIndex }}
-                          >
-                            <div className="mb-5">
-                              <h3 className="text-lg font-medium mb-3 flex items-center gap-2 pb-1 border-b border-border/50">
-                                {key === "technical" && <FiCpu className="h-4 w-4 text-primary" />}
-                                {key === "product" && <FiBriefcase className="h-4 w-4 text-primary" />}
-                                {key === "ai" && <FiStar className="h-4 w-4 text-primary" />}
-                                {key === "industry" && <FiBook className="h-4 w-4 text-primary" />}
-                                {category.title}
-                              </h3>
-                            </div>
-                            <div className="flex flex-wrap gap-2">
-                              {category.skills.map((skill, skillIndex) => (
-                                <motion.div
-                                  key={skill.name}
-                                  initial={{ opacity: 0, scale: 0.95 }}
-                                  animate={{ opacity: 1, scale: 1 }}
-                                  transition={{ duration: 0.3, delay: 0.05 * skillIndex }}
-                                  whileHover={{ y: -2, scale: 1.05, transition: { duration: 0.2 } }}
-                                >
-                                  <Badge 
-                                    className="px-3 py-1.5 text-sm font-medium bg-card hover:bg-card/90 border-border hover:border-primary/30 transition-colors shadow-sm"
-                                    variant="outline"
-                                  >
-                                    {skill.name}
-                                  </Badge>
-                                </motion.div>
-                              ))}
-                            </div>
-                          </motion.div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              </TabsContent>
-              
-              <TabsContent value="certifications" className="mt-0">
-                <motion.div
-                  initial="hidden"
-                  animate="visible"
-                  variants={stagger}
-                  className="space-y-6"
-                >
-                  {resumeData.certifications.length > 0 ? (
-                    (resumeData.certifications as Certification[]).map((cert, index) => (
-                      <motion.div key={index} variants={fadeInUp}>
-                        <Card className="border border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
-                          <CardHeader>
-                            <CardTitle className="text-xl font-bold">{cert.name}</CardTitle>
-                            <CardDescription className="text-muted-foreground">
-                              {cert.issuer} · {cert.date}
-                            </CardDescription>
-                          </CardHeader>
-                          {cert.url && (
-                            <CardFooter>
-                              <Button asChild variant="ghost" className="gap-2">
-                                <a href={cert.url} target="_blank" rel="noopener noreferrer">
-                                  View Certificate
-                                  <FiArrowRight className="h-4 w-4" />
-                                </a>
-                              </Button>
-                            </CardFooter>
-                          )}
-                        </Card>
-                      </motion.div>
-                    ))
-                  ) : (
-                    <Card className="border border-border/50 bg-card/50 backdrop-blur-sm shadow-sm">
-                      <CardContent className="pt-6 text-center">
-                        <p className="text-muted-foreground italic py-8">Certifications will be added soon.</p>
-                      </CardContent>
-                    </Card>
-                  )}
-                </motion.div>
-              </TabsContent>
-            </div>
-          </Tabs>
+          {resumeData.experience.map((exp, index) => (
+            <TimelineItem 
+              key={index} 
+              isLast={index === resumeData.experience.length - 1 && resumeData.education.length === 0}
+              position={index % 2 === 0 ? "right" : "left"}
+            >
+              <Card className="border border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50 pointer-events-none" />
+                <CardHeader className="pb-3">
+                  <div className="flex justify-between items-start flex-wrap gap-2">
+                    <div>
+                      <CardTitle className="text-xl font-bold">{exp.title}</CardTitle>
+                      <CardDescription className="text-base flex items-center gap-1 mt-1">
+                        <span className="font-medium">{exp.company}</span>
+                        <span className="mx-1">•</span>
+                        <div className="flex items-center gap-1 text-muted-foreground">
+                          <FiMapPin className="h-3 w-3" />
+                          <span>{exp.location}</span>
+                        </div>
+                      </CardDescription>
+                    </div>
+                    <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20 backdrop-blur-sm flex items-center gap-1 shadow-sm">
+                      <FiCalendar className="h-3 w-3" />
+                      <span>{exp.period}</span>
+                    </Badge>
+                  </div>
+                </CardHeader>
+                <CardContent className="pb-6">
+                  <ul className="space-y-3">
+                    {exp.description.map((item, i) => (
+                      <li key={i} className="flex items-start gap-3 text-muted-foreground">
+                        <div className="mt-1.5">
+                          <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+                        </div>
+                        <span className="leading-relaxed">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            </TimelineItem>
+          ))}
         </div>
+        
+        {/* Timeline - Education Section */}
+        {resumeData.education.length > 0 && (
+          <div className="relative mt-28">
+            <div className="mb-10 text-center">
+              <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70">
+                Education
+              </h2>
+            </div>
+            
+            {(resumeData.education as Education[]).map((edu, index) => (
+              <TimelineItem
+                key={index}
+                isLast={index === resumeData.education.length - 1}
+                position={index % 2 === 0 ? "right" : "left"}
+              >
+                <Card className="border border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50 pointer-events-none" />
+                  <CardHeader className="pb-3">
+                    <div className="flex justify-between items-start flex-wrap gap-2">
+                      <div>
+                        <CardTitle className="text-xl font-bold">{edu.degree}</CardTitle>
+                        <CardDescription className="text-base mt-1">
+                          <span className="font-medium">{edu.institution}</span>
+                        </CardDescription>
+                      </div>
+                      <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20 backdrop-blur-sm flex items-center gap-1 shadow-sm">
+                        <FiCalendar className="h-3 w-3" />
+                        <span>{edu.period}</span>
+                      </Badge>
+                    </div>
+                  </CardHeader>
+                  {edu.description && (
+                    <CardContent className="pb-6 text-muted-foreground">
+                      {edu.description}
+                    </CardContent>
+                  )}
+                </Card>
+              </TimelineItem>
+            ))}
+          </div>
+        )}
+        
+        {/* Skills Section */}
+        <SkillsSection />
+        
+        {/* Certifications Section */}
+        <CertificationsSection />
       </div>
+
+      {/* Add global styles */}
+      <style jsx global>{`
+        .shadow-glow {
+          box-shadow: 0 0 15px 2px rgba(var(--primary-rgb), 0.3);
+        }
+      `}</style>
     </Layout>
   );
 } 
