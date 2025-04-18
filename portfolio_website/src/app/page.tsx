@@ -44,28 +44,48 @@ export default function Home() {
       logo: "/images/company_logos/Quara_holding.png",
       role: "Product Manager - AI",
       period: "08/2023 – 03/2025",
-      description: "AI-powered PropTech insights platform"
+      description: "AI-powered PropTech insights platform",
+      website: "https://www.quaraholding.com/"
     },
     {
       name: "foundit",
       logo: "/images/company_logos/foundit.png",
       role: "Associate Product Manager",
       period: "01/2022 – 08/2023",
-      description: "UX and onboarding across 9 markets"
+      description: "UX and onboarding across 9 markets",
+      website: "https://www.foundit.in/"
     },
     {
       name: "Freecharge",
       logo: "/images/company_logos/Freecharge_logo.png",
       role: "Associate Product Manager",
       period: "02/2021 – 01/2022",
-      description: "Digital payments & fintech solutions"
+      description: "Digital payments & fintech solutions",
+      website: "https://www.freecharge.in/"
     },
     {
       name: "Shaadi.com",
       logo: "/images/company_logos/Shaadi.png",
       role: "Management Trainee - Product",
       period: "06/2020 – 02/2021",
-      description: "AI-driven matchmaking optimization"
+      description: "AI-driven matchmaking optimization",
+      website: "https://www.shaadi.com/"
+    },
+    {
+      name: "Lenskart",
+      logo: "/images/company_logos/Lenskart-Logo.png",
+      role: "MBA Internship",
+      period: "04/2019 – 05/2019",
+      description: "Sales & market optimization",
+      website: "https://www.lenskart.com/"
+    },
+    {
+      name: "Petrofac",
+      logo: "/images/company_logos/Petrofac.png",
+      role: "Software Engineering Intern",
+      period: "01/2017 – 07/2017",
+      description: "Remote monitoring system development",
+      website: "https://www.petrofac.com/"
     }
   ];
 
@@ -81,6 +101,12 @@ export default function Home() {
   // Scroll position state for scroll indicator
   const [scrollPosition, setScrollPosition] = useState(0);
   const scrollThreshold = 100; // Show scroll indicator only when scroll position is less than this value
+
+  // For carousel auto-scrolling
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const carouselInnerRef = useRef<HTMLDivElement>(null);
+  const [carouselWidth, setCarouselWidth] = useState(0);
+  const [shouldAnimate, setShouldAnimate] = useState(true);
 
   // Handle timer animation
   useEffect(() => {
@@ -216,6 +242,30 @@ export default function Home() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  useEffect(() => {
+    const updateCarouselWidth = () => {
+      if (carouselRef.current && carouselInnerRef.current) {
+        const containerWidth = carouselRef.current.offsetWidth;
+        const innerWidth = carouselInnerRef.current.scrollWidth;
+        setCarouselWidth(innerWidth);
+      }
+    };
+
+    // Initial update
+    updateCarouselWidth();
+
+    // Update on resize
+    window.addEventListener('resize', updateCarouselWidth);
+    
+    return () => {
+      window.removeEventListener('resize', updateCarouselWidth);
+    };
+  }, []);
+
+  // Pause animation on hover
+  const handleMouseEnter = () => setShouldAnimate(false);
+  const handleMouseLeave = () => setShouldAnimate(true);
 
   return (
     <Layout>
@@ -415,83 +465,227 @@ export default function Home() {
             </motion.h2>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            {companies.map((company, index) => (
-              <motion.div 
-                key={company.name}
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                whileHover={{ 
-                  y: -5, 
-                  transition: { duration: 0.2 } 
-                }}
-                className="group"
-              >
-                <Card className="h-full bg-card/40 backdrop-blur-sm hover:bg-card/60 border-border/20 transition-all duration-300 overflow-hidden">
-                  <CardContent className="p-5">
-                    {/* Timeline indicator */}
-                    <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-transparent via-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    
-                    {/* Company Logo */}
-                    <div className="h-16 mb-4 relative flex items-center justify-center">
-                      <div className="relative w-full h-12 grayscale group-hover:grayscale-0 transition-all duration-300 flex items-center justify-center">
-                        <Image 
-                          src={company.logo} 
-                          alt={`${company.name} logo`} 
-                          height={60}
-                          width={120}
-                          className="object-contain max-h-12 max-w-[140px]"
-                        />
-                        <motion.div 
-                          className="absolute inset-0 bg-primary/5 rounded-md opacity-0 group-hover:opacity-100"
-                          animate={{ 
-                            boxShadow: ['0 0 0px rgba(var(--primary-rgb), 0)', '0 0 20px rgba(var(--primary-rgb), 0.2)', '0 0 0px rgba(var(--primary-rgb), 0)']
-                          }}
-                          transition={{ 
-                            repeat: Infinity, 
-                            duration: 2.5,
-                            ease: "easeInOut"
-                          }}
-                        />
+          {/* Carousel Container */}
+          <div 
+            ref={carouselRef}
+            className="relative overflow-hidden"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            {/* Gradient overlay for left edge */}
+            <div className="absolute left-0 top-0 w-16 h-full z-10 pointer-events-none bg-gradient-to-r from-background/95 to-transparent"></div>
+            
+            {/* Gradient overlay for right edge */}
+            <div className="absolute right-0 top-0 w-16 h-full z-10 pointer-events-none bg-gradient-to-l from-background/95 to-transparent"></div>
+            
+            {/* Inner carousel with smooth scrolling motion */}
+            <motion.div
+              ref={carouselInnerRef}
+              className="flex space-x-6 px-10"
+              drag="x"
+              dragConstraints={{ left: -carouselWidth + 100, right: 0 }}
+              animate={shouldAnimate ? {
+                x: [-20, -carouselWidth + 100],
+              } : { x: 0 }}
+              transition={shouldAnimate ? {
+                x: {
+                  repeat: Infinity,
+                  repeatType: "loop",
+                  duration: 40,
+                  ease: "linear",
+                },
+              } : { duration: 0.5 }}
+            >
+              {/* Duplicate first few cards for infinite loop effect */}
+              {companies.map((company, index) => (
+                <motion.div 
+                  key={`${company.name}-${index}`}
+                  className="flex-shrink-0 w-[280px] md:w-[300px]"
+                  whileHover={{ 
+                    y: -5, 
+                    transition: { duration: 0.2 } 
+                  }}
+                >
+                  <Card className="h-full bg-card/40 backdrop-blur-sm hover:bg-card/60 border-border/20 transition-all duration-300 overflow-hidden">
+                    <CardContent className="p-5">
+                      {/* Timeline indicator */}
+                      <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-transparent via-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      
+                      {/* Company Logo */}
+                      <div className="h-16 mb-4 relative flex items-center justify-center">
+                        <div className="relative w-full h-12 grayscale hover:grayscale-0 transition-all duration-300 flex items-center justify-center">
+                          <Image 
+                            src={company.logo} 
+                            alt={`${company.name} logo`} 
+                            height={60}
+                            width={120}
+                            className="object-contain max-h-12 max-w-[140px]"
+                          />
+                          <motion.div 
+                            className="absolute inset-0 bg-primary/5 rounded-md opacity-0 hover:opacity-100"
+                            animate={{ 
+                              boxShadow: ['0 0 0px rgba(var(--primary-rgb), 0)', '0 0 20px rgba(var(--primary-rgb), 0.2)', '0 0 0px rgba(var(--primary-rgb), 0)']
+                            }}
+                            transition={{ 
+                              repeat: Infinity, 
+                              duration: 2.5,
+                              ease: "easeInOut"
+                            }}
+                          />
+                        </div>
                       </div>
-                    </div>
-                    
-                    {/* Company Details */}
-                    <div className="space-y-1 text-center">
-                      <Badge variant="outline" className="bg-background/50 text-xs px-2 py-0.5">
-                        {company.period}
-                      </Badge>
-                      <h3 className="text-foreground font-medium text-base mt-2 group-hover:text-primary transition-colors duration-200">
-                        {company.role}
-                      </h3>
-                      <p className="text-muted-foreground text-sm">
-                        {company.description}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
+                      
+                      {/* Company Name with Link */}
+                      <div className="mb-2 text-center">
+                        <Link 
+                          href={company.website} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="group inline-flex items-center gap-1 transition-colors hover:text-primary"
+                        >
+                          <span className="font-semibold text-foreground group-hover:text-primary transition-colors duration-200">
+                            {company.name}
+                          </span>
+                          <svg 
+                            xmlns="http://www.w3.org/2000/svg" 
+                            className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors duration-200" 
+                            fill="none" 
+                            viewBox="0 0 24 24" 
+                            stroke="currentColor"
+                          >
+                            <path 
+                              strokeLinecap="round" 
+                              strokeLinejoin="round" 
+                              strokeWidth={2} 
+                              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" 
+                            />
+                          </svg>
+                        </Link>
+                      </div>
+                      
+                      {/* Company Details */}
+                      <div className="space-y-1 text-center">
+                        <Badge variant="outline" className="bg-background/50 text-xs px-2 py-0.5">
+                          {company.period}
+                        </Badge>
+                        <h3 className="text-foreground font-medium text-base mt-2 hover:text-primary transition-colors duration-200">
+                          {company.role}
+                        </h3>
+                        <p className="text-muted-foreground text-sm">
+                          {company.description}
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+              
+              {/* Duplicate first cards for seamless loop */}
+              {companies.slice(0, 3).map((company, index) => (
+                <motion.div 
+                  key={`${company.name}-duplicate-${index}`}
+                  className="flex-shrink-0 w-[280px] md:w-[300px]"
+                  whileHover={{ 
+                    y: -5, 
+                    transition: { duration: 0.2 } 
+                  }}
+                >
+                  <Card className="h-full bg-card/40 backdrop-blur-sm hover:bg-card/60 border-border/20 transition-all duration-300 overflow-hidden">
+                    <CardContent className="p-5">
+                      {/* Timeline indicator */}
+                      <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-transparent via-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      
+                      {/* Company Logo */}
+                      <div className="h-16 mb-4 relative flex items-center justify-center">
+                        <div className="relative w-full h-12 grayscale hover:grayscale-0 transition-all duration-300 flex items-center justify-center">
+                          <Image 
+                            src={company.logo} 
+                            alt={`${company.name} logo`} 
+                            height={60}
+                            width={120}
+                            className="object-contain max-h-12 max-w-[140px]"
+                          />
+                          <motion.div 
+                            className="absolute inset-0 bg-primary/5 rounded-md opacity-0 hover:opacity-100"
+                            animate={{ 
+                              boxShadow: ['0 0 0px rgba(var(--primary-rgb), 0)', '0 0 20px rgba(var(--primary-rgb), 0.2)', '0 0 0px rgba(var(--primary-rgb), 0)']
+                            }}
+                            transition={{ 
+                              repeat: Infinity, 
+                              duration: 2.5,
+                              ease: "easeInOut"
+                            }}
+                          />
+                        </div>
+                      </div>
+                      
+                      {/* Company Name with Link */}
+                      <div className="mb-2 text-center">
+                        <Link 
+                          href={company.website} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="group inline-flex items-center gap-1 transition-colors hover:text-primary"
+                        >
+                          <span className="font-semibold text-foreground group-hover:text-primary transition-colors duration-200">
+                            {company.name}
+                          </span>
+                          <svg 
+                            xmlns="http://www.w3.org/2000/svg" 
+                            className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors duration-200" 
+                            fill="none" 
+                            viewBox="0 0 24 24" 
+                            stroke="currentColor"
+                          >
+                            <path 
+                              strokeLinecap="round" 
+                              strokeLinejoin="round" 
+                              strokeWidth={2} 
+                              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" 
+                            />
+                          </svg>
+                        </Link>
+                      </div>
+                      
+                      {/* Company Details */}
+                      <div className="space-y-1 text-center">
+                        <Badge variant="outline" className="bg-background/50 text-xs px-2 py-0.5">
+                          {company.period}
+                        </Badge>
+                        <h3 className="text-foreground font-medium text-base mt-2 hover:text-primary transition-colors duration-200">
+                          {company.role}
+                        </h3>
+                        <p className="text-muted-foreground text-sm">
+                          {company.description}
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
           
-          {/* Timeline connector */}
-          <div className="mt-8 relative h-2 w-full max-w-3xl mx-auto opacity-40">
-            <div className="absolute inset-0 h-[1px] w-full bg-primary/20 top-1/2 transform -translate-y-1/2"></div>
+          {/* Carousel position indicators */}
+          <div className="mt-8 flex justify-center space-x-2">
             <motion.div 
-              className="absolute left-0 top-1/2 h-2 w-2 rounded-full bg-primary transform -translate-y-1/2"
-              animate={{ 
-                x: [0, "100%", 0],
-                opacity: [0.5, 1, 0.5],
-              }}
-              transition={{ 
-                repeat: Infinity, 
-                duration: 8,
-                ease: "easeInOut",
-                repeatType: "reverse"
-              }}
-            />
+              className="w-20 h-1 rounded-full bg-foreground/5 relative overflow-hidden"
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+            >
+              <motion.div 
+                className="absolute top-0 left-0 h-full bg-primary/30"
+                animate={{ 
+                  x: ["0%", "100%", "0%"]
+                }}
+                transition={{ 
+                  repeat: Infinity, 
+                  duration: 40,
+                  ease: "linear",
+                  repeatType: "loop",
+                }}
+              />
+            </motion.div>
           </div>
         </div>
       </section>

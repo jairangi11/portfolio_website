@@ -92,6 +92,25 @@ export const resumeData = {
         "Improved premium engagement with personalized AI-driven VIP features.",
         "Built a predictive CRM model, reducing response time by 15% and improving efficiency."
       ]
+    },
+    {
+      title: "MBA Internship",
+      company: "Lenskart",
+      location: "Faridabad, India",
+      period: "04/2019 – 05/2019",
+      description: [
+        "Boosted John Jacobs sunglasses sales by 25% through market and inventory optimization.",
+        "Defined KPIs for stores to align with GTM strategies."
+      ]
+    },
+    {
+      title: "Software Engineering Intern",
+      company: "Petrofac",
+      location: "Gurgaon, India",
+      period: "01/2017 – 07/2017",
+      description: [
+        "Developed a remote monitoring system for real-time analytics."
+      ]
     }
   ],
   
