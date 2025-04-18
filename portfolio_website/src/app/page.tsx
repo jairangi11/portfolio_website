@@ -37,6 +37,38 @@ export default function Home() {
     }
   ];
 
+  // Company information for the logos section with matching image files
+  const companies = [
+    {
+      name: "Quara Holdings",
+      logo: "/images/company_logos/Quara_holding.png",
+      role: "Product Manager - AI",
+      period: "08/2023 – 03/2025",
+      description: "AI-powered PropTech insights platform"
+    },
+    {
+      name: "foundit",
+      logo: "/images/company_logos/foundit.png",
+      role: "Associate Product Manager",
+      period: "01/2022 – 08/2023",
+      description: "UX and onboarding across 9 markets"
+    },
+    {
+      name: "Freecharge",
+      logo: "/images/company_logos/Freecharge_logo.png",
+      role: "Associate Product Manager",
+      period: "02/2021 – 01/2022",
+      description: "Digital payments & fintech solutions"
+    },
+    {
+      name: "Shaadi.com",
+      logo: "/images/company_logos/Shaadi.png",
+      role: "Management Trainee - Product",
+      period: "06/2020 – 02/2021",
+      description: "AI-driven matchmaking optimization"
+    }
+  ];
+
   // Skills animation implementation
   const skills = ["AI-powered solutions", "Machine Learning", "SaaS", "B2B PropTech"];
   const [currentSkillIndex, setCurrentSkillIndex] = useState(0);
@@ -188,7 +220,7 @@ export default function Home() {
   return (
     <Layout>
       {/* Hero Section with matching header background */}
-      <section className="relative h-[90vh] overflow-hidden bg-background">
+      <section className="relative min-h-[85vh] overflow-hidden bg-background">
         {/* Simple background elements */}
         <div className="absolute inset-0 z-0 opacity-15">
           <div className="absolute top-1/4 left-1/4 w-32 h-32 rounded-full bg-primary/10 blur-3xl"></div>
@@ -196,105 +228,107 @@ export default function Home() {
           <div className="absolute top-2/3 right-1/4 w-24 h-24 rounded-full bg-primary/10 blur-2xl"></div>
         </div>
         
-        <div className="relative z-20 h-full container mx-auto px-4 flex flex-col md:flex-row items-center justify-center">
-          <div className="flex-1 text-center md:text-left mb-10 md:mb-0">
-            <motion.h1 
-              className="text-5xl md:text-7xl font-bold text-foreground tracking-tight mb-6"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
-              <span className="text-primary">Jay</span> Rangi
-            </motion.h1>
-            
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="h-1 w-12 bg-primary my-6 mx-auto md:mx-0 rounded-full"
-            />
-            
-            <motion.h2 
-              className="text-xl md:text-2xl text-foreground/80 mt-4 max-w-3xl leading-relaxed"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-            >
-              <span className="text-foreground/80 font-normal">Data-driven </span>
-              <span className="relative inline-block">
-                <span className="bg-gradient-to-r from-primary/80 to-primary/60 bg-clip-text text-transparent font-semibold">Product Manager</span>
-                <motion.span 
-                  className="absolute bottom-0 left-0 w-full h-[2px] bg-primary/50"
-                  initial={{ width: 0 }}
-                  animate={{ width: "100%" }}
-                  transition={{ duration: 0.7, delay: 0.7 }}
-                />
-              </span>
-              <span className="text-foreground/80 font-normal"> specializing in </span>
-              <span className="relative">
-                <AnimatePresence mode="wait">
-                  <motion.span
-                    key={currentSkillIndex}
-                    className="text-primary font-medium inline-block min-w-[180px]"
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: -20, opacity: 0 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    {skills[currentSkillIndex]}
-                  </motion.span>
-                </AnimatePresence>
-                
-                {/* Timer animation */}
-                <div className="absolute -bottom-4 left-0 w-full h-[2px] bg-zinc-800/30 overflow-hidden rounded-full">
-                  <div 
-                    className="h-full bg-primary/30 transition-none"
-                    style={{ width: `${timerProgress * 100}%` }}
-                  />
-                </div>
-              </span>
-            </motion.h2>
-            
-            <motion.div 
-              className="mt-10 flex flex-col sm:flex-row gap-4 justify-center md:justify-start"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-            >
-              <Button asChild size="lg" className="group">
-                <Link href="/resume" className="flex items-center">
-                  View Resume
-                  <FiArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </Button>
-              {/* Improved Secondary Button with consistent arrow behavior */}
-              <Button 
-                asChild 
-                variant="secondary" 
-                size="lg" 
-                className="bg-secondary/30 border border-secondary/30 hover:bg-secondary/40 text-foreground shadow-sm hover:shadow-md transition-all duration-300 group"
+        <div className="relative z-20 h-full container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-12 items-center min-h-[85vh]">
+            <div className="md:col-span-7 mb-10 md:mb-0 pt-10 md:pt-0">
+              <motion.h1 
+                className="text-6xl md:text-7xl lg:text-8xl font-bold text-foreground tracking-tight"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
               >
-                <Link href="/case-studies" className="flex items-center">
-                  Explore Case Studies
-                  <FiArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </Button>
+                <span className="text-primary">Jay</span> Rangi
+              </motion.h1>
+              
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                className="h-1 w-16 bg-primary my-6 rounded-full"
+              />
+              
+              <motion.h2 
+                className="text-2xl md:text-3xl lg:text-4xl text-foreground/80 mt-6 max-w-3xl leading-relaxed"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+              >
+                <span className="text-foreground/80 font-normal">Data-driven </span>
+                <span className="relative inline-block">
+                  <span className="bg-gradient-to-r from-primary/80 to-primary/60 bg-clip-text text-transparent font-semibold">Product Manager</span>
+                  <motion.span 
+                    className="absolute bottom-0 left-0 w-full h-[2px] bg-primary/50"
+                    initial={{ width: 0 }}
+                    animate={{ width: "100%" }}
+                    transition={{ duration: 0.7, delay: 0.7 }}
+                  />
+                </span>
+                <span className="text-foreground/80 font-normal"> specializing in </span>
+                <span className="relative">
+                  <AnimatePresence mode="wait">
+                    <motion.span
+                      key={currentSkillIndex}
+                      className="text-primary font-medium inline-block min-w-[180px]"
+                      initial={{ y: 20, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      exit={{ y: -20, opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      {skills[currentSkillIndex]}
+                    </motion.span>
+                  </AnimatePresence>
+                  
+                  {/* Timer animation */}
+                  <div className="absolute -bottom-4 left-0 w-full h-[2px] bg-zinc-800/30 overflow-hidden rounded-full">
+                    <div 
+                      className="h-full bg-primary/30 transition-none"
+                      style={{ width: `${timerProgress * 100}%` }}
+                    />
+                  </div>
+                </span>
+              </motion.h2>
+              
+              <motion.div 
+                className="mt-10 flex flex-row gap-4 items-center flex-wrap"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.6 }}
+              >
+                <Button asChild size="lg" className="group shadow-lg hover:shadow-xl hover:shadow-primary/5 transition-all duration-300">
+                  <Link href="/resume" className="flex items-center">
+                    View Resume
+                    <FiArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </Link>
+                </Button>
+                {/* Improved Secondary Button with consistent arrow behavior */}
+                <Button 
+                  asChild 
+                  variant="secondary" 
+                  size="lg" 
+                  className="bg-secondary/30 border border-secondary/30 hover:bg-secondary/40 text-foreground shadow-lg hover:shadow-xl hover:shadow-secondary/5 transition-all duration-300 group"
+                >
+                  <Link href="/case-studies" className="flex items-center">
+                    Explore Case Studies
+                    <FiArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </Link>
+                </Button>
+              </motion.div>
+            </div>
+            
+            {/* Profile Card Column */}
+            <motion.div 
+              className="md:col-span-5 flex justify-center md:justify-end h-[420px] md:h-auto"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.7, delay: 0.7 }}
+            >
+              <ProfileCard 
+                name={resumeData.name}
+                title={resumeData.title}
+                subtitle="AI/ML Product Manager"
+              />
             </motion.div>
           </div>
-          
-          {/* Profile Card */}
-          <motion.div 
-            className="w-full md:w-auto h-[420px] md:h-auto"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.7 }}
-          >
-            <ProfileCard 
-              name={resumeData.name}
-              title={resumeData.title}
-              subtitle="AI/ML Product Manager"
-            />
-          </motion.div>
           
           <AnimatePresence>
             {scrollPosition < scrollThreshold && (
@@ -336,6 +370,129 @@ export default function Home() {
               </motion.div>
             )}
           </AnimatePresence>
+        </div>
+      </section>
+
+      {/* Company Logos Section */}
+      <section className="py-16 px-4 bg-gradient-to-b from-background/60 to-background/95 relative border-t border-border/5">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <div className="absolute top-1/4 -left-40 w-80 h-80 border border-border/10 rounded-full opacity-10"></div>
+          <div className="absolute bottom-0 right-1/4 w-60 h-60 border border-border/5 rounded-full opacity-5"></div>
+          <motion.div 
+            className="absolute top-1/2 left-1/3 w-1 h-1 bg-primary rounded-full"
+            animate={{ 
+              scale: [1, 15, 1],
+              opacity: [0, 0.15, 0]
+            }}
+            transition={{ 
+              repeat: Infinity,
+              duration: 8,
+              repeatType: "reverse"
+            }}
+          />
+        </div>
+        
+        <div className="container mx-auto relative z-10">
+          <div className="text-center mb-12">
+            <motion.h2 
+              className="text-2xl md:text-3xl font-bold text-foreground"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4 }}
+            >
+              <span className="relative inline-block">
+                Companies I've Worked With
+                <motion.span 
+                  className="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-primary/10 via-primary/50 to-primary/10"
+                  initial={{ width: 0 }}
+                  whileInView={{ width: "100%" }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.1 }}
+                />
+              </span>
+            </motion.h2>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            {companies.map((company, index) => (
+              <motion.div 
+                key={company.name}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                whileHover={{ 
+                  y: -5, 
+                  transition: { duration: 0.2 } 
+                }}
+                className="group"
+              >
+                <Card className="h-full bg-card/40 backdrop-blur-sm hover:bg-card/60 border-border/20 transition-all duration-300 overflow-hidden">
+                  <CardContent className="p-5">
+                    {/* Timeline indicator */}
+                    <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-transparent via-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    
+                    {/* Company Logo */}
+                    <div className="h-16 mb-4 relative flex items-center justify-center">
+                      <div className="relative w-full h-12 grayscale group-hover:grayscale-0 transition-all duration-300 flex items-center justify-center">
+                        <Image 
+                          src={company.logo} 
+                          alt={`${company.name} logo`} 
+                          height={60}
+                          width={120}
+                          className="object-contain max-h-12 max-w-[140px]"
+                        />
+                        <motion.div 
+                          className="absolute inset-0 bg-primary/5 rounded-md opacity-0 group-hover:opacity-100"
+                          animate={{ 
+                            boxShadow: ['0 0 0px rgba(var(--primary-rgb), 0)', '0 0 20px rgba(var(--primary-rgb), 0.2)', '0 0 0px rgba(var(--primary-rgb), 0)']
+                          }}
+                          transition={{ 
+                            repeat: Infinity, 
+                            duration: 2.5,
+                            ease: "easeInOut"
+                          }}
+                        />
+                      </div>
+                    </div>
+                    
+                    {/* Company Details */}
+                    <div className="space-y-1 text-center">
+                      <Badge variant="outline" className="bg-background/50 text-xs px-2 py-0.5">
+                        {company.period}
+                      </Badge>
+                      <h3 className="text-foreground font-medium text-base mt-2 group-hover:text-primary transition-colors duration-200">
+                        {company.role}
+                      </h3>
+                      <p className="text-muted-foreground text-sm">
+                        {company.description}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+          
+          {/* Timeline connector */}
+          <div className="mt-8 relative h-2 w-full max-w-3xl mx-auto opacity-40">
+            <div className="absolute inset-0 h-[1px] w-full bg-primary/20 top-1/2 transform -translate-y-1/2"></div>
+            <motion.div 
+              className="absolute left-0 top-1/2 h-2 w-2 rounded-full bg-primary transform -translate-y-1/2"
+              animate={{ 
+                x: [0, "100%", 0],
+                opacity: [0.5, 1, 0.5],
+              }}
+              transition={{ 
+                repeat: Infinity, 
+                duration: 8,
+                ease: "easeInOut",
+                repeatType: "reverse"
+              }}
+            />
+          </div>
         </div>
       </section>
 
