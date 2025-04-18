@@ -12,8 +12,60 @@ import { ProfileCard } from "@/components/ui/profile-card";
 import { resumeData } from "@/data/resumeData";
 import { useState, useEffect, useRef } from "react";
 import React from "react";
+import { useRouter, usePathname } from "next/navigation";
 
 export default function Home() {
+  // Add router for navigation detection
+  const router = useRouter();
+  const pathname = usePathname();
+  
+  // Flag to track if navigation is in progress
+  const [isNavigating, setIsNavigating] = useState(false);
+  
+  // Listen for route changes to prevent animation during navigation
+  useEffect(() => {
+    // When this component mounts, set isNavigating to false
+    setIsNavigating(false);
+    
+    // Create a navigation start handler to add to all navigation triggers
+    const handleNavigationStart = () => {
+      setIsNavigating(true);
+    };
+    
+    // Add click listeners to all navigation elements
+    const addNavigationListeners = () => {
+      document.querySelectorAll('a[href], button[onclick]').forEach(element => {
+        // Skip elements that already have the listener
+        if (!(element as any).__hasNavigationListener) {
+          element.addEventListener('click', handleNavigationStart);
+          (element as any).__hasNavigationListener = true;
+        }
+      });
+    };
+    
+    // Initial addition of listeners
+    addNavigationListeners();
+    
+    // Set up a MutationObserver to detect dynamically added elements
+    const observer = new MutationObserver(() => {
+      addNavigationListeners();
+    });
+    
+    observer.observe(document.body, { 
+      childList: true, 
+      subtree: true 
+    });
+    
+    return () => {
+      // Clean up on unmount
+      observer.disconnect();
+      document.querySelectorAll('a[href], button[onclick]').forEach(element => {
+        element.removeEventListener('click', handleNavigationStart);
+        delete (element as any).__hasNavigationListener;
+      });
+    };
+  }, [pathname]);
+
   const expertiseItems = [
     { 
       icon: <FiCpu className="h-6 w-6" />,
@@ -107,6 +159,9 @@ export default function Home() {
   const carouselInnerRef = useRef<HTMLDivElement>(null);
   const [carouselWidth, setCarouselWidth] = useState(0);
   const [shouldAnimate, setShouldAnimate] = useState(true);
+  const [carouselPosition, setCarouselPosition] = useState(0);
+  const prevPositionRef = useRef(0);
+  const animationFrameRef = useRef<number | null>(null);
 
   // Handle timer animation
   useEffect(() => {
@@ -260,12 +315,62 @@ export default function Home() {
     
     return () => {
       window.removeEventListener('resize', updateCarouselWidth);
+      
+      // Ensure animation frame is canceled on unmount
+      if (animationFrameRef.current !== null) {
+        cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
+      }
     };
   }, []);
 
+  // Track carousel position for hover pause/resume
+  useEffect(() => {
+    // Skip animation if navigating or animation should be paused
+    if (isNavigating || !shouldAnimate || !carouselInnerRef.current) return;
+
+    let startTime = performance.now();
+    const duration = 40000; // 40 seconds, matching the animation duration
+    const totalDistance = carouselWidth - 100;
+    const initialOffset = prevPositionRef.current;
+    
+    const updatePosition = (timestamp: number) => {
+      if (isNavigating || !carouselInnerRef.current) return;
+      
+      const elapsed = timestamp - startTime;
+      const progress = (elapsed % duration) / duration;
+      const adjustedProgress = (initialOffset / totalDistance) + (progress * (1 - initialOffset / totalDistance));
+      const newPosition = adjustedProgress * totalDistance;
+      
+      setCarouselPosition(newPosition);
+      prevPositionRef.current = newPosition;
+      
+      if (!isNavigating) {
+        animationFrameRef.current = requestAnimationFrame(updatePosition);
+      }
+    };
+    
+    animationFrameRef.current = requestAnimationFrame(updatePosition);
+    
+    return () => {
+      if (animationFrameRef.current !== null) {
+        cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
+      }
+    };
+  }, [shouldAnimate, carouselWidth, isNavigating]);
+
   // Pause animation on hover
-  const handleMouseEnter = () => setShouldAnimate(false);
-  const handleMouseLeave = () => setShouldAnimate(true);
+  const handleMouseEnter = () => {
+    if (isNavigating) return;
+    setShouldAnimate(false);
+    prevPositionRef.current = carouselPosition;
+  };
+  
+  const handleMouseLeave = () => {
+    if (isNavigating) return;
+    setShouldAnimate(true);
+  };
 
   return (
     <Layout>
@@ -482,38 +587,69 @@ export default function Home() {
             <motion.div
               ref={carouselInnerRef}
               className="flex space-x-6 px-10"
-              drag="x"
+              drag={isNavigating ? false : "x"}
               dragConstraints={{ left: -carouselWidth + 100, right: 0 }}
-              animate={shouldAnimate ? {
-                x: [-20, -carouselWidth + 100],
-              } : { x: 0 }}
+              animate={!isNavigating && shouldAnimate ? {
+                x: -carouselPosition,
+              } : { x: -prevPositionRef.current }}
               transition={shouldAnimate ? {
                 x: {
-                  repeat: Infinity,
-                  repeatType: "loop",
-                  duration: 40,
-                  ease: "linear",
+                  duration: 0.5,
+                  ease: "easeOut",
                 },
-              } : { duration: 0.5 }}
+              } : { duration: 0.2 }}
+              onDragEnd={(e, info) => {
+                // Skip updates if navigating
+                if (isNavigating) return;
+                
+                // Update the position when drag ends
+                if (carouselInnerRef.current) {
+                  const currentTransform = carouselInnerRef.current.style.transform;
+                  const match = currentTransform.match(/translateX\((.+)px\)/);
+                  if (match && match[1]) {
+                    const newPos = Math.abs(parseFloat(match[1]));
+                    prevPositionRef.current = newPos;
+                    setCarouselPosition(newPos);
+                  }
+                }
+              }}
             >
               {/* Duplicate first few cards for infinite loop effect */}
               {companies.map((company, index) => (
                 <motion.div 
                   key={`${company.name}-${index}`}
-                  className="flex-shrink-0 w-[280px] md:w-[300px]"
+                  className="flex-shrink-0 w-[280px] md:w-[300px] group"
                   whileHover={{ 
                     y: -5, 
                     transition: { duration: 0.2 } 
                   }}
                 >
-                  <Card className="h-full bg-card/40 backdrop-blur-sm hover:bg-card/60 border-border/20 transition-all duration-300 overflow-hidden">
-                    <CardContent className="p-5">
+                  <Card className="h-full bg-card/40 backdrop-blur-sm group-hover:bg-card/60 border-border/20 transition-all duration-300 overflow-hidden relative">
+                    {/* Shiny overlay effect on hover */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5"></div>
+                      <motion.div 
+                        className="absolute top-0 -left-[100%] w-[50%] h-full bg-gradient-to-r from-transparent via-white/10 to-transparent transform rotate-12 skew-x-12"
+                        animate={{
+                          left: ['0%', '200%'],
+                          opacity: [0, 0.3, 0]
+                        }}
+                        transition={{
+                          duration: 1.5,
+                          ease: "easeInOut",
+                          repeat: Infinity,
+                          repeatDelay: 2
+                        }}
+                      />
+                    </div>
+                    
+                    <CardContent className="p-5 relative z-10">
                       {/* Timeline indicator */}
                       <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-transparent via-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       
                       {/* Company Logo */}
                       <div className="h-16 mb-4 relative flex items-center justify-center">
-                        <div className="relative w-full h-12 grayscale hover:grayscale-0 transition-all duration-300 flex items-center justify-center">
+                        <div className="relative w-full h-12 grayscale group-hover:grayscale-0 transition-all duration-300 flex items-center justify-center">
                           <Image 
                             src={company.logo} 
                             alt={`${company.name} logo`} 
@@ -522,7 +658,7 @@ export default function Home() {
                             className="object-contain max-h-12 max-w-[140px]"
                           />
                           <motion.div 
-                            className="absolute inset-0 bg-primary/5 rounded-md opacity-0 hover:opacity-100"
+                            className="absolute inset-0 bg-primary/5 rounded-md opacity-0 group-hover:opacity-100"
                             animate={{ 
                               boxShadow: ['0 0 0px rgba(var(--primary-rgb), 0)', '0 0 20px rgba(var(--primary-rgb), 0.2)', '0 0 0px rgba(var(--primary-rgb), 0)']
                             }}
@@ -568,7 +704,7 @@ export default function Home() {
                         <Badge variant="outline" className="bg-background/50 text-xs px-2 py-0.5">
                           {company.period}
                         </Badge>
-                        <h3 className="text-foreground font-medium text-base mt-2 hover:text-primary transition-colors duration-200">
+                        <h3 className="text-foreground font-medium text-base mt-2 group-hover:text-primary transition-colors duration-200">
                           {company.role}
                         </h3>
                         <p className="text-muted-foreground text-sm">
@@ -584,20 +720,38 @@ export default function Home() {
               {companies.slice(0, 3).map((company, index) => (
                 <motion.div 
                   key={`${company.name}-duplicate-${index}`}
-                  className="flex-shrink-0 w-[280px] md:w-[300px]"
+                  className="flex-shrink-0 w-[280px] md:w-[300px] group"
                   whileHover={{ 
                     y: -5, 
                     transition: { duration: 0.2 } 
                   }}
                 >
-                  <Card className="h-full bg-card/40 backdrop-blur-sm hover:bg-card/60 border-border/20 transition-all duration-300 overflow-hidden">
-                    <CardContent className="p-5">
+                  <Card className="h-full bg-card/40 backdrop-blur-sm group-hover:bg-card/60 border-border/20 transition-all duration-300 overflow-hidden relative">
+                    {/* Shiny overlay effect on hover */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5"></div>
+                      <motion.div 
+                        className="absolute top-0 -left-[100%] w-[50%] h-full bg-gradient-to-r from-transparent via-white/10 to-transparent transform rotate-12 skew-x-12"
+                        animate={{
+                          left: ['0%', '200%'],
+                          opacity: [0, 0.3, 0]
+                        }}
+                        transition={{
+                          duration: 1.5,
+                          ease: "easeInOut",
+                          repeat: Infinity,
+                          repeatDelay: 2
+                        }}
+                      />
+                    </div>
+                    
+                    <CardContent className="p-5 relative z-10">
                       {/* Timeline indicator */}
                       <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-transparent via-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       
                       {/* Company Logo */}
                       <div className="h-16 mb-4 relative flex items-center justify-center">
-                        <div className="relative w-full h-12 grayscale hover:grayscale-0 transition-all duration-300 flex items-center justify-center">
+                        <div className="relative w-full h-12 grayscale group-hover:grayscale-0 transition-all duration-300 flex items-center justify-center">
                           <Image 
                             src={company.logo} 
                             alt={`${company.name} logo`} 
@@ -606,7 +760,7 @@ export default function Home() {
                             className="object-contain max-h-12 max-w-[140px]"
                           />
                           <motion.div 
-                            className="absolute inset-0 bg-primary/5 rounded-md opacity-0 hover:opacity-100"
+                            className="absolute inset-0 bg-primary/5 rounded-md opacity-0 group-hover:opacity-100"
                             animate={{ 
                               boxShadow: ['0 0 0px rgba(var(--primary-rgb), 0)', '0 0 20px rgba(var(--primary-rgb), 0.2)', '0 0 0px rgba(var(--primary-rgb), 0)']
                             }}
@@ -652,7 +806,7 @@ export default function Home() {
                         <Badge variant="outline" className="bg-background/50 text-xs px-2 py-0.5">
                           {company.period}
                         </Badge>
-                        <h3 className="text-foreground font-medium text-base mt-2 hover:text-primary transition-colors duration-200">
+                        <h3 className="text-foreground font-medium text-base mt-2 group-hover:text-primary transition-colors duration-200">
                           {company.role}
                         </h3>
                         <p className="text-muted-foreground text-sm">
