@@ -58,7 +58,7 @@ export function InfiniteCarousel({
   useAnimationFrame((time, delta) => {
     if (!shouldAnimate || !carouselWidth || isNavigating || scrollSpeed === 0) return;
 
-    let moveBy = (delta / 1000) * scrollSpeed;
+    const moveBy = (delta / 1000) * scrollSpeed;
     let newBaseX = baseX.get() + moveBy;
 
     // Wrap the position
@@ -105,10 +105,10 @@ export function InfiniteCarousel({
         style={{ x: baseX }}
         drag={isNavigating ? false : "x"}
         dragConstraints={carouselRef}
-        onDragEnd={(e, info) => {
+        onDragEnd={(_e, _info) => {
           if (isNavigating) return;
           
-          let finalX = baseX.get();
+          const finalX = baseX.get();
           // Apply immediate wrap logic based on drag end position
           if (finalX < -carouselWidth) {
             baseX.set(finalX % carouselWidth);

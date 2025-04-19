@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import { ExpertiseCard } from "@/components/landing/expertise-card";
 
 // Define the shape of expertise item data
@@ -14,8 +14,8 @@ interface ExpertiseArea {
 
 interface ExpertiseSectionProps {
   expertiseItems: ExpertiseArea[];
-  containerVariants: any; // Or define a more specific type for variants
-  itemVariants: any;      // Or define a more specific type for variants
+  containerVariants: Variants;
+  itemVariants: Variants;
 }
 
 export function ExpertiseSection({

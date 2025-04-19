@@ -3,6 +3,11 @@
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 
+// Define an interface for elements that can have the listener flag
+interface ListenableElement extends Element {
+  __hasNavigationListener?: boolean;
+}
+
 /**
  * Custom hook to detect client-side navigation starts and provide a boolean flag.
  * Resets the flag when the pathname changes (indicating navigation completed).
@@ -51,17 +56,18 @@ export function useNavigationAnimationControl(): boolean {
                 // Check added nodes for relevant elements
                 mutation.addedNodes.forEach(node => {
                     if (node.nodeType === Node.ELEMENT_NODE) {
-                       const element = node as Element;
+                       const element = node as ListenableElement;
                        if (element.matches('a[href]')) {
-                           if (!(element as any).__hasNavigationListener) {
+                           if (!element.__hasNavigationListener) {
                                 element.addEventListener('click', handleNavigationStart);
-                                (element as any).__hasNavigationListener = true;
+                                element.__hasNavigationListener = true;
                             }
                        }
                        element.querySelectorAll('a[href]').forEach(link => {
-                           if (!(link as any).__hasNavigationListener) {
-                                link.addEventListener('click', handleNavigationStart);
-                                (link as any).__hasNavigationListener = true;
+                           const listenableLink = link as ListenableElement;
+                           if (!listenableLink.__hasNavigationListener) {
+                                listenableLink.addEventListener('click', handleNavigationStart);
+                                listenableLink.__hasNavigationListener = true;
                             }
                        });
                     }
@@ -74,10 +80,11 @@ export function useNavigationAnimationControl(): boolean {
     // Query for standard links and elements likely triggering navigation
     // Note: This might need adjustment based on specific component libraries or routing methods
     document.querySelectorAll('a[href]').forEach(element => {
+      const listenableElement = element as ListenableElement;
       // Avoid adding multiple listeners
-      if (!(element as any).__hasNavigationListener) {
-        element.addEventListener('click', handleNavigationStart);
-        (element as any).__hasNavigationListener = true;
+      if (!listenableElement.__hasNavigationListener) {
+        listenableElement.addEventListener('click', handleNavigationStart);
+        listenableElement.__hasNavigationListener = true;
       }
     });
 
@@ -92,9 +99,10 @@ export function useNavigationAnimationControl(): boolean {
       observer.disconnect();
       // Clean up listeners added by this effect
       document.querySelectorAll('a[href]').forEach(element => {
-        if ((element as any).__hasNavigationListener) {
-          element.removeEventListener('click', handleNavigationStart);
-          delete (element as any).__hasNavigationListener;
+        const listenableElement = element as ListenableElement;
+        if (listenableElement.__hasNavigationListener) {
+          listenableElement.removeEventListener('click', handleNavigationStart);
+          delete listenableElement.__hasNavigationListener;
         }
       });
     };

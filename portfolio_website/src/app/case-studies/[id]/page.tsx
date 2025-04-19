@@ -112,7 +112,7 @@ export default function CaseStudyPage() {
             <section className="mb-12 bg-gray-50 p-6 rounded-lg">
               <h2 className="text-2xl font-bold mb-4">Client Testimonial</h2>
               <blockquote className="italic text-gray-700 mb-4">
-                "{caseStudy.testimonial.quote}"
+                &quot;{caseStudy.testimonial.quote}&quot;
               </blockquote>
               <div className="flex items-center">
                 {caseStudy.testimonial.avatar && (

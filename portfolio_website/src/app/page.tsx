@@ -8,6 +8,7 @@ import { HeroSection } from "@/components/landing/hero-section";
 import { CompaniesSection } from "@/components/landing/companies-section";
 import { ExpertiseSection } from "@/components/landing/expertise-section";
 import { CtaSection } from "@/components/landing/cta-section";
+import { FiCpu, FiLayers, FiCode, FiGrid, FiTool } from "react-icons/fi";
 
 // Define types for dynamic expertise data
 interface ExpertiseArea {
@@ -19,8 +20,6 @@ interface ExpertiseArea {
 
 // Function to categorize skills and generate expertise areas
 const getExpertiseAreas = (): ExpertiseArea[] => {
-  const { FiCpu, FiLayers, FiCode, FiGrid, FiTool } = require("react-icons/fi");
-
   const skills = resumeData.skills;
 
   // Define categories and their corresponding icons and descriptions
@@ -90,7 +89,7 @@ const getExpertiseAreas = (): ExpertiseArea[] => {
   // Ensure we have 4 main areas by combining if necessary or selecting top 4
   // For simplicity, let's stick to the defined main categories if they exist
   const primaryKeys = ['ai', 'product', 'tech', 'industry'];
-  let finalAreas = primaryKeys
+  const finalAreas = primaryKeys
     .map(key => expertiseItems.find(item => item.title === areasMap[key].title))
     .filter((item): item is ExpertiseArea => item !== undefined); // Type guard
 

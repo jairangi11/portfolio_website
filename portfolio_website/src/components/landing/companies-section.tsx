@@ -51,7 +51,7 @@ export function CompaniesSection({ companies, isNavigating }: CompaniesSectionPr
             transition={{ duration: 0.4 }}
           >
             <span className="relative inline-block">
-              Companies I've Worked With
+              Companies I&apos;ve Worked With
               <motion.span 
                 className="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-primary/10 via-primary/50 to-primary/10"
                 initial={{ width: 0 }}

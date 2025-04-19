@@ -1,14 +1,14 @@
 "use client";
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { FiArrowRight } from "react-icons/fi";
 
 interface CtaSectionProps {
-  containerVariants: any; // Or define a more specific type for variants
-  itemVariants: any;      // Or define a more specific type for variants
+  containerVariants: Variants;
+  itemVariants: Variants;
 }
 
 export function CtaSection({ containerVariants, itemVariants }: CtaSectionProps) {
@@ -70,13 +70,13 @@ export function CtaSection({ containerVariants, itemVariants }: CtaSectionProps)
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
-          variants={containerVariants} // Use passed variants
+          variants={containerVariants}
         >
           <motion.h2 
             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground tracking-tight"
-            variants={itemVariants} // Use passed variants
+            variants={itemVariants}
           >
-            Let's Build <span className="relative inline-block">
+            Let&apos;s Build <span className="relative inline-block">
               <span className="bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">Something</span>
               <motion.span 
                 className="absolute -bottom-2 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary/70 to-transparent"
@@ -89,14 +89,14 @@ export function CtaSection({ containerVariants, itemVariants }: CtaSectionProps)
           </motion.h2>
           
           <motion.p
-            variants={itemVariants} // Use passed variants
+            variants={itemVariants}
             className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed"
           >
-            Have a project in mind or looking for a Product leader to drive AI innovation? Let's connect.
+            Have a project in mind or looking for a Product leader to drive AI innovation? Let&apos;s connect.
           </motion.p>
           
           <motion.div
-            variants={itemVariants} // Use passed variants
+            variants={itemVariants}
           >
             {/* Enhanced Button with subtle animation */}
             <Button 
