@@ -599,40 +599,44 @@ export default function Home() {
           <AnimatePresence>
             {scrollPosition < scrollThreshold && (
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.4 }}
-                className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
+                initial={{ opacity: 0, y: 10 }} // Start slightly lower
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
+                className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center cursor-pointer group" // Reduced bottom margin
               >
-                <div className="flex flex-col items-center gap-2 text-sm text-foreground/60 group cursor-pointer">
-                  <span className="font-medium tracking-wide">Scroll Down</span>
-                  <div className="relative h-10 w-6 border-2 border-foreground/30 rounded-full flex justify-center p-1">
-                    <motion.div 
-                      className="w-1.5 h-1.5 bg-primary rounded-full"
-                      animate={{ 
-                        y: [0, 12, 0],
-                      }}
-                      transition={{ 
-                        repeat: Infinity, 
-                        duration: 2,
-                        ease: "easeInOut"
-                      }}
-                    />
-                  </div>
-                  <motion.div 
-                    className="absolute h-12 w-12 rounded-full border border-foreground/10"
-                    animate={{ 
-                      scale: [1, 1.1, 1],
-                      opacity: [0.2, 0.5, 0.2],
-                    }}
-                    transition={{ 
-                      repeat: Infinity, 
-                      duration: 3,
-                      ease: "easeInOut"
-                    }}
+                {/* Optional: Text Label */}
+                {/* <span className="text-xs text-foreground/50 mb-2 group-hover:text-foreground/70 transition-colors duration-300 tracking-widest uppercase">Scroll</span> */}
+                
+                {/* Animated Chevron */}
+                <motion.svg
+                  width="24" // Slightly larger for better visibility
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="text-foreground/40 group-hover:text-foreground/60 transition-colors duration-300"
+                  animate={{
+                    y: ["0%", "20%", "0%"], // Subtle vertical bounce
+                  }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    repeatType: "loop",
+                    ease: "easeInOut",
+                  }}
+                >
+                  <path
+                    d="M19.5 8.25L12 15.75L4.5 8.25" // Standard chevron down shape
+                    stroke="currentColor"
+                    strokeWidth="1.5" // Thinner stroke for sleekness
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
-                </div>
+                </motion.svg>
+                
+                {/* Removed the old circle and dot animation */}
+                {/* Removed the pulsing outer circle */}
               </motion.div>
             )}
           </AnimatePresence>
