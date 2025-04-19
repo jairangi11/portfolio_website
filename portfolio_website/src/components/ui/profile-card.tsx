@@ -25,10 +25,14 @@ export function ProfileCard({
   const [imageError, setImageError] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
-  // Get top skills from resumeData
-  const topSkills = resumeData.skills
-    .filter(skill => skill.type === "product" || skill.type === "ai")
-    .slice(0, 5);
+  // Define the specific skills to display
+  const keySkills = [
+    { name: "Product Management" },
+    { name: "AI/ML" },
+    { name: "GTM Strategy" },
+    { name: "SaaS" }, // Corrected Saas to SaaS
+    { name: "Growth Strategy" },
+  ];
     
 
   useEffect(() => {
@@ -67,7 +71,7 @@ export function ProfileCard({
   return (
     <div className="relative flex justify-center items-center w-full h-full perspective-1000" ref={cardRef}>
       <motion.div
-        className="relative w-[500px] h-[700px] rounded-2xl overflow-visible"
+        className="relative w-[500px] h-[625px] rounded-2xl overflow-visible"
         style={{
           transformStyle: "preserve-3d",
           willChange: "transform",
@@ -115,7 +119,7 @@ export function ProfileCard({
         {/* Card Content */}
         <div className="relative w-full h-full p-9 flex flex-col text-white z-50">
           {/* Header */}
-          <div className="flex justify-between items-start mb-12">
+          <div className="flex justify-between items-start mb-8">
             <div>
               <div className="text-3xl font-bold tracking-tight text-white">{title}</div>
               <div className="text-2xl font-semibold text-white mt-2">{name}</div>
@@ -144,7 +148,7 @@ export function ProfileCard({
           </div>
           
           {/* Current Role */}
-          <div className="mb-14">
+          <div className="mb-10">
             <div className="flex items-center mb-4">
               <FiBriefcase className="w-5 h-5 text-zinc-400 mr-2.5" />
               <div className="text-base font-medium text-white">Latest Role</div>
@@ -172,7 +176,7 @@ export function ProfileCard({
               <div className="text-base font-medium text-white">Key Skills</div>
             </div>
             <div className="flex flex-wrap gap-3">
-              {topSkills.map((skill, index) => (
+              {keySkills.map((skill, index) => (
                 <div key={index} className="text-sm bg-zinc-800 rounded-full px-4 py-2 border border-zinc-700 shadow-sm">
                   {skill.name}
                 </div>
