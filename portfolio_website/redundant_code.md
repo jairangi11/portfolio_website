@@ -29,15 +29,15 @@ Complex state management and animation logic specific to certain features could 
     *   **Description:** The logic implementing the draggable, infinite scrolling effect was intricate and defined inline.
     *   **Update:** Extracted the logic and structure into a reusable `InfiniteCarousel` component (`src/components/ui/infinite-carousel.tsx`). `page.tsx` now imports this component and passes the `CompanyCard` components as children. Removed the corresponding state, refs, effects, and handlers from `page.tsx`.
 
-*   **Navigation Animation Handling:**
-    *   **Location:** State (`isNavigating`), `useEffect` setting up listeners (lines ~122-169), and helper functions (`handleNavigationStart`, `stopAllAnimations`, `handleLinkClick`).
-    *   **Description:** Logic to detect navigation events and prevent/stop animations during page transitions.
-    *   **Suggestion:** If this specific behavior is needed on other pages with heavy animations, consider extracting it into a custom hook (`useNavigationAnimationControl`) in `src/hooks`.
+*   **Navigation Animation Handling:** - **Done**
+    *   **Location:** State (`isNavigating`), `useEffect` setting up listeners (lines ~122-169), and helper functions (`handleNavigationStart`, `stopAllAnimations`, `handleLinkClick`) in `page.tsx`.
+    *   **Description:** Logic to detect navigation events and prevent/stop animations during page transitions was defined inline and coupled with specific animation stopping logic.
+    *   **Update:** Extracted the navigation detection logic (state, effect, listeners) into a reusable hook `useNavigationAnimationControl` in `src/hooks/`. `page.tsx` now uses this hook to get the `isNavigating` state. A separate `useEffect` was added in `page.tsx` to specifically watch this state and stop the skill timer animation (`progressControls.stop()` and `clearInterval`). The general `stopAllAnimations` function and related listeners were removed from the skill timer effect.
 
-### 3. Section Components (`src/app/page.tsx`)
+### 3. Section Components (`src/app/page.tsx`) - Done
 
 *   **Description:** The main `page.tsx` renders multiple distinct sections (Hero, Companies, Expertise, CTA).
-*   **Suggestion:** Break down `page.tsx` by extracting each major section into its own component within a dedicated directory like `src/components/landing/`. This would drastically reduce the size of `page.tsx`.
+*   **Update:** Extracted each major section into its own component (`HeroSection`, `CompaniesSection`, `ExpertiseSection`, `CtaSection`) within `src/components/landing/`. `page.tsx` now imports and renders these components, passing necessary data and state (like `isNavigating`, `resumeData`, `companies`, `expertiseItems`, `variants`) as props. Section-specific logic (like skill rotation, scroll indicator) was moved into the respective section components.
 
 ## Lower Priority Refactoring Opportunities
 
