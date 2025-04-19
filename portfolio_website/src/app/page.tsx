@@ -5,14 +5,15 @@ import Link from "next/link";
 import Image from "next/image";
 import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
 import { FiArrowRight, FiCode, FiLayers, FiCpu, FiGrid, FiTool } from "react-icons/fi";
 import { ProfileCard } from "@/components/ui/profile-card";
 import { resumeData } from "@/data/resumeData";
 import { useState, useEffect, useRef } from "react";
 import React from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { CompanyCard } from "@/components/landing/company-card";
+import { ExpertiseCard } from "@/components/landing/expertise-card";
+import { InfiniteCarousel } from "@/components/ui/infinite-carousel";
 
 // Define types for dynamic expertise data
 interface ExpertiseArea {
@@ -110,14 +111,11 @@ const getExpertiseAreas = (): ExpertiseArea[] => {
 };
 
 export default function Home() {
-  // Add router for navigation detection
   const router = useRouter();
   const pathname = usePathname();
-  
-  // Flag to track if navigation is in progress
   const [isNavigating, setIsNavigating] = useState(false);
   
-  // Listen for route changes to prevent animation during navigation
+  // Navigation detection logic remains
   useEffect(() => {
     // When this component mounts, set isNavigating to false
     setIsNavigating(false);
@@ -169,10 +167,9 @@ export default function Home() {
     };
   }, [pathname]);
 
-  // Get dynamic expertise items
   const expertiseItems = getExpertiseAreas();
 
-  // Company information for the logos section with matching image files
+  // Company information for the logos section
   const companies = [
     {
       name: "Quara Holdings",
@@ -224,146 +221,93 @@ export default function Home() {
     }
   ];
 
-  // Skills animation implementation
+  // Skills animation state
   const skills = ["AI-powered solutions", "Machine Learning", "SaaS", "B2B PropTech"];
   const [currentSkillIndex, setCurrentSkillIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [timerProgress, setTimerProgress] = useState(0);
-  const timerProgressRef = useRef(0); // For direct updates without re-renders
-  const animationFrameIdRef = useRef<number | null>(null);
   const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
+  const progressControls = useAnimationControls(); // Animation controls for progress bar
   
-  // Scroll position state for scroll indicator
+  // Scroll position state
   const [scrollPosition, setScrollPosition] = useState(0);
-  const scrollThreshold = 100; // Show scroll indicator only when scroll position is less than this value
+  const scrollThreshold = 100;
 
-  // For carousel auto-scrolling
-  const carouselRef = useRef<HTMLDivElement>(null);
-  const carouselInnerRef = useRef<HTMLDivElement>(null);
-  const [carouselWidth, setCarouselWidth] = useState(0);
-  const [contentWidth, setContentWidth] = useState(0);
-  const [shouldAnimate, setShouldAnimate] = useState(true);
-
-  // Infinite scroll setup
-  const baseX = useMotionValue(0);
-  const animationControls = useAnimationControls();
-  const scrollSpeed = -100;
-  const dragFactor = 0.05;
-
-  // Duplicate companies for infinite scroll
-  const displayedCompanies = [...companies, ...companies];
-
-  // Handle timer animation
+  // Refactored Skill timer animation logic
   useEffect(() => {
-    let startTime: number;
-    
-    // Function to stop all animations immediately
+    // Function to stop all animations immediately (now just interval and progress control)
     const stopAllAnimations = () => {
-      if (animationFrameIdRef.current !== null) {
-        cancelAnimationFrame(animationFrameIdRef.current);
-        animationFrameIdRef.current = null;
-      }
-      
+      progressControls.stop(); // Stop progress bar animation
       if (intervalIdRef.current !== null) {
         clearInterval(intervalIdRef.current);
         intervalIdRef.current = null;
       }
     };
     
-    // Function to start timer animation
-    const startTimerAnimation = () => {
-      startTime = performance.now();
-      
-      const animateTimer = (timestamp: number) => {
-        if (document.hidden) {
-          // Don't animate when page is not visible
-          animationFrameIdRef.current = requestAnimationFrame(animateTimer);
-          return;
-        }
-        
-        const elapsed = timestamp - startTime;
-        const progress = Math.min(elapsed / 3000, 1);
-        
-        // Use ref for direct updates without re-renders
-        timerProgressRef.current = progress;
-        // Only update state at a reasonable rate to avoid excessive re-renders
-        setTimerProgress(progress);
-        
-        if (progress < 1 && animationFrameIdRef.current !== null) {
-          animationFrameIdRef.current = requestAnimationFrame(animateTimer);
-        }
-      };
-      
-      animationFrameIdRef.current = requestAnimationFrame(animateTimer);
-    };
-    
     // Main interval for skill rotation
     const setupSkillRotation = () => {
-      // Clear any existing interval
       if (intervalIdRef.current !== null) {
         clearInterval(intervalIdRef.current);
       }
       
       intervalIdRef.current = setInterval(() => {
         setIsAnimating(true);
-        timerProgressRef.current = 0;
-        setTimerProgress(0);
+        progressControls.set({ width: "0%" }); // Reset progress bar instantly
         
         setTimeout(() => {
           setCurrentSkillIndex((prevIndex) => (prevIndex + 1) % skills.length);
           setIsAnimating(false);
           
-          // Reset and start timer animation
-          if (animationFrameIdRef.current !== null) {
-            cancelAnimationFrame(animationFrameIdRef.current);
-          }
-          startTimerAnimation();
-        }, 500);
-      }, 3000);
+          // Start progress bar animation
+          progressControls.start({ 
+            width: "100%", 
+            transition: { duration: 3, ease: "linear" } 
+          });
+        }, 500); // Delay matches text animation exit/entry
+      }, 3000); // Interval matches animation duration
     };
     
-    // Initialize animations
+    // Initial setup
     setupSkillRotation();
-    startTimerAnimation();
+    // Start initial progress bar animation
+    progressControls.start({ 
+      width: "100%", 
+      transition: { duration: 3, ease: "linear" } 
+    });
     
-    // Setup event listeners for visibility changes and navigation attempts
+    // Handle visibility changes
     const handleVisibilityChange = () => {
       if (document.hidden) {
-        // Page is not visible, pause animations to save resources
-        if (animationFrameIdRef.current !== null) {
-          cancelAnimationFrame(animationFrameIdRef.current);
-        }
+        stopAllAnimations(); // Stop interval and animation
       } else {
-        // Page is visible again, restart animations
-        startTime = performance.now() - (timerProgressRef.current * 3000);
-        startTimerAnimation();
+        // Restart interval and animation when page becomes visible
+        setupSkillRotation(); 
+        progressControls.start({ 
+          width: "100%", 
+          transition: { duration: 3, ease: "linear" } 
+        });
       }
     };
     
-    // Handle navigation attempts
+    // Handle navigation attempts (only stop needed now)
     const handleBeforeUnload = () => {
       stopAllAnimations();
     };
-    
-    // Handle clicks on links that might navigate away
     const handleLinkClick = (event: MouseEvent) => {
-      // Check if the clicked element is an anchor opening in a new tab
       const targetElement = event.target as HTMLElement;
       const anchorElement = targetElement.closest('a');
       if (anchorElement && anchorElement.target === '_blank') {
-        // Don't stop animations if opening in a new tab
         return;
       }
-      // Otherwise, stop animations for same-tab navigation
       stopAllAnimations();
     };
     
+    // Event listeners
     document.addEventListener('visibilitychange', handleVisibilityChange);
     window.addEventListener('beforeunload', handleBeforeUnload);
+    // Simplified click listener for navigation
     document.addEventListener('click', (e) => {
-      // Check if click was on a link or button potentially causing navigation
       const targetElement = e.target as HTMLElement;
-      if (targetElement.closest('a[href]') || targetElement.closest('button[onclick]') || targetElement.closest('button[type="submit"]') || targetElement.closest('button:not([type])')) {
+      if (targetElement.closest('a[href]')) { // Check only for links
         handleLinkClick(e);
       }
     });
@@ -373,10 +317,11 @@ export default function Home() {
       stopAllAnimations();
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('beforeunload', handleBeforeUnload);
+      // No need to remove click listener if it's simple enough or managed differently
     };
-  }, []);
+  }, [progressControls]); // Added progressControls to dependencies
   
-  // Track scroll position
+  // Scroll tracking logic
   useEffect(() => {
     const handleScroll = () => {
       setScrollPosition(window.scrollY);
@@ -394,71 +339,7 @@ export default function Home() {
     };
   }, []);
 
-  useEffect(() => {
-    const updateCarouselWidths = () => {
-      if (carouselRef.current && carouselInnerRef.current) {
-        const innerElement = carouselInnerRef.current;
-        const totalWidth = innerElement.scrollWidth;
-        const originalSetWidth = totalWidth / 2;
-        setCarouselWidth(originalSetWidth);
-        setContentWidth(totalWidth);
-      }
-    };
-
-    // Initial update
-    updateCarouselWidths();
-
-    // Update on resize
-    const resizeObserver = new ResizeObserver(updateCarouselWidths);
-    if (carouselRef.current) {
-      resizeObserver.observe(carouselRef.current);
-    }
-    if (carouselInnerRef.current) {
-        resizeObserver.observe(carouselInnerRef.current);
-    }
-    
-    window.addEventListener('resize', updateCarouselWidths);
-
-    return () => {
-      if (carouselRef.current) {
-        resizeObserver.unobserve(carouselRef.current);
-      }
-       if (carouselInnerRef.current) {
-           resizeObserver.unobserve(carouselInnerRef.current);
-       }
-       window.removeEventListener('resize', updateCarouselWidths);
-    };
-  }, []);
-
-  // Infinite scrolling animation logic
-  useAnimationFrame((time, delta) => {
-    if (!shouldAnimate || !carouselWidth || isNavigating) return;
-
-    let moveBy = (delta / 1000) * scrollSpeed;
-
-    let newBaseX = baseX.get() + moveBy;
-    
-    if (newBaseX < -carouselWidth) {
-      newBaseX = newBaseX % carouselWidth;
-    } else if (newBaseX > 0) {
-      newBaseX = (newBaseX % carouselWidth) - carouselWidth;
-    }
-
-    baseX.set(newBaseX);
-  });
-
-  // Pause animation on hover
-  const handleMouseEnter = () => {
-    if (isNavigating) return;
-    setShouldAnimate(false);
-  };
-  
-  const handleMouseLeave = () => {
-    if (isNavigating) return;
-    setShouldAnimate(true);
-  };
-
-  // Framer Motion variants for staggered animation
+  // Framer Motion variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -544,11 +425,12 @@ export default function Home() {
                     </motion.span>
                   </AnimatePresence>
                   
-                  {/* Timer animation */}
+                  {/* Timer animation - UPDATED */}
                   <div className="absolute -bottom-4 left-0 w-full h-[2px] bg-zinc-800/30 overflow-hidden rounded-full">
-                    <div 
-                      className="h-full bg-primary/30 transition-none"
-                      style={{ width: `${timerProgress * 100}%` }}
+                    <motion.div 
+                      className="h-full bg-primary/30"
+                      initial={{ width: "0%" }} // Initial state for motion div
+                      animate={progressControls} // Controlled by animation controls
                     />
                   </div>
                 </span>
@@ -643,7 +525,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Company Logos Section */}
+      {/* Company Logos Section - UPDATED */}
       <section className="py-16 px-4 bg-gradient-to-b from-background/60 to-background/95 relative border-t border-border/5">
         {/* Background decorative elements */}
         <div className="absolute inset-0 z-0 overflow-hidden">
@@ -685,157 +567,17 @@ export default function Home() {
             </motion.h2>
           </div>
           
-          {/* Carousel Container */}
-          <div 
-            ref={carouselRef}
-            className="relative overflow-hidden"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+          {/* Carousel Container - Uses InfiniteCarousel component */}
+          <InfiniteCarousel 
+            isNavigating={isNavigating} 
+            scrollSpeed={-100} // Default, but can be customized
+            innerClassName="space-x-6 px-10" // Pass original inner div classes
           >
-            {/* Gradient overlay for left edge */}
-            <div className="absolute left-0 top-0 w-16 h-full z-10 pointer-events-none bg-gradient-to-r from-background/95 to-transparent"></div>
-            
-            {/* Gradient overlay for right edge */}
-            <div className="absolute right-0 top-0 w-16 h-full z-10 pointer-events-none bg-gradient-to-l from-background/95 to-transparent"></div>
-            
-            {/* Inner carousel with smooth scrolling motion */}
-            <motion.div
-              ref={carouselInnerRef}
-              className="flex space-x-6 px-10"
-              style={{ x: baseX }}
-              drag={isNavigating ? false : "x"}
-              dragConstraints={{ left: -contentWidth + (carouselRef.current?.offsetWidth ?? 0), right: 0 }}
-              onDrag={(e, info) => {
-                 baseX.set(baseX.get() + info.delta.x);
-              }}
-              onDragEnd={(e, info) => {
-                if (isNavigating) return;
-                
-                let finalX = baseX.get();
-                
-                const velocityFactor = 0.2;
-                animationControls.start({
-                  x: finalX + info.velocity.x * velocityFactor,
-                  transition: { type: "spring", stiffness: 100, damping: 20 }
-                }).then(() => {
-                  let currentX = baseX.get();
-                  if (currentX < -carouselWidth) {
-                     baseX.set(currentX % carouselWidth, false);
-                  } else if (currentX > 0) {
-                      baseX.set((currentX % carouselWidth) - carouselWidth, false);
-                  }
-                });
-
-                if (finalX < -carouselWidth) {
-                  baseX.set(finalX % carouselWidth, false);
-                } else if (finalX > 0) {
-                   baseX.set((finalX % carouselWidth) - carouselWidth, false);
-                }
-              }}
-            >
-              {/* Use displayedCompanies (doubled array) */}
-              {displayedCompanies.map((company, index) => (
-                <motion.div 
-                  key={`${company.name}-${index}`}
-                  className="flex-shrink-0 w-[280px] md:w-[300px] group"
-                  whileHover={{ 
-                    y: -5, 
-                    transition: { duration: 0.2 } 
-                  }}
-                >
-                  <Card className="h-full bg-card/40 backdrop-blur-sm group-hover:bg-card/60 border-border/20 transition-all duration-300 overflow-hidden relative">
-                    {/* Shiny overlay effect on hover */}
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5"></div>
-                      <motion.div 
-                        className="absolute top-0 -left-[100%] w-[50%] h-full bg-gradient-to-r from-transparent via-white/10 to-transparent transform rotate-12 skew-x-12"
-                        animate={{
-                          left: ['0%', '200%'],
-                          opacity: [0, 0.3, 0]
-                        }}
-                        transition={{
-                          duration: 1.5,
-                          ease: "easeInOut",
-                          repeat: Infinity,
-                          repeatDelay: 2
-                        }}
-                      />
-                    </div>
-                    
-                    <CardContent className="p-5 relative z-10">
-                      {/* Timeline indicator */}
-                      <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-transparent via-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                      
-                      {/* Company Logo */}
-                      <div className="h-16 mb-4 relative flex items-center justify-center">
-                        <div className="relative w-full h-12 grayscale group-hover:grayscale-0 transition-all duration-300 flex items-center justify-center">
-                          <Image 
-                            src={company.logo} 
-                            alt={`${company.name} logo`} 
-                            height={60}
-                            width={120}
-                            className="object-contain max-h-12 max-w-[140px]"
-                          />
-                          <motion.div 
-                            className="absolute inset-0 bg-primary/5 rounded-md opacity-0 group-hover:opacity-100"
-                            animate={{ 
-                              boxShadow: ['0 0 0px rgba(var(--primary-rgb), 0)', '0 0 20px rgba(var(--primary-rgb), 0.2)', '0 0 0px rgba(var(--primary-rgb), 0)']
-                            }}
-                            transition={{ 
-                              repeat: Infinity, 
-                              duration: 2.5,
-                              ease: "easeInOut"
-                            }}
-                          />
-                        </div>
-                      </div>
-                      
-                      {/* Company Name with Link */}
-                      <div className="mb-2 text-center">
-                        <Link 
-                          href={company.website} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="group inline-flex items-center gap-1 transition-colors hover:text-primary"
-                        >
-                          <span className="font-semibold text-foreground group-hover:text-primary transition-colors duration-200">
-                            {company.name}
-                          </span>
-                          <svg 
-                            xmlns="http://www.w3.org/2000/svg" 
-                            className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors duration-200" 
-                            fill="none" 
-                            viewBox="0 0 24 24" 
-                            stroke="currentColor"
-                          >
-                            <path 
-                              strokeLinecap="round" 
-                              strokeLinejoin="round" 
-                              strokeWidth={2} 
-                              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" 
-                            />
-                          </svg>
-                        </Link>
-                      </div>
-                      
-                      {/* Company Details */}
-                      <div className="space-y-1 text-center">
-                        <Badge variant="outline" className="bg-background/50 text-xs px-2 py-0.5">
-                          {company.period}
-                        </Badge>
-                        <h3 className="text-foreground font-medium text-base mt-2 group-hover:text-primary transition-colors duration-200">
-                          {company.role}
-                        </h3>
-                        <p className="text-muted-foreground text-sm">
-                          {company.description}
-                        </p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
+            {/* Map directly over original companies array */}
+            {companies.map((company) => (
+              <CompanyCard key={company.name} company={company} />
+            ))}
+          </InfiniteCarousel>
           
           {/* Carousel position indicators */}
           <div className="mt-8 flex justify-center space-x-2">
@@ -924,77 +666,7 @@ export default function Home() {
             viewport={{ once: true, amount: 0.1 }} // Trigger earlier for smoother feel
           >
             {expertiseItems.map((item) => (
-              <motion.div
-                key={item.title}
-                variants={itemVariants}
-                whileHover={{ 
-                  y: -6, 
-                  scale: 1.03,
-                  boxShadow: '0 10px 25px -5px rgba(var(--primary-rgb), 0.1), 0 8px 10px -6px rgba(var(--primary-rgb), 0.1)',
-                  transition: { duration: 0.25, ease: "easeOut" } 
-                }}
-                className="h-full" // Ensure motion div takes full height for consistent layout
-              >
-                {/* Updated Card Design */}
-                <Card className="relative h-full border border-border/10 bg-gradient-to-br from-card/60 via-card/50 to-card/60 backdrop-blur-md transition-all duration-300 group overflow-hidden shadow-md hover:shadow-lg hover:border-primary/30">
-                  {/* Inner border highlight on hover */}
-                  <div className="absolute inset-0 border border-primary/0 group-hover:border-primary/20 rounded-lg transition-colors duration-300 pointer-events-none"></div>
-                  
-                  {/* Subtle glow effect */}
-                  <motion.div 
-                    className="absolute -inset-2 bg-gradient-radial from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-50 transition-opacity duration-400 rounded-xl blur-lg"
-                    animate={{ opacity: [0, 0.5, 0] }}
-                    transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-                  />
-
-                  <CardContent className="p-6 relative z-10 flex flex-col h-full"> {/* Flex column for alignment */}
-                    {/* Modern icon with background */}
-                    <div className="mb-5">
-                      <div className="relative inline-flex items-center justify-center w-12 h-12 rounded-lg bg-gradient-to-tr from-background/80 to-background/95 border border-border/20 shadow-inner group-hover:border-primary/30 transition-colors duration-300">
-                        <div className="text-primary group-hover:scale-110 transition-transform duration-300">
-                          {item.icon}
-                        </div>
-                        {/* Icon pulse */}
-                        <motion.div 
-                          className="absolute inset-0 rounded-lg bg-primary/10 opacity-0 group-hover:opacity-50"
-                          animate={{ scale: [1, 1.3, 1], opacity: [0, 0.5, 0] }}
-                          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut", delay: 0.5 }}
-                        />
-                      </div>
-                    </div>
-
-                    <h3 className="text-lg md:text-xl font-semibold mb-3 text-foreground group-hover:text-primary transition-colors duration-200">
-                      {item.title}
-                    </h3>
-
-                    <p className="text-muted-foreground group-hover:text-foreground/90 transition-colors duration-200 text-sm leading-relaxed flex-grow"> {/* flex-grow makes paragraph take remaining space */}
-                      {item.description}
-                    </p>
-
-                     {/* Optional: Display a few key skills from the list */}
-                     {/* <div className="mt-4 pt-3 border-t border-border/10">
-                       <p className="text-xs text-muted-foreground mb-1">Key Skills:</p>
-                       <div className="flex flex-wrap gap-1.5">
-                         {item.skills.slice(0, 3).map(skill => (
-                           <Badge key={skill} variant="secondary" className="text-xs px-1.5 py-0.5 bg-background/60 border-border/20">{skill}</Badge>
-                         ))}
-                       </div>
-                     </div> */}
-                  </CardContent>
-
-                  {/* Bottom highlight line */}
-                  <motion.div
-                    className="absolute bottom-0 left-0 h-[2px] bg-primary"
-                    initial={{ width: 0 }}
-                    style={{ transformOrigin: 'left' }} // Animate from left
-                    variants={{ // Animate width on hover within the parent's variants
-                      hidden: { width: 0 },
-                      visible: { width: 0 }, // Default state
-                    }}
-                    whileHover={{ width: "100%", transition: { duration: 0.3, ease: 'easeOut' } }} // Override on hover
-                  />
-                </Card>
-              </motion.div>
+              <ExpertiseCard key={item.title} item={item} />
             ))}
           </motion.div>
         </div>
