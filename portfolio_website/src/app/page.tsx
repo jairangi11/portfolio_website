@@ -996,116 +996,114 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Call to Action */}
-      <section className="py-24 px-4 bg-gradient-to-t from-background/50 to-background/95 border-t border-border/20 relative overflow-hidden">
-        {/* Background decorative elements */}
-        <div className="absolute inset-0 z-0">
-          <div className="absolute -top-[100px] left-1/2 transform -translate-x-1/2 w-full h-[250px] bg-gradient-to-b from-primary/5 to-transparent blur-3xl opacity-30"></div>
-          <div className="absolute left-1/4 top-1/4 w-32 h-32 border border-border/20 rounded-full opacity-20"></div>
-          <div className="absolute right-1/4 bottom-1/4 w-48 h-48 border border-border/10 rounded-full opacity-10"></div>
-          <motion.div 
-            className="absolute bottom-0 left-0 w-full h-[1px]"
-            style={{
-              background: 'linear-gradient(90deg, transparent 0%, rgba(var(--primary-rgb), 0.3) 50%, transparent 100%)'
+      {/* Call to Action - Enhanced */}
+      <section className="py-24 px-4 bg-gradient-to-t from-background/60 via-background/80 to-background border-t border-border/10 relative overflow-hidden">
+        {/* Enhanced Background: Subtle Animated Mesh Gradient */}
+        <div className="absolute inset-0 z-0 opacity-40">
+          <motion.div
+            className="absolute top-0 left-0 w-[50vw] h-[50vh] bg-gradient-radial from-primary/10 via-transparent to-transparent filter blur-3xl"
+            animate={{
+              x: ['-10%', '10%', '-10%'],
+              y: ['-10%', '10%', '-10%'],
             }}
-            animate={{ 
-              opacity: [0.3, 0.6, 0.3],
-            }}
-            transition={{ 
-              repeat: Infinity, 
-              duration: 4,
-              ease: "easeInOut"
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              repeatType: 'reverse',
+              ease: 'easeInOut',
             }}
           />
+          <motion.div
+            className="absolute bottom-0 right-0 w-[40vw] h-[40vh] bg-gradient-radial from-secondary/5 via-transparent to-transparent filter blur-3xl"
+            animate={{
+              x: ['10%', '-10%', '10%'],
+              y: ['10%', '-10%', '10%'],
+            }}
+            transition={{
+              duration: 25,
+              repeat: Infinity,
+              repeatType: 'reverse',
+              ease: 'easeInOut',
+              delay: 5,
+            }}
+          />
+           {/* Animated Grid Lines */}
+           <div className="absolute inset-0 z-0 opacity-15">
+             <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+               <defs>
+                 <pattern id="ctaGrid" width="80" height="80" patternUnits="userSpaceOnUse">
+                   <motion.path 
+                     d="M 80 0 L 0 0 0 80" 
+                     fill="none" 
+                     stroke="rgba(var(--border-rgb), 0.5)" 
+                     strokeWidth="0.5"
+                     initial={{ pathLength: 0 }}
+                     animate={{ pathLength: 1 }}
+                     transition={{ duration: 2, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
+                   />
+                 </pattern>
+               </defs>
+               <rect width="100%" height="100%" fill="url(#ctaGrid)" />
+             </svg>
+           </div>
         </div>
         
         <div className="container mx-auto relative z-10">
           <motion.div 
-            className="max-w-4xl mx-auto text-center"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4 }}
+            className="max-w-3xl mx-auto text-center" // Slightly reduced max-width for better focus
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={containerVariants} // Use the container variants for staggered effect
           >
-            <h2 className="text-3xl md:text-5xl font-bold mb-6 text-foreground">
-              Let's Work <span className="relative inline-block">
-                <span className="text-primary">Together</span>
+            <motion.h2 
+              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground tracking-tight" // Adjusted sizes
+              variants={itemVariants} // Animate this item
+            >
+              Let's Build <span className="relative inline-block">
+                <span className="bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">Something</span>
                 <motion.span 
-                  className="absolute -bottom-2 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary/80 to-transparent"
+                  className="absolute -bottom-2 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary/70 to-transparent"
                   initial={{ width: 0, opacity: 0 }}
                   whileInView={{ width: "100%", opacity: 1 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
+                  transition={{ duration: 0.7, delay: 0.4 }} // Synchronized delay
                 />
-              </span>
-            </h2>
+              </span> Amazing
+            </motion.h2>
             
             <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: 0.1 }}
-              className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed"
+              variants={itemVariants} // Animate this item
+              className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed"
             >
-              Looking for a Product Manager who can drive results through data-driven decisions and AI innovation?
+              Have a project in mind or looking for a Product leader to drive AI innovation? Let's connect.
             </motion.p>
             
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: 0.2 }}
+              variants={itemVariants} // Animate this item
             >
-              <Button asChild size="lg" className="group">
+              {/* Enhanced Button with subtle animation */}
+              <Button 
+                asChild 
+                size="lg" 
+                className="group shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-0.5"
+              >
                 <Link href="/contact" className="flex items-center">
                   Get in Touch
-                  <FiArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  {/* Icon with subtle scale and rotation */}
+                  <motion.div 
+                    className="ml-2"
+                    whileHover={{ scale: 1.1, rotate: -5 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+                  >
+                    <FiArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </motion.div>
                 </Link>
               </Button>
             </motion.div>
             
-            {/* Decorative circles */}
-            <div className="relative h-20 w-full mt-12 opacity-60">
-              <motion.div 
-                className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-primary/50 rounded-full"
-                animate={{ 
-                  scale: [1, 2, 1],
-                  opacity: [0.5, 0.2, 0.5]
-                }}
-                transition={{ 
-                  repeat: Infinity, 
-                  duration: 4,
-                  ease: "easeInOut"
-                }}
-              />
-              
-              <motion.div 
-                className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 border border-primary/10 rounded-full"
-                animate={{ 
-                  scale: [1, 1.1, 1],
-                  opacity: [0.3, 0.1, 0.3]
-                }}
-                transition={{ 
-                  repeat: Infinity, 
-                  duration: 6,
-                  ease: "easeInOut"
-                }}
-              />
-              
-              <motion.div 
-                className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 border border-border/10 rounded-full"
-                animate={{ 
-                  scale: [1.1, 1, 1.1],
-                  opacity: [0.2, 0.1, 0.2]
-                }}
-                transition={{ 
-                  repeat: Infinity, 
-                  duration: 8,
-                  ease: "easeInOut",
-                  delay: 1
-                }}
-              />
-            </div>
+            {/* Removed old decorative circles, replaced by animated grid background */}
+            
           </motion.div>
         </div>
       </section>
