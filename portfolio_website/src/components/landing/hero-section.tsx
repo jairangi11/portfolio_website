@@ -130,7 +130,7 @@ export function HeroSection({ resumeData, isNavigating }: HeroSectionProps) {
             />
             
             <motion.h2 
-              className="text-2xl md:text-3xl lg:text-4xl text-foreground/80 mt-6 max-w-3xl leading-relaxed"
+              className="text-2xl md:text-3xl lg:text-4xl text-foreground/80 mt-6 max-w-3xl md:max-w-xl lg:max-w-2xl leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.5 }}
