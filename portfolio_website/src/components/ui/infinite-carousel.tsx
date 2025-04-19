@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback, Children, useMemo } from 'react';
-import { motion, useMotionValue, useAnimationFrame, useAnimationControls } from 'framer-motion';
+import { motion, useMotionValue, useAnimationFrame } from 'framer-motion';
 
 interface InfiniteCarouselProps {
   children: React.ReactNode;
@@ -21,11 +21,9 @@ export function InfiniteCarousel({
   const carouselRef = useRef<HTMLDivElement>(null);
   const carouselInnerRef = useRef<HTMLDivElement>(null);
   const [carouselWidth, setCarouselWidth] = useState(0);
-  const [contentWidth, setContentWidth] = useState(0);
   const [shouldAnimate, setShouldAnimate] = useState(true);
 
   const baseX = useMotionValue(0);
-  const animationControls = useAnimationControls();
 
   // Duplicate children for seamless looping
   const duplicatedChildren = useMemo(() => Children.toArray(children), [children]);
@@ -36,7 +34,6 @@ export function InfiniteCarousel({
       // Calculate width based on the original set of children
       const totalWidth = innerElement.scrollWidth / 2; // Divide by 2 because we doubled children
       setCarouselWidth(totalWidth); // Width of one full set of items
-      setContentWidth(innerElement.scrollWidth); // Total width of the doubled items
     }
   }, []);
 
@@ -112,21 +109,7 @@ export function InfiniteCarousel({
           if (isNavigating) return;
           
           let finalX = baseX.get();
-          const velocityFactor = 0.2;
-          // Animate with velocity after drag ends
-          animationControls.start({
-            x: finalX + info.velocity.x * velocityFactor,
-            transition: { type: "spring", stiffness: 100, damping: 20 }
-          }).then(() => {
-            // Ensure wrapping after spring animation settles
-            let currentX = baseX.get();
-            if (currentX < -carouselWidth) {
-                baseX.set(currentX % carouselWidth);
-            } else if (currentX > 0) {
-                baseX.set((currentX % carouselWidth) - carouselWidth);
-            }
-          });
-          // Apply immediate wrap logic based on drag end position as well
+          // Apply immediate wrap logic based on drag end position
           if (finalX < -carouselWidth) {
             baseX.set(finalX % carouselWidth);
           } else if (finalX > 0) {

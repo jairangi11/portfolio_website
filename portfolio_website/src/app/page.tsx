@@ -1,10 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
-import Image from "next/image";
 import Layout from "@/components/layout/Layout";
 import { resumeData } from "@/data/resumeData";
-import React from "react";
+import type React from "react";
 import { useNavigationAnimationControl } from "@/hooks/useNavigationAnimationControl";
 import { HeroSection } from "@/components/landing/hero-section";
 import { CompaniesSection } from "@/components/landing/companies-section";

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 
 /**
@@ -44,19 +44,6 @@ export function useNavigationAnimationControl(): boolean {
       setIsNavigating(true);
     };
 
-    // Function to add listeners to relevant elements
-    const addNavigationListeners = () => {
-      // Query for standard links and elements likely triggering navigation
-      // Note: This might need adjustment based on specific component libraries or routing methods
-      document.querySelectorAll('a[href]').forEach(element => {
-        // Avoid adding multiple listeners
-        if (!(element as any).__hasNavigationListener) {
-          element.addEventListener('click', handleNavigationStart);
-          (element as any).__hasNavigationListener = true;
-        }
-      });
-    };
-
     // Use a MutationObserver to detect dynamically added elements (like in SPAs)
     const observer = new MutationObserver((mutationsList) => {
         for(const mutation of mutationsList) {
@@ -84,7 +71,15 @@ export function useNavigationAnimationControl(): boolean {
     });
 
     // Initial addition of listeners
-    addNavigationListeners();
+    // Query for standard links and elements likely triggering navigation
+    // Note: This might need adjustment based on specific component libraries or routing methods
+    document.querySelectorAll('a[href]').forEach(element => {
+      // Avoid adding multiple listeners
+      if (!(element as any).__hasNavigationListener) {
+        element.addEventListener('click', handleNavigationStart);
+        (element as any).__hasNavigationListener = true;
+      }
+    });
 
     // Observe the body for added nodes
     observer.observe(document.body, { 

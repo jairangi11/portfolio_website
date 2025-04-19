@@ -27,7 +27,6 @@ const scrollThreshold = 100; // Threshold for scroll indicator visibility
 export function HeroSection({ resumeData, isNavigating }: HeroSectionProps) {
   // Skills animation state
   const [currentSkillIndex, setCurrentSkillIndex] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
   const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
   const progressControls = useAnimationControls();
 
@@ -42,11 +41,9 @@ export function HeroSection({ resumeData, isNavigating }: HeroSectionProps) {
       }
       intervalIdRef.current = setInterval(() => {
         if (document.hidden) return;
-        setIsAnimating(true);
         progressControls.set({ width: "0%" });
         setTimeout(() => {
           setCurrentSkillIndex((prevIndex) => (prevIndex + 1) % skills.length);
-          setIsAnimating(false);
           progressControls.start({ 
             width: "100%", 
             transition: { duration: 3, ease: "linear" } 

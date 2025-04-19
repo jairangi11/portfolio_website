@@ -87,18 +87,13 @@ function Button({
         shineElement.style.transform = 'translateX(-100%) skewX(-12deg)';
       }, 800);
     };
-    
-    const handleMouseLeave = () => {
-      // No immediate action needed on mouse leave
-      // The animation will complete its cycle and the flag will be reset
-    };
-    
+        
     wrapper.addEventListener('mouseenter', handleMouseEnter);
-    wrapper.addEventListener('mouseleave', handleMouseLeave);
+    // No need to add handleMouseLeave as it's empty
     
     return () => {
       wrapper.removeEventListener('mouseenter', handleMouseEnter);
-      wrapper.removeEventListener('mouseleave', handleMouseLeave);
+      // No need to remove handleMouseLeave as it wasn't added
     };
   }, []);
 

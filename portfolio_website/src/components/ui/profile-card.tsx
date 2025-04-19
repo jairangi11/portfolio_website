@@ -30,35 +30,6 @@ export function ProfileCard({
     .filter(skill => skill.type === "product" || skill.type === "ai")
     .slice(0, 5);
     
-  // Extract key accomplishments from current role
-  const createAccomplishmentSummary = () => {
-    const currentRole = resumeData.experience[0];
-    // Look for achievements with metrics and AI references
-    const keyPoints = currentRole.description
-      .filter(desc => 
-        desc.includes("AI") || 
-        desc.includes("increased") || 
-        desc.includes("improving") || 
-        desc.includes("boosting") ||
-        desc.includes("%") ||
-        desc.includes("$")
-      )
-      .slice(0, 2); // Take top 2 accomplishments
-      
-    if (keyPoints.length > 0) {
-      // Extract the key metrics and achievements
-      return keyPoints.map(point => {
-        // Shorten the point by removing extra details
-        return point
-          .replace(/Spearheaded technical product management for /g, '')
-          .replace(/, generating over \$100,000 in ARR/g, '')
-          .replace(/across the Gulf region/g, '');
-      }).join(' ');
-    }
-    
-    // Fallback to first description if no key points found
-    return currentRole.description[0];
-  };
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {

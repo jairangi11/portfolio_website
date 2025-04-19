@@ -4,7 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { blogPosts, BlogPost } from "@/data/blogData";
+import { blogPosts } from "@/data/blogData";
+import type { BlogPost } from "@/data/blogData";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { 
@@ -15,6 +16,58 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Layout from "@/components/layout/Layout";
+
+function BlogPostCard({ post }: { post: BlogPost }) {
+  return (
+    <Link 
+      href={`/blog/${post.slug}`}
+      className="group block h-full"
+    >
+      <div className="border rounded-lg overflow-hidden h-full flex flex-col bg-card hover:bg-muted/50 transition-all duration-200">
+        <div className="relative h-48">
+          <Image
+            src={post.coverImage}
+            alt={post.title}
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+        </div>
+        
+        <div className="p-5 flex flex-col flex-1">
+          <div className="flex flex-wrap gap-2 mb-3">
+            {post.tags.slice(0, 2).map((tag) => (
+              <Badge key={tag} variant="secondary" className="text-xs">
+                {tag}
+              </Badge>
+            ))}
+            {post.tags.length > 2 && (
+              <Badge variant="outline" className="text-xs">
+                +{post.tags.length - 2}
+              </Badge>
+            )}
+          </div>
+          
+          <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
+            {post.title}
+          </h3>
+          
+          <p className="text-muted-foreground text-sm mb-4 line-clamp-2 flex-1">
+            {post.description}
+          </p>
+          
+          <div className="flex items-center justify-between mt-auto pt-3 border-t">
+            <span className="text-xs text-muted-foreground">
+              {post.date} · {post.readTime}
+            </span>
+            <span className="text-xs font-medium text-primary group-hover:underline">
+              Read more
+            </span>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
 
 export default function BlogPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -172,57 +225,5 @@ export default function BlogPage() {
         )}
       </main>
     </Layout>
-  );
-}
-
-function BlogPostCard({ post }: { post: BlogPost }) {
-  return (
-    <Link 
-      href={`/blog/${post.slug}`}
-      className="group block h-full"
-    >
-      <div className="border rounded-lg overflow-hidden h-full flex flex-col bg-card hover:bg-muted/50 transition-all duration-200">
-        <div className="relative h-48">
-          <Image
-            src={post.coverImage}
-            alt={post.title}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
-          />
-        </div>
-        
-        <div className="p-5 flex flex-col flex-1">
-          <div className="flex flex-wrap gap-2 mb-3">
-            {post.tags.slice(0, 2).map((tag) => (
-              <Badge key={tag} variant="secondary" className="text-xs">
-                {tag}
-              </Badge>
-            ))}
-            {post.tags.length > 2 && (
-              <Badge variant="outline" className="text-xs">
-                +{post.tags.length - 2}
-              </Badge>
-            )}
-          </div>
-          
-          <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
-            {post.title}
-          </h3>
-          
-          <p className="text-muted-foreground text-sm mb-4 line-clamp-2 flex-1">
-            {post.description}
-          </p>
-          
-          <div className="flex items-center justify-between mt-auto pt-3 border-t">
-            <span className="text-xs text-muted-foreground">
-              {post.date} · {post.readTime}
-            </span>
-            <span className="text-xs font-medium text-primary group-hover:underline">
-              Read more
-            </span>
-          </div>
-        </div>
-      </div>
-    </Link>
   );
 } 

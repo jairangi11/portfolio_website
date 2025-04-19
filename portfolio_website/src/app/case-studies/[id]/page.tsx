@@ -1,6 +1,5 @@
 "use client";
 
-import React from 'react';
 import { notFound, useParams } from 'next/navigation';
 import Image from 'next/image';
 import { motion } from 'framer-motion';

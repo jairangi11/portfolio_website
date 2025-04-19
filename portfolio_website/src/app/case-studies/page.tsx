@@ -1,6 +1,5 @@
 "use client";
 
-import React from 'react';
 import { motion } from 'framer-motion';
 import { caseStudies } from '@/data/caseStudiesData';
 import Layout from '@/components/layout/Layout';
