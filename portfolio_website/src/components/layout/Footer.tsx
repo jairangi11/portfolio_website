@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
-import { FiLinkedin, FiGithub, FiMail, FiArrowRight } from "react-icons/fi";
+import { FiLinkedin, FiGithub, FiMail } from "react-icons/fi";
 import { FaHeart } from "react-icons/fa";
+import { Home, FileText, Briefcase, BookOpen, Mail as LucideMail } from 'lucide-react';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -34,31 +35,31 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link href="/" className="text-muted-foreground hover:text-primary transition-colors flex items-center group">
-                  <FiArrowRight className="mr-2 h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <Home className="mr-2 h-4 w-4 transition-opacity duration-200" />
                   Home
                 </Link>
               </li>
               <li>
                 <Link href="/resume" className="text-muted-foreground hover:text-primary transition-colors flex items-center group">
-                  <FiArrowRight className="mr-2 h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <FileText className="mr-2 h-4 w-4 transition-opacity duration-200" />
                   Resume
                 </Link>
               </li>
               <li>
                 <Link href="/case-studies" className="text-muted-foreground hover:text-primary transition-colors flex items-center group">
-                  <FiArrowRight className="mr-2 h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <Briefcase className="mr-2 h-4 w-4 transition-opacity duration-200" />
                   Case Studies
                 </Link>
               </li>
               <li>
                 <Link href="/blog" className="text-muted-foreground hover:text-primary transition-colors flex items-center group">
-                  <FiArrowRight className="mr-2 h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <BookOpen className="mr-2 h-4 w-4 transition-opacity duration-200" />
                   Blog
                 </Link>
               </li>
               <li>
                 <Link href="/contact" className="text-muted-foreground hover:text-primary transition-colors flex items-center group">
-                  <FiArrowRight className="mr-2 h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <LucideMail className="mr-2 h-4 w-4 transition-opacity duration-200" />
                   Contact
                 </Link>
               </li>
