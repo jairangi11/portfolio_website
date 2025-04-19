@@ -7,12 +7,107 @@ import Layout from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { FiArrowRight, FiCode, FiLayers, FiCpu, FiGrid } from "react-icons/fi";
+import { FiArrowRight, FiCode, FiLayers, FiCpu, FiGrid, FiTool } from "react-icons/fi";
 import { ProfileCard } from "@/components/ui/profile-card";
 import { resumeData } from "@/data/resumeData";
 import { useState, useEffect, useRef } from "react";
 import React from "react";
 import { useRouter, usePathname } from "next/navigation";
+
+// Define types for dynamic expertise data
+interface ExpertiseArea {
+  title: string;
+  icon: React.ReactElement;
+  description: string;
+  skills: string[];
+}
+
+// Function to categorize skills and generate expertise areas
+const getExpertiseAreas = (): ExpertiseArea[] => {
+  const skills = resumeData.skills;
+
+  // Define categories and their corresponding icons and descriptions
+  const areasMap: { [key: string]: Omit<ExpertiseArea, 'skills'> } = {
+    ai: {
+      title: "AI & Data Science",
+      icon: <FiCpu className="h-6 w-6" />,
+      description: "Leveraging AI/ML models like NLP, Prediction, Classification, and Generative AI to build intelligent solutions and drive data-driven insights.",
+    },
+    product: {
+      title: "Product Management & Strategy",
+      icon: <FiLayers className="h-6 w-6" />,
+      description: "Defining product vision, creating strategic roadmaps, managing backlogs (including KPIs), and leading Go-to-Market strategies with a focus on growth.",
+    },
+    tech: { // Combine relevant technical types
+      title: "Technical Proficiency",
+      icon: <FiCode className="h-6 w-6" />,
+      description: "Developing robust solutions using Python, SQL, API integrations, Cloud technologies, and applying Agile methodologies for efficient development.",
+    },
+    industry: {
+      title: "Industry Expertise",
+      icon: <FiGrid className="h-6 w-6" />,
+      description: "Applying product and technical skills within SaaS, Fintech, PropTech, and E-commerce domains to address specific industry challenges.",
+    },
+     // Add a category for tools/design if needed, or merge into tech/product
+     tools: {
+       title: "Tools & Analytics",
+       icon: <FiTool className="h-6 w-6" />, // Example, replace if needed
+       description: "Utilizing Power BI, Tableau, Mixpanel, CleverTap, Adobe Analytics, Figma, and JIRA for analysis, design, and project management."
+     }
+  };
+
+  // Group skills by category
+  const groupedSkills: { [key: string]: string[] } = {};
+  skills.forEach(skill => {
+    let categoryKey = skill.type;
+    // Consolidate technical skills
+    if (['frontend', 'database', 'backend', 'devops', 'cloud'].includes(skill.type)) {
+      categoryKey = 'tech';
+    }
+    // Assign KPIs to product management
+    if (skill.name === 'KPIs') {
+      categoryKey = 'product';
+    }
+     // Consolidate tools/design
+     if (['tools', 'design'].includes(skill.type)) {
+       categoryKey = 'tools';
+     }
+
+    if (!groupedSkills[categoryKey]) {
+      groupedSkills[categoryKey] = [];
+    }
+    // Avoid duplicating KPIs if already listed under product type
+    if (!(categoryKey === 'product' && skill.name === 'KPIs' && groupedSkills[categoryKey].includes(skill.name))) {
+         groupedSkills[categoryKey].push(skill.name);
+    }
+  });
+
+  // Build the final expertise areas array
+  const expertiseItems: ExpertiseArea[] = Object.keys(areasMap)
+    .filter(key => groupedSkills[key] && groupedSkills[key].length > 0) // Only include areas with skills
+    .map(key => ({
+      ...areasMap[key],
+      skills: groupedSkills[key],
+    }));
+
+  // Ensure we have 4 main areas by combining if necessary or selecting top 4
+  // For simplicity, let's stick to the defined main categories if they exist
+  const primaryKeys = ['ai', 'product', 'tech', 'industry'];
+  let finalAreas = primaryKeys
+    .map(key => expertiseItems.find(item => item.title === areasMap[key].title))
+    .filter((item): item is ExpertiseArea => item !== undefined); // Type guard
+
+   // If we have fewer than 4, add 'Tools & Analytics' if available
+   if (finalAreas.length < 4) {
+     const toolsArea = expertiseItems.find(item => item.title === "Tools & Analytics");
+     if (toolsArea) {
+       finalAreas.push(toolsArea);
+     }
+   }
+
+   // Limit to 4 if more were generated
+   return finalAreas.slice(0, 4);
+};
 
 export default function Home() {
   // Add router for navigation detection
@@ -74,28 +169,8 @@ export default function Home() {
     };
   }, [pathname]);
 
-  const expertiseItems = [
-    { 
-      icon: <FiCpu className="h-6 w-6" />,
-      title: "AI Solutions", 
-      description: "Developing AI-powered products with a focus on natural language processing and machine learning." 
-    },
-    { 
-      icon: <FiLayers className="h-6 w-6" />,
-      title: "Product Strategy", 
-      description: "Creating data-driven product roadmaps aligned with business goals and user needs."
-    },
-    { 
-      icon: <FiCode className="h-6 w-6" />,
-      title: "SaaS & B2B", 
-      description: "Building scalable software solutions with optimized user experiences."
-    },
-    { 
-      icon: <FiGrid className="h-6 w-6" />,
-      title: "PropTech", 
-      description: "Leveraging technology to transform the real estate industry."
-    }
-  ];
+  // Get dynamic expertise items
+  const expertiseItems = getExpertiseAreas();
 
   // Company information for the logos section with matching image files
   const companies = [
@@ -381,6 +456,31 @@ export default function Home() {
   const handleMouseLeave = () => {
     if (isNavigating) return;
     setShouldAnimate(true);
+  };
+
+  // Framer Motion variants for staggered animation
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { y: 30, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: 'spring',
+        stiffness: 90,
+        damping: 15,
+      },
+    },
   };
 
   return (
@@ -757,143 +857,142 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Expertise Section */}
-      <section className="py-24 px-4 bg-gradient-to-b from-background to-background/95 relative">
-        {/* Background decorative elements */}
-        <div className="absolute inset-0 z-0 overflow-hidden">
-          <div className="absolute top-1/4 -left-20 w-40 h-40 border border-border/20 rounded-full opacity-20"></div>
-          <div className="absolute bottom-1/4 -right-20 w-60 h-60 border border-border/10 rounded-full opacity-10"></div>
-          <motion.div 
-            className="absolute top-1/2 left-1/3 w-1 h-1 bg-primary rounded-full"
-            animate={{ 
-              scale: [1, 15, 1],
-              opacity: [0, 0.2, 0]
-            }}
-            transition={{ 
-              repeat: Infinity,
-              duration: 8,
-              repeatType: "reverse"
-            }}
-          />
-          <motion.div 
-            className="absolute bottom-1/3 right-1/3 w-1 h-1 bg-primary rounded-full"
-            animate={{ 
-              scale: [1, 20, 1],
-              opacity: [0, 0.1, 0]
-            }}
-            transition={{ 
-              repeat: Infinity,
-              duration: 12,
-              repeatType: "reverse",
-              delay: 2
-            }}
-          />
+      {/* Expertise Section - REFACTORED */}
+      <section className="py-24 px-4 bg-gradient-to-b from-background/90 to-background relative overflow-hidden">
+        {/* Enhanced Background decorative elements */}
+        <div className="absolute inset-0 z-0 opacity-50">
+          {/* Subtle grid pattern */}
+          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="smallGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(var(--border-rgb), 0.1)" strokeWidth="0.5"/>
+              </pattern>
+              <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
+                <rect width="100" height="100" fill="url(#smallGrid)"/>
+                <path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(var(--border-rgb), 0.15)" strokeWidth="1"/>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+          </svg>
+          {/* Gradient blobs */}
+          <div className="absolute -top-40 -left-40 w-96 h-96 bg-primary/5 rounded-full filter blur-3xl opacity-30 animate-pulse-slow"></div>
+          <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-secondary/5 rounded-full filter blur-3xl opacity-30 animation-delay-2000 animate-pulse-slow"></div>
         </div>
-        
+
         <div className="container mx-auto relative z-10">
           <div className="text-center mb-16">
-            <motion.h2 
+            <motion.h2
               className="text-3xl md:text-4xl font-bold text-foreground"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: 0.1 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
             >
-              Areas of <span className="relative inline-block">
+              Areas of <span className="relative inline-block text-primary">
                 Specialization
-                <motion.span 
-                  className="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-primary/30 via-primary/80 to-primary/30"
-                  initial={{ width: 0 }}
-                  whileInView={{ width: "100%" }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
+                <motion.span
+                  className="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary/70 to-transparent"
+                  initial={{ width: 0, opacity: 0 }}
+                  whileInView={{ width: "100%", opacity: 1 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
                 />
               </span>
             </motion.h2>
-            
+
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: 0.2 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
               className="max-w-2xl mx-auto text-muted-foreground text-lg mt-4"
             >
-              Leveraging technology to solve complex business challenges and deliver exceptional user experiences.
+              Leveraging technology to solve complex business challenges and deliver exceptional user experiences across various domains.
             </motion.p>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {expertiseItems.map((item, index) => (
-              <motion.div 
+
+          {/* Animated Grid Container */}
+          <motion.div
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }} // Trigger earlier for smoother feel
+          >
+            {expertiseItems.map((item) => (
+              <motion.div
                 key={item.title}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: 0.05 * index }}
-                whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                variants={itemVariants}
+                whileHover={{ 
+                  y: -6, 
+                  scale: 1.03,
+                  boxShadow: '0 10px 25px -5px rgba(var(--primary-rgb), 0.1), 0 8px 10px -6px rgba(var(--primary-rgb), 0.1)',
+                  transition: { duration: 0.25, ease: "easeOut" } 
+                }}
+                className="h-full" // Ensure motion div takes full height for consistent layout
               >
-                <Card className="relative h-full border-none bg-card/30 backdrop-blur-sm transition-all duration-200 group overflow-hidden shadow-sm hover:shadow-md">
-                  {/* Shiny reflective surface effect */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <motion.div 
-                    className="absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-primary/10 to-transparent rounded-full opacity-0 group-hover:opacity-100 blur-xl"
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    whileHover={{ scale: 1, opacity: 0.7 }}
-                    transition={{ duration: 0.3 }}
-                  />
+                {/* Updated Card Design */}
+                <Card className="relative h-full border border-border/10 bg-gradient-to-br from-card/60 via-card/50 to-card/60 backdrop-blur-md transition-all duration-300 group overflow-hidden shadow-md hover:shadow-lg hover:border-primary/30">
+                  {/* Inner border highlight on hover */}
+                  <div className="absolute inset-0 border border-primary/0 group-hover:border-primary/20 rounded-lg transition-colors duration-300 pointer-events-none"></div>
                   
-                  <CardContent className="p-6 relative z-10">
-                    {/* Modern icon with glowing effect */}
-                    <div className="mb-5 relative">
-                      <div className="relative z-10 inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-background/80 to-background border border-border/20 shadow-inner">
-                        <div className="text-primary">
-                          {React.cloneElement(item.icon, { 
-                            className: "h-6 w-6 z-10 group-hover:text-primary transition-colors duration-300"
-                          })}
+                  {/* Subtle glow effect */}
+                  <motion.div 
+                    className="absolute -inset-2 bg-gradient-radial from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-50 transition-opacity duration-400 rounded-xl blur-lg"
+                    animate={{ opacity: [0, 0.5, 0] }}
+                    transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+                  />
+
+                  <CardContent className="p-6 relative z-10 flex flex-col h-full"> {/* Flex column for alignment */}
+                    {/* Modern icon with background */}
+                    <div className="mb-5">
+                      <div className="relative inline-flex items-center justify-center w-12 h-12 rounded-lg bg-gradient-to-tr from-background/80 to-background/95 border border-border/20 shadow-inner group-hover:border-primary/30 transition-colors duration-300">
+                        <div className="text-primary group-hover:scale-110 transition-transform duration-300">
+                          {item.icon}
                         </div>
+                        {/* Icon pulse */}
                         <motion.div 
-                          className="absolute inset-0 rounded-xl bg-primary/5 opacity-0 group-hover:opacity-100"
-                          animate={{ 
-                            boxShadow: ['0 0 0px rgba(var(--primary-rgb), 0)', '0 0 15px rgba(var(--primary-rgb), 0.3)', '0 0 0px rgba(var(--primary-rgb), 0)']
-                          }}
-                          transition={{ 
-                            repeat: Infinity, 
-                            duration: 2,
-                            ease: "easeInOut"
-                          }}
+                          className="absolute inset-0 rounded-lg bg-primary/10 opacity-0 group-hover:opacity-50"
+                          animate={{ scale: [1, 1.3, 1], opacity: [0, 0.5, 0] }}
+                          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut", delay: 0.5 }}
                         />
                       </div>
-                      <motion.div 
-                        className="absolute inset-0 rounded-xl"
-                        initial={{ opacity: 0 }}
-                        whileHover={{ opacity: 1 }}
-                        transition={{ duration: 0.2 }}
-                        style={{
-                          background: 'radial-gradient(circle at center, rgba(var(--primary-rgb), 0.15) 0%, rgba(var(--primary-rgb), 0) 70%)',
-                        }}
-                      />
                     </div>
-                    
-                    <h3 className="text-xl font-semibold mb-3 text-foreground group-hover:text-primary transition-colors duration-200">
+
+                    <h3 className="text-lg md:text-xl font-semibold mb-3 text-foreground group-hover:text-primary transition-colors duration-200">
                       {item.title}
                     </h3>
-                    
-                    <p className="text-muted-foreground group-hover:text-foreground/80 transition-colors duration-200">
+
+                    <p className="text-muted-foreground group-hover:text-foreground/90 transition-colors duration-200 text-sm leading-relaxed flex-grow"> {/* flex-grow makes paragraph take remaining space */}
                       {item.description}
                     </p>
+
+                     {/* Optional: Display a few key skills from the list */}
+                     {/* <div className="mt-4 pt-3 border-t border-border/10">
+                       <p className="text-xs text-muted-foreground mb-1">Key Skills:</p>
+                       <div className="flex flex-wrap gap-1.5">
+                         {item.skills.slice(0, 3).map(skill => (
+                           <Badge key={skill} variant="secondary" className="text-xs px-1.5 py-0.5 bg-background/60 border-border/20">{skill}</Badge>
+                         ))}
+                       </div>
+                     </div> */}
                   </CardContent>
-                  
+
                   {/* Bottom highlight line */}
-                  <motion.div 
-                    className="absolute bottom-0 left-0 h-[1.5px] bg-gradient-to-r from-transparent via-primary/60 to-transparent"
-                    initial={{ width: 0, opacity: 0 }}
-                    whileHover={{ width: "100%", opacity: 1 }}
-                    transition={{ duration: 0.2 }}
+                  <motion.div
+                    className="absolute bottom-0 left-0 h-[2px] bg-primary"
+                    initial={{ width: 0 }}
+                    style={{ transformOrigin: 'left' }} // Animate from left
+                    variants={{ // Animate width on hover within the parent's variants
+                      hidden: { width: 0 },
+                      visible: { width: 0 }, // Default state
+                    }}
+                    whileHover={{ width: "100%", transition: { duration: 0.3, ease: 'easeOut' } }} // Override on hover
                   />
                 </Card>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
