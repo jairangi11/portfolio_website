@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useAnimationControls } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ProfileCard } from "@/components/ui/profile-card";
@@ -28,7 +28,6 @@ export function HeroSection({ resumeData, isNavigating }: HeroSectionProps) {
   // Skills animation state
   const [currentSkillIndex, setCurrentSkillIndex] = useState(0);
   const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
-  const progressControls = useAnimationControls();
 
   // Scroll position state
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -41,24 +40,14 @@ export function HeroSection({ resumeData, isNavigating }: HeroSectionProps) {
       }
       intervalIdRef.current = setInterval(() => {
         if (document.hidden) return;
-        progressControls.set({ width: "0%" });
-        setTimeout(() => {
-          setCurrentSkillIndex((prevIndex) => (prevIndex + 1) % skills.length);
-          progressControls.start({ 
-            width: "100%", 
-            transition: { duration: 3, ease: "linear" } 
-          });
-        }, 500); 
-      }, 3000); 
-      progressControls.start({ 
-        width: "100%", 
-        transition: { duration: 3, ease: "linear" } 
-      });
+        setCurrentSkillIndex((prevIndex) => (prevIndex + 1) % skills.length);
+      }, 3000);
     };
+    
     setupSkillRotation();
+
     const handleVisibilityChange = () => {
       if (document.hidden) {
-        progressControls.stop();
         if (intervalIdRef.current !== null) {
           clearInterval(intervalIdRef.current);
           intervalIdRef.current = null;
@@ -67,27 +56,26 @@ export function HeroSection({ resumeData, isNavigating }: HeroSectionProps) {
         setupSkillRotation(); 
       }
     };
+
     document.addEventListener('visibilitychange', handleVisibilityChange);
+
     return () => {
-      progressControls.stop();
       if (intervalIdRef.current !== null) {
         clearInterval(intervalIdRef.current);
       }
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [progressControls]);
+  }, []);
 
   // Effect to stop skill animation when navigation starts
   useEffect(() => {
     if (isNavigating) {
-      // console.log("HeroSection: Navigation detected, stopping skill animation.");
-      progressControls.stop();
       if (intervalIdRef.current !== null) {
         clearInterval(intervalIdRef.current);
         intervalIdRef.current = null;
       }
     }
-  }, [isNavigating, progressControls]);
+  }, [isNavigating]);
   
   // Scroll tracking logic
   useEffect(() => {
@@ -159,15 +147,6 @@ export function HeroSection({ resumeData, isNavigating }: HeroSectionProps) {
                     {skills[currentSkillIndex]}
                   </motion.span>
                 </AnimatePresence>
-                
-                {/* Timer animation uses progressControls */}
-                <div className="absolute -bottom-4 left-0 w-full h-[2px] bg-zinc-800/30 overflow-hidden rounded-full">
-                  <motion.div 
-                    className="h-full bg-primary/30"
-                    initial={{ width: "0%" }}
-                    animate={progressControls} 
-                  />
-                </div>
               </span>
             </motion.h2>
             
