@@ -1,8 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { FiLinkedin, FiGithub, FiMail } from "react-icons/fi";
 import { FaHeart } from "react-icons/fa";
-import { Home, FileText, Briefcase, BookOpen, Mail as LucideMail } from 'lucide-react';
+import { Home, FileText, Briefcase, BookOpen, Mail as LucideMail, Linkedin, Github } from 'lucide-react';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -76,7 +75,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-primary transition-colors flex items-center"
               >
-                <FiLinkedin className="mr-2 h-4 w-4 text-primary" />
+                <Linkedin className="mr-2 h-4 w-4" />
                 <span>LinkedIn</span>
               </a>
               <a 
@@ -85,14 +84,14 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-primary transition-colors flex items-center"
               >
-                <FiGithub className="mr-2 h-4 w-4 text-primary" />
+                <Github className="mr-2 h-4 w-4" />
                 <span>GitHub</span>
               </a>
               <a 
                 href="mailto:jairangi11101995@gmail.com"
                 className="text-muted-foreground hover:text-primary transition-colors flex items-center"
               >
-                <FiMail className="mr-2 h-4 w-4 text-primary" />
+                <LucideMail className="mr-2 h-4 w-4" />
                 <span>jairangi11101995@gmail.com</span>
               </a>
             </div>
