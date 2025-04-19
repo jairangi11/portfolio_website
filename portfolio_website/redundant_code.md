@@ -41,14 +41,8 @@ Complex state management and animation logic specific to certain features could 
 
 ## Lower Priority Refactoring Opportunities
 
-### 4. Data Handling (`src/app/page.tsx`)
 
-*   **`getExpertiseAreas` Function:**
-    *   **Location:** Lines ~26-110.
-    *   **Description:** Processes `resumeData` specifically for the Expertise section.
-    *   **Suggestion:** If this data processing logic is needed on other pages (e.g., a dedicated Skills page), move the function to a utility file like `src/lib/resumeUtils.ts`.
-
-### 5. Styling/Animation Patterns
+### 4. Styling/Animation Patterns
 
 *   **Consistent Framer Motion Variants:** Review the use of inline animation props (`initial`, `animate`) versus defined `variants` (like `containerVariants`, `itemVariants`) for consistency, especially where staggering or complex sequences are involved.
 *   **Tailwind Abstraction:** Identify highly repetitive, complex Tailwind class combinations. Consider using `@apply` in `globals.css` for common patterns or ensuring they are encapsulated within the base styles of extracted components. 

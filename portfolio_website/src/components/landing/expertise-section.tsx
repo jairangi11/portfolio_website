@@ -46,18 +46,23 @@ export function ExpertiseSection({
       </div>
 
       <div className="container mx-auto relative z-10">
-        <div className="text-center mb-16">
+        {/* Wrap text block for container variant animation */}
+        <motion.div 
+          className="text-center mb-16"
+          variants={containerVariants} // Use container variants
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+        >
           <motion.h2
             className="text-3xl md:text-4xl font-bold text-foreground"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+            variants={itemVariants} // Use item variants
           >
             Areas of <span className="relative inline-block text-primary">
               Specialization
               <motion.span
                 className="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary/70 to-transparent"
+                // Keep underline animation separate as it's specific
                 initial={{ width: 0, opacity: 0 }}
                 whileInView={{ width: "100%", opacity: 1 }}
                 viewport={{ once: true, amount: 0.3 }}
@@ -67,15 +72,12 @@ export function ExpertiseSection({
           </motion.h2>
 
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
             className="max-w-2xl mx-auto text-muted-foreground text-lg mt-4"
+            variants={itemVariants} // Use item variants
           >
             Leveraging technology to solve complex business challenges and deliver exceptional user experiences across various domains.
           </motion.p>
-        </div>
+        </motion.div>
 
         {/* Animated Grid Container */}
         <motion.div
