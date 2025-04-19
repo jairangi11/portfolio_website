@@ -110,7 +110,7 @@ export default function ContactPage() {
         setSubmitStatus('idle');
         setSuccessMessage("");
       }, 5000);
-    } catch (_error) {
+    } catch {
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);

@@ -105,7 +105,7 @@ export function InfiniteCarousel({
         style={{ x: baseX }}
         drag={isNavigating ? false : "x"}
         dragConstraints={carouselRef}
-        onDragEnd={(_e, _info) => {
+        onDragEnd={() => {
           if (isNavigating) return;
           
           const finalX = baseX.get();
