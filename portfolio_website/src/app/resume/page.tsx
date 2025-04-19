@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useRef } from "react";
 import Layout from "@/components/layout/Layout";
 import { motion, useInView } from "framer-motion";
 import { resumeData, type Education, type Certification } from "@/data/resumeData";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { FiDownload, FiArrowRight, FiBriefcase, FiBook, FiAward, FiStar, FiCpu, FiCalendar, FiMapPin } from "react-icons/fi";
+import { FiDownload, FiArrowRight, FiBriefcase, FiBook, FiStar, FiCpu, FiCalendar, FiMapPin } from "react-icons/fi";
 
 // Sample certification data
 const sampleCertifications: Certification[] = [
