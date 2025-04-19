@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useAnimationControls, useAnimationFrame, wrap } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import Layout from "@/components/layout/Layout";
@@ -158,10 +158,17 @@ export default function Home() {
   const carouselRef = useRef<HTMLDivElement>(null);
   const carouselInnerRef = useRef<HTMLDivElement>(null);
   const [carouselWidth, setCarouselWidth] = useState(0);
+  const [contentWidth, setContentWidth] = useState(0);
   const [shouldAnimate, setShouldAnimate] = useState(true);
-  const [carouselPosition, setCarouselPosition] = useState(0);
-  const prevPositionRef = useRef(0);
-  const animationFrameRef = useRef<number | null>(null);
+
+  // Infinite scroll setup
+  const baseX = useMotionValue(0);
+  const animationControls = useAnimationControls();
+  const scrollSpeed = -100;
+  const dragFactor = 0.05;
+
+  // Duplicate companies for infinite scroll
+  const displayedCompanies = [...companies, ...companies];
 
   // Handle timer animation
   useEffect(() => {
@@ -299,72 +306,62 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const updateCarouselWidth = () => {
+    const updateCarouselWidths = () => {
       if (carouselRef.current && carouselInnerRef.current) {
-        const containerWidth = carouselRef.current.offsetWidth;
-        const innerWidth = carouselInnerRef.current.scrollWidth;
-        setCarouselWidth(innerWidth);
+        const innerElement = carouselInnerRef.current;
+        const totalWidth = innerElement.scrollWidth;
+        const originalSetWidth = totalWidth / 2;
+        setCarouselWidth(originalSetWidth);
+        setContentWidth(totalWidth);
       }
     };
 
     // Initial update
-    updateCarouselWidth();
+    updateCarouselWidths();
 
     // Update on resize
-    window.addEventListener('resize', updateCarouselWidth);
+    const resizeObserver = new ResizeObserver(updateCarouselWidths);
+    if (carouselRef.current) {
+      resizeObserver.observe(carouselRef.current);
+    }
+    if (carouselInnerRef.current) {
+        resizeObserver.observe(carouselInnerRef.current);
+    }
     
+    window.addEventListener('resize', updateCarouselWidths);
+
     return () => {
-      window.removeEventListener('resize', updateCarouselWidth);
-      
-      // Ensure animation frame is canceled on unmount
-      if (animationFrameRef.current !== null) {
-        cancelAnimationFrame(animationFrameRef.current);
-        animationFrameRef.current = null;
+      if (carouselRef.current) {
+        resizeObserver.unobserve(carouselRef.current);
       }
+       if (carouselInnerRef.current) {
+           resizeObserver.unobserve(carouselInnerRef.current);
+       }
+       window.removeEventListener('resize', updateCarouselWidths);
     };
   }, []);
 
-  // Track carousel position for hover pause/resume
-  useEffect(() => {
-    // Skip animation if navigating or animation should be paused
-    if (isNavigating || !shouldAnimate || !carouselInnerRef.current) return;
+  // Infinite scrolling animation logic
+  useAnimationFrame((time, delta) => {
+    if (!shouldAnimate || !carouselWidth || isNavigating) return;
 
-    let startTime = performance.now();
-    const duration = 40000; // 40 seconds, matching the animation duration
-    const totalDistance = carouselWidth - 100;
-    const initialOffset = prevPositionRef.current;
+    let moveBy = (delta / 1000) * scrollSpeed;
+
+    let newBaseX = baseX.get() + moveBy;
     
-    const updatePosition = (timestamp: number) => {
-      if (isNavigating || !carouselInnerRef.current) return;
-      
-      const elapsed = timestamp - startTime;
-      const progress = (elapsed % duration) / duration;
-      const adjustedProgress = (initialOffset / totalDistance) + (progress * (1 - initialOffset / totalDistance));
-      const newPosition = adjustedProgress * totalDistance;
-      
-      setCarouselPosition(newPosition);
-      prevPositionRef.current = newPosition;
-      
-      if (!isNavigating) {
-        animationFrameRef.current = requestAnimationFrame(updatePosition);
-      }
-    };
-    
-    animationFrameRef.current = requestAnimationFrame(updatePosition);
-    
-    return () => {
-      if (animationFrameRef.current !== null) {
-        cancelAnimationFrame(animationFrameRef.current);
-        animationFrameRef.current = null;
-      }
-    };
-  }, [shouldAnimate, carouselWidth, isNavigating]);
+    if (newBaseX < -carouselWidth) {
+      newBaseX = newBaseX % carouselWidth;
+    } else if (newBaseX > 0) {
+      newBaseX = (newBaseX % carouselWidth) - carouselWidth;
+    }
+
+    baseX.set(newBaseX);
+  });
 
   // Pause animation on hover
   const handleMouseEnter = () => {
     if (isNavigating) return;
     setShouldAnimate(false);
-    prevPositionRef.current = carouselPosition;
   };
   
   const handleMouseLeave = () => {
@@ -587,139 +584,41 @@ export default function Home() {
             <motion.div
               ref={carouselInnerRef}
               className="flex space-x-6 px-10"
+              style={{ x: baseX }}
               drag={isNavigating ? false : "x"}
-              dragConstraints={{ left: -carouselWidth + 100, right: 0 }}
-              animate={!isNavigating && shouldAnimate ? {
-                x: -carouselPosition,
-              } : { x: -prevPositionRef.current }}
-              transition={shouldAnimate ? {
-                x: {
-                  duration: 0.5,
-                  ease: "easeOut",
-                },
-              } : { duration: 0.2 }}
+              dragConstraints={{ left: -contentWidth + (carouselRef.current?.offsetWidth ?? 0), right: 0 }}
+              onDrag={(e, info) => {
+                 baseX.set(baseX.get() + info.delta.x);
+              }}
               onDragEnd={(e, info) => {
-                // Skip updates if navigating
                 if (isNavigating) return;
                 
-                // Update the position when drag ends
-                if (carouselInnerRef.current) {
-                  const currentTransform = carouselInnerRef.current.style.transform;
-                  const match = currentTransform.match(/translateX\((.+)px\)/);
-                  if (match && match[1]) {
-                    const newPos = Math.abs(parseFloat(match[1]));
-                    prevPositionRef.current = newPos;
-                    setCarouselPosition(newPos);
+                let finalX = baseX.get();
+                
+                const velocityFactor = 0.2;
+                animationControls.start({
+                  x: finalX + info.velocity.x * velocityFactor,
+                  transition: { type: "spring", stiffness: 100, damping: 20 }
+                }).then(() => {
+                  let currentX = baseX.get();
+                  if (currentX < -carouselWidth) {
+                     baseX.set(currentX % carouselWidth, false);
+                  } else if (currentX > 0) {
+                      baseX.set((currentX % carouselWidth) - carouselWidth, false);
                   }
+                });
+
+                if (finalX < -carouselWidth) {
+                  baseX.set(finalX % carouselWidth, false);
+                } else if (finalX > 0) {
+                   baseX.set((finalX % carouselWidth) - carouselWidth, false);
                 }
               }}
             >
-              {/* Duplicate first few cards for infinite loop effect */}
-              {companies.map((company, index) => (
+              {/* Use displayedCompanies (doubled array) */}
+              {displayedCompanies.map((company, index) => (
                 <motion.div 
                   key={`${company.name}-${index}`}
-                  className="flex-shrink-0 w-[280px] md:w-[300px] group"
-                  whileHover={{ 
-                    y: -5, 
-                    transition: { duration: 0.2 } 
-                  }}
-                >
-                  <Card className="h-full bg-card/40 backdrop-blur-sm group-hover:bg-card/60 border-border/20 transition-all duration-300 overflow-hidden relative">
-                    {/* Shiny overlay effect on hover */}
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5"></div>
-                      <motion.div 
-                        className="absolute top-0 -left-[100%] w-[50%] h-full bg-gradient-to-r from-transparent via-white/10 to-transparent transform rotate-12 skew-x-12"
-                        animate={{
-                          left: ['0%', '200%'],
-                          opacity: [0, 0.3, 0]
-                        }}
-                        transition={{
-                          duration: 1.5,
-                          ease: "easeInOut",
-                          repeat: Infinity,
-                          repeatDelay: 2
-                        }}
-                      />
-                    </div>
-                    
-                    <CardContent className="p-5 relative z-10">
-                      {/* Timeline indicator */}
-                      <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-transparent via-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                      
-                      {/* Company Logo */}
-                      <div className="h-16 mb-4 relative flex items-center justify-center">
-                        <div className="relative w-full h-12 grayscale group-hover:grayscale-0 transition-all duration-300 flex items-center justify-center">
-                          <Image 
-                            src={company.logo} 
-                            alt={`${company.name} logo`} 
-                            height={60}
-                            width={120}
-                            className="object-contain max-h-12 max-w-[140px]"
-                          />
-                          <motion.div 
-                            className="absolute inset-0 bg-primary/5 rounded-md opacity-0 group-hover:opacity-100"
-                            animate={{ 
-                              boxShadow: ['0 0 0px rgba(var(--primary-rgb), 0)', '0 0 20px rgba(var(--primary-rgb), 0.2)', '0 0 0px rgba(var(--primary-rgb), 0)']
-                            }}
-                            transition={{ 
-                              repeat: Infinity, 
-                              duration: 2.5,
-                              ease: "easeInOut"
-                            }}
-                          />
-                        </div>
-                      </div>
-                      
-                      {/* Company Name with Link */}
-                      <div className="mb-2 text-center">
-                        <Link 
-                          href={company.website} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="group inline-flex items-center gap-1 transition-colors hover:text-primary"
-                        >
-                          <span className="font-semibold text-foreground group-hover:text-primary transition-colors duration-200">
-                            {company.name}
-                          </span>
-                          <svg 
-                            xmlns="http://www.w3.org/2000/svg" 
-                            className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors duration-200" 
-                            fill="none" 
-                            viewBox="0 0 24 24" 
-                            stroke="currentColor"
-                          >
-                            <path 
-                              strokeLinecap="round" 
-                              strokeLinejoin="round" 
-                              strokeWidth={2} 
-                              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" 
-                            />
-                          </svg>
-                        </Link>
-                      </div>
-                      
-                      {/* Company Details */}
-                      <div className="space-y-1 text-center">
-                        <Badge variant="outline" className="bg-background/50 text-xs px-2 py-0.5">
-                          {company.period}
-                        </Badge>
-                        <h3 className="text-foreground font-medium text-base mt-2 group-hover:text-primary transition-colors duration-200">
-                          {company.role}
-                        </h3>
-                        <p className="text-muted-foreground text-sm">
-                          {company.description}
-                        </p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-              
-              {/* Duplicate first cards for seamless loop */}
-              {companies.slice(0, 3).map((company, index) => (
-                <motion.div 
-                  key={`${company.name}-duplicate-${index}`}
                   className="flex-shrink-0 w-[280px] md:w-[300px] group"
                   whileHover={{ 
                     y: -5, 
