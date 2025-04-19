@@ -28,7 +28,15 @@ export default function Home() {
     setIsNavigating(false);
     
     // Create a navigation start handler to add to all navigation triggers
-    const handleNavigationStart = () => {
+    const handleNavigationStart = (event: Event) => {
+      // Check if the clicked element is an anchor opening in a new tab
+      const targetElement = event.target as HTMLElement;
+      const anchorElement = targetElement.closest('a');
+      if (anchorElement && anchorElement.target === '_blank') {
+        // Don't set navigating flag if opening in a new tab
+        return;
+      }
+      // Otherwise, assume same-tab navigation and set the flag
       setIsNavigating(true);
     };
     
@@ -126,7 +134,7 @@ export default function Home() {
     {
       name: "Lenskart",
       logo: "/images/company_logos/Lenskart-Logo.png",
-      role: "MBA Internship",
+      role: "Marketing Intern",
       period: "04/2019 – 05/2019",
       description: "Sales & market optimization",
       website: "https://www.lenskart.com/"
@@ -134,7 +142,7 @@ export default function Home() {
     {
       name: "Petrofac",
       logo: "/images/company_logos/Petrofac.png",
-      role: "Software Engineering Intern",
+      role: "Software Developer",
       period: "01/2017 – 07/2017",
       description: "Remote monitoring system development",
       website: "https://www.petrofac.com/"
@@ -263,19 +271,25 @@ export default function Home() {
     };
     
     // Handle clicks on links that might navigate away
-    const handleLinkClick = () => {
+    const handleLinkClick = (event: MouseEvent) => {
+      // Check if the clicked element is an anchor opening in a new tab
+      const targetElement = event.target as HTMLElement;
+      const anchorElement = targetElement.closest('a');
+      if (anchorElement && anchorElement.target === '_blank') {
+        // Don't stop animations if opening in a new tab
+        return;
+      }
+      // Otherwise, stop animations for same-tab navigation
       stopAllAnimations();
     };
     
     document.addEventListener('visibilitychange', handleVisibilityChange);
     window.addEventListener('beforeunload', handleBeforeUnload);
     document.addEventListener('click', (e) => {
-      // Check if click was on a link or button
-      if (e.target instanceof HTMLAnchorElement || 
-          e.target instanceof HTMLButtonElement ||
-          (e.target as HTMLElement).closest('a') ||
-          (e.target as HTMLElement).closest('button')) {
-        handleLinkClick();
+      // Check if click was on a link or button potentially causing navigation
+      const targetElement = e.target as HTMLElement;
+      if (targetElement.closest('a[href]') || targetElement.closest('button[onclick]') || targetElement.closest('button[type="submit"]') || targetElement.closest('button:not([type])')) {
+        handleLinkClick(e);
       }
     });
     
