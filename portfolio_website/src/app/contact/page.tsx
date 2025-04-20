@@ -105,7 +105,7 @@ export default function ContactPage() {
       
       // Success
       setSubmitStatus('success');
-      setSuccessMessage("Message successfully delivered. I'll be in touch!");
+      setSuccessMessage("Message successfully delivered. I&apos;ll be in touch!");
       setFormData({ name: "", email: "", subject: "", message: "" });
       setErrors({}); // Clear errors on success
       
