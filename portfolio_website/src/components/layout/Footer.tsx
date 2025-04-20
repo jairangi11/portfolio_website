@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { FaHeart } from "react-icons/fa";
-import { Home, FileText, Briefcase, BookOpen, Mail as LucideMail, Linkedin, Github } from 'lucide-react';
+import { SiLinkedin } from "react-icons/si";
+import { Home, FileText, Briefcase, BookOpen, Mail as LucideMail } from 'lucide-react';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -75,7 +76,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-primary transition-colors flex items-center"
               >
-                <Linkedin className="mr-2 h-4 w-4" />
+                <SiLinkedin className="mr-2 h-4 w-4" />
                 <span>LinkedIn</span>
               </a>
               <a 

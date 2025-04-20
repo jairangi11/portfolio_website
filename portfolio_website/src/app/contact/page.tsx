@@ -15,12 +15,12 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import {
   FiMail,
-  FiLinkedin,
   FiSend,
   FiCheckCircle,
   FiAlertCircle,
   FiCopy
 } from "react-icons/fi";
+import { SiLinkedin } from "react-icons/si";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
@@ -435,7 +435,7 @@ export default function ContactPage() {
                          rel="noopener noreferrer"
                          className="flex items-center gap-2 text-muted-foreground group-hover:text-primary transition-colors duration-200 text-sm sm:text-base"
                        >
-                         <FiLinkedin className="h-5 w-5 text-primary flex-shrink-0" />
+                         <SiLinkedin className="h-5 w-5 text-primary flex-shrink-0" />
                          <span>LinkedIn Profile</span>
                        </a>
                      </div>
