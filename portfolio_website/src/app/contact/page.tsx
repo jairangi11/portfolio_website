@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Layout from "@/components/layout/Layout";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -13,8 +13,17 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { FiMail, FiLinkedin, FiSend, FiCheckCircle, FiAlertCircle } from "react-icons/fi";
+import {
+  FiMail,
+  FiLinkedin,
+  FiSend,
+  FiCheckCircle,
+  FiAlertCircle,
+  FiCopy,
+  FiExternalLink
+} from "react-icons/fi";
 import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 
 interface FormData {
   name: string;
@@ -42,7 +51,9 @@ export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [successMessage, setSuccessMessage] = useState("");
-  
+
+  const [emailCopied, setEmailCopied] = useState(false);
+
   // Handle form input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -105,7 +116,7 @@ export default function ContactPage() {
       
       // Success
       setSubmitStatus('success');
-      setSuccessMessage("Message successfully delivered. I&apos;ll be in touch!");
+      setSuccessMessage("Message successfully delivered");
       setFormData({ name: "", email: "", subject: "", message: "" });
       setErrors({}); // Clear errors on success
       
@@ -120,6 +131,19 @@ export default function ContactPage() {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  // Function to copy email to clipboard
+  const copyEmailToClipboard = () => {
+    navigator.clipboard.writeText("jairangi11101995@gmail.com")
+      .then(() => {
+        setEmailCopied(true);
+        setTimeout(() => setEmailCopied(false), 2000); // Reset after 2 seconds
+      })
+      .catch(err => {
+        console.error("Failed to copy email: ", err);
+        // Optionally show an error message to the user
+      });
   };
 
   const inputVariants = {
@@ -146,6 +170,13 @@ export default function ContactPage() {
       transition: { type: 'spring', stiffness: 100 },
     },
   };
+
+  const iconHoverAnim = {
+    hover: { scale: 1.2, rotate: 5 },
+    tap: { scale: 0.9 }
+  };
+
+  const shinyEffect = "relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent";
   
   return (
     <Layout>
@@ -167,11 +198,14 @@ export default function ContactPage() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
             <motion.div variants={itemVariants} className="w-full">
-              <Card className="w-full border border-border/40 shadow-lg bg-card/60 backdrop-blur-lg rounded-lg">
+              <Card className={cn(
+                "w-full border border-border/40 shadow-lg bg-gradient-to-br from-card/60 to-card/80 backdrop-blur-lg rounded-lg",
+                shinyEffect
+              )}>
                 <CardHeader className="pb-4">
                   <CardTitle className="text-2xl text-foreground">Send a Message</CardTitle>
                   <CardDescription className="text-muted-foreground">
-                    Fill out the form and I'll get back to you.
+                    Fill out the form and I&apos;ll get back to you.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -213,7 +247,7 @@ export default function ContactPage() {
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
-                            className={`w-full ${errors.name ? 'border-red-500 focus-visible:ring-red-500/40' : 'border-border/30 focus-visible:ring-primary/40'} bg-background/80 focus-visible:ring-2 focus-visible:ring-offset-0`}
+                            className={`w-full ${errors.name ? 'border-red-500 focus-visible:ring-red-500/40' : 'border-border/30 focus-visible:ring-primary/40'} bg-background/80 focus-visible:ring-2 focus-visible:ring-offset-0 transition-colors duration-200`}
                             placeholder="Your Name"
                             disabled={isSubmitting}
                             aria-invalid={!!errors.name}
@@ -234,7 +268,7 @@ export default function ContactPage() {
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
-                             className={`w-full ${errors.email ? 'border-red-500 focus-visible:ring-red-500/40' : 'border-border/30 focus-visible:ring-primary/40'} bg-background/80 focus-visible:ring-2 focus-visible:ring-offset-0`}
+                             className={`w-full ${errors.email ? 'border-red-500 focus-visible:ring-red-500/40' : 'border-border/30 focus-visible:ring-primary/40'} bg-background/80 focus-visible:ring-2 focus-visible:ring-offset-0 transition-colors duration-200`}
                             placeholder="your.email@example.com"
                             disabled={isSubmitting}
                             aria-invalid={!!errors.email}
@@ -255,7 +289,7 @@ export default function ContactPage() {
                           name="subject"
                           value={formData.subject}
                           onChange={handleChange}
-                           className={`w-full ${errors.subject ? 'border-red-500 focus-visible:ring-red-500/40' : 'border-border/30 focus-visible:ring-primary/40'} bg-background/80 focus-visible:ring-2 focus-visible:ring-offset-0`}
+                           className={`w-full ${errors.subject ? 'border-red-500 focus-visible:ring-red-500/40' : 'border-border/30 focus-visible:ring-primary/40'} bg-background/80 focus-visible:ring-2 focus-visible:ring-offset-0 transition-colors duration-200`}
                           placeholder="Regarding..."
                           disabled={isSubmitting}
                            aria-invalid={!!errors.subject}
@@ -276,7 +310,7 @@ export default function ContactPage() {
                           value={formData.message}
                           onChange={handleChange}
                           rows={5}
-                           className={`w-full ${errors.message ? 'border-red-500 focus-visible:ring-red-500/40' : 'border-border/30 focus-visible:ring-primary/40'} bg-background/80 focus-visible:ring-2 focus-visible:ring-offset-0`}
+                           className={`w-full ${errors.message ? 'border-red-500 focus-visible:ring-red-500/40' : 'border-border/30 focus-visible:ring-primary/40'} bg-background/80 focus-visible:ring-2 focus-visible:ring-offset-0 transition-colors duration-200`}
                           placeholder="Your message..."
                           disabled={isSubmitting}
                           aria-invalid={!!errors.message}
@@ -292,10 +326,10 @@ export default function ContactPage() {
                       <Button
                         type="submit"
                         disabled={isSubmitting}
-                        className="w-full group flex items-center justify-center gap-2 transition-all duration-300 ease-in-out hover:shadow-md active:scale-[0.98] bg-primary text-primary-foreground hover:bg-primary/90"
+                        className="w-full group relative overflow-hidden flex items-center justify-center gap-2 transition-all duration-300 ease-in-out hover:shadow-lg active:scale-[0.98] bg-primary text-primary-foreground hover:bg-primary/90 rounded-md py-2.5 px-4 font-semibold"
                         aria-live="polite"
                       >
-                        {isSubmitting ? (
+                         {isSubmitting ? (
                           <>
                             <motion.svg 
                               className="animate-spin h-5 w-5 text-current" 
@@ -324,44 +358,97 @@ export default function ContactPage() {
               </Card>
             </motion.div>
             
-            <motion.div variants={itemVariants} className="w-full space-y-6 md:pt-10">
-              <div className="space-y-5">
-                <h3 className="text-2xl font-semibold text-foreground mb-4">Contact Details</h3>
-                <motion.div 
-                  className="flex items-center gap-3 group"
-                  whileHover={{ scale: 1.03 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                >
-                  <FiMail className="h-5 w-5 text-primary flex-shrink-0" />
-                  <a 
-                    href="mailto:jairangi11101995@gmail.com" 
-                    className="text-muted-foreground group-hover:text-primary transition-colors duration-200 text-sm sm:text-base break-all"
+            <motion.div variants={itemVariants} className="w-full">
+              <Card className={cn(
+                "w-full border border-border/40 shadow-lg bg-gradient-to-br from-card/60 to-card/80 backdrop-blur-lg rounded-lg p-6",
+                shinyEffect
+              )}>
+                 <CardHeader className="p-0 mb-5">
+                   <CardTitle className="text-2xl text-foreground">Contact Details</CardTitle>
+                 </CardHeader>
+                 <CardContent className="p-0 space-y-5">
+                  <motion.div 
+                    className="flex items-center justify-between gap-3 group relative"
+                    whileHover="hover"
+                    initial="rest"
                   >
-                    jairangi11101995@gmail.com
-                  </a>
-                </motion.div>
-                <motion.div 
-                  className="flex items-center gap-3 group"
-                  whileHover={{ scale: 1.03 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                >
-                  <FiLinkedin className="h-5 w-5 text-primary flex-shrink-0" />
-                  <a 
-                    href="https://www.linkedin.com/in/jayrangi/" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-muted-foreground group-hover:text-primary transition-colors duration-200 text-sm sm:text-base"
+                    <div 
+                      className="flex items-center gap-3 cursor-pointer" 
+                      onClick={copyEmailToClipboard}
+                      title="Copy email address"
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') copyEmailToClipboard(); }}
+                    >
+                      <FiMail className="h-5 w-5 text-primary flex-shrink-0" />
+                      <span
+                        className="text-muted-foreground group-hover:text-primary transition-colors duration-200 text-sm sm:text-base break-all"
+                      >
+                        jairangi11101995@gmail.com
+                      </span>
+                    </div>
+                    <motion.button 
+                      onClick={(e) => { 
+                        e.stopPropagation();
+                        copyEmailToClipboard(); 
+                      }}
+                      variants={iconHoverAnim}
+                      whileTap="tap"
+                      className="p-1 text-muted-foreground hover:text-primary transition-colors absolute right-0 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 focus:opacity-100"
+                      aria-label={emailCopied ? "Email copied" : "Copy email"}
+                      title={emailCopied ? "Email copied" : "Copy email"}
+                    >
+                       <AnimatePresence mode="wait">
+                         {emailCopied ? (
+                           <motion.div
+                             key="check"
+                             initial={{ scale: 0.5, opacity: 0 }}
+                             animate={{ scale: 1, opacity: 1 }}
+                             exit={{ scale: 0.5, opacity: 0 }}
+                             transition={{ duration: 0.2 }}
+                           >
+                             <FiCheckCircle className="h-4 w-4 text-green-500" />
+                           </motion.div>
+                         ) : (
+                           <motion.div
+                             key="copy"
+                             initial={{ scale: 0.5, opacity: 0 }}
+                             animate={{ scale: 1, opacity: 1 }}
+                             exit={{ scale: 0.5, opacity: 0 }}
+                             transition={{ duration: 0.2 }}
+                           >
+                             <FiCopy className="h-4 w-4" />
+                           </motion.div>
+                         )}
+                       </AnimatePresence>
+                    </motion.button>
+                  </motion.div>
+
+                  <motion.div 
+                    className="flex items-center justify-between gap-3 group relative"
+                    whileHover="hover"
+                    initial="rest"
                   >
-                    LinkedIn Profile
-                  </a>
-                </motion.div>
-              </div>
+                     <div className="flex items-center gap-3">
+                       <a
+                         href="https://www.linkedin.com/in/jayrangi/"
+                         target="_blank"
+                         rel="noopener noreferrer"
+                         className="flex items-center gap-2 text-muted-foreground group-hover:text-primary transition-colors duration-200 text-sm sm:text-base"
+                       >
+                         <FiLinkedin className="h-5 w-5 text-primary flex-shrink-0" />
+                         <span>LinkedIn Profile</span>
+                       </a>
+                     </div>
+                  </motion.div>
 
-              <hr className="border-border/30 my-6"/>
+                  <hr className="border-border/30 my-6"/>
 
-              <div className="text-sm text-muted-foreground">
-                <p>I typically respond within 24-48 hours.</p>
-              </div>
+                  <div className="text-sm text-muted-foreground">
+                    <p>I typically respond within 24-48 hours.</p>
+                  </div>
+                </CardContent>
+              </Card>
             </motion.div>
           </div>
         </motion.div>
