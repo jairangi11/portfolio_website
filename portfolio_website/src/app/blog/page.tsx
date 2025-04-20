@@ -99,25 +99,23 @@ export default function BlogPage() {
 
   return (
     <Layout>
-      <main className="container mx-auto px-4 py-12">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+      <motion.main 
+        className="container mx-auto px-4 py-12"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div
           className="mb-12 text-center"
         >
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Blog</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Insights on product management, AI, UX design, and technology trends.
           </p>
-        </motion.div>
+        </div>
 
-        {/* Featured Post */}
         {featuredPost && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
+          <div 
             className="mb-16"
           >
             <h2 className="text-2xl font-semibold mb-6 flex items-center">
@@ -161,14 +159,10 @@ export default function BlogPage() {
                 </div>
               </div>
             </Link>
-          </motion.div>
+          </div>
         )}
 
-        {/* Search and Filter */}
-        <motion.div 
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.5 }}
+        <div 
           className="flex flex-col sm:flex-row gap-4 mb-8"
         >
           <div className="relative flex-1">
@@ -196,16 +190,15 @@ export default function BlogPage() {
               ))}
             </SelectContent>
           </Select>
-        </motion.div>
+        </div>
 
-        {/* Blog Post Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {sortedPosts.map((post, index) => (
             <motion.div
               key={post.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 * (index % 6), duration: 0.5 }}
+              transition={{ delay: 0.2 + (index * 0.05), duration: 0.4 }}
             >
               <BlogPostCard post={post} />
             </motion.div>
@@ -216,6 +209,7 @@ export default function BlogPage() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
             className="text-center py-12"
           >
             <p className="text-lg text-muted-foreground">
@@ -223,7 +217,7 @@ export default function BlogPage() {
             </p>
           </motion.div>
         )}
-      </main>
+      </motion.main>
     </Layout>
   );
 } 

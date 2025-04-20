@@ -8,42 +8,42 @@ import CaseStudyCard from '@/components/case-studies/CaseStudyCard';
 export default function CaseStudiesPage() {
   return (
     <Layout>
-      <main className="container mx-auto px-4 py-16">
-        <motion.div
+      <motion.main 
+        className="container mx-auto px-4 py-16"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div
           className="text-center mb-16"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
         >
-          <motion.h1
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+          <h1
             className="text-4xl md:text-5xl font-bold mb-4"
           >
             Case Studies
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+          </h1>
+          <p
             className="text-xl text-muted-foreground max-w-2xl mx-auto"
           >
             Explore my work through detailed case studies showcasing the challenges, solutions, and results.
-          </motion.p>
-        </motion.div>
+          </p>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+        <div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
           {caseStudies.map((study, index) => (
-            <CaseStudyCard key={study.id} caseStudy={study} index={index} />
+            <motion.div
+              key={study.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 + (index * 0.05), duration: 0.4 }}
+            >
+              <CaseStudyCard caseStudy={study} index={index} />
+            </motion.div>
           ))}
-        </motion.div>
-      </main>
+        </div>
+      </motion.main>
     </Layout>
   );
 } 

@@ -150,26 +150,6 @@ export default function ContactPage() {
     focus: { scale: 1.02, transition: { duration: 0.2 } },
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { type: 'spring', stiffness: 100 },
-    },
-  };
-
   const iconHoverAnim = {
     hover: { scale: 1.2, rotate: 5 },
     tap: { scale: 0.9 }
@@ -179,24 +159,26 @@ export default function ContactPage() {
   
   return (
     <Layout>
-      <div className="container mx-auto px-4 py-16 md:py-24 min-h-[calc(100vh-var(--header-height))] flex items-center justify-center">
-        <motion.div 
+      <motion.div 
+        className="container mx-auto px-4 py-16 md:py-24 min-h-[calc(100vh-var(--header-height))] flex items-center justify-center"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div 
           className="max-w-4xl w-full"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
         >
-          <motion.div variants={itemVariants} className="text-center mb-12 md:mb-16">
+          <div className="text-center mb-12 md:mb-16">
             <h1 className="text-4xl md:text-5xl font-bold mb-3 text-foreground">
               Get in Touch
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
               Have a question or want to collaborate? Reach out below.
             </p>
-          </motion.div>
+          </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
-            <motion.div variants={itemVariants} className="w-full">
+            <div className="w-full">
               <Card className={cn(
                 "w-full border border-border/40 shadow-lg bg-gradient-to-br from-card/60 to-card/80 backdrop-blur-lg rounded-lg",
                 shinyEffect
@@ -238,7 +220,7 @@ export default function ContactPage() {
                   
                   <form onSubmit={handleSubmit} className="space-y-5">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <motion.div variants={itemVariants} className="space-y-1.5">
+                      <div className="space-y-1.5">
                         <Label htmlFor="name" className="text-sm font-medium text-muted-foreground">Name</Label>
                         <motion.div whileFocus="focus" initial="rest" variants={inputVariants}>
                           <Input
@@ -256,9 +238,9 @@ export default function ContactPage() {
                         {errors.name && (
                           <p id="name-error" className="text-xs text-red-500 pt-1">{errors.name}</p>
                         )}
-                      </motion.div>
+                      </div>
                       
-                      <motion.div variants={itemVariants} className="space-y-1.5">
+                      <div className="space-y-1.5">
                         <Label htmlFor="email" className="text-sm font-medium text-muted-foreground">Email</Label>
                          <motion.div whileFocus="focus" initial="rest" variants={inputVariants}>
                           <Input
@@ -277,10 +259,10 @@ export default function ContactPage() {
                         {errors.email && (
                           <p id="email-error" className="text-xs text-red-500 pt-1">{errors.email}</p>
                         )}
-                      </motion.div>
+                      </div>
                     </div>
                     
-                    <motion.div variants={itemVariants} className="space-y-1.5">
+                    <div className="space-y-1.5">
                       <Label htmlFor="subject" className="text-sm font-medium text-muted-foreground">Subject</Label>
                        <motion.div whileFocus="focus" initial="rest" variants={inputVariants}>
                         <Input
@@ -298,9 +280,9 @@ export default function ContactPage() {
                       {errors.subject && (
                         <p id="subject-error" className="text-xs text-red-500 pt-1">{errors.subject}</p>
                       )}
-                    </motion.div>
+                    </div>
                     
-                    <motion.div variants={itemVariants} className="space-y-1.5">
+                    <div className="space-y-1.5">
                       <Label htmlFor="message" className="text-sm font-medium text-muted-foreground">Message</Label>
                        <motion.div whileFocus="focus" initial="rest" variants={inputVariants}>
                         <Textarea
@@ -319,9 +301,9 @@ export default function ContactPage() {
                       {errors.message && (
                         <p id="message-error" className="text-xs text-red-500 pt-1">{errors.message}</p>
                       )}
-                    </motion.div>
+                    </div>
                     
-                    <motion.div variants={itemVariants}>
+                    <div>
                       <Button
                         type="submit"
                         disabled={isSubmitting}
@@ -351,13 +333,13 @@ export default function ContactPage() {
                           </>
                         )}
                       </Button>
-                    </motion.div>
+                    </div>
                   </form>
                 </CardContent>
               </Card>
-            </motion.div>
+            </div>
             
-            <motion.div variants={itemVariants} className="w-full">
+            <div className="w-full">
               <Card className={cn(
                 "w-full border border-border/40 shadow-lg bg-gradient-to-br from-card/60 to-card/80 backdrop-blur-lg rounded-lg p-6",
                 shinyEffect
@@ -448,10 +430,10 @@ export default function ContactPage() {
                   </div>
                 </CardContent>
               </Card>
-            </motion.div>
+            </div>
           </div>
-        </motion.div>
-      </div>
+        </div>
+      </motion.div>
     </Layout>
   );
 } 
