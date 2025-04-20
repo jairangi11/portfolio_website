@@ -2,18 +2,19 @@
 
 import { useState } from "react";
 import Layout from "@/components/layout/Layout";
-import { motion } from "framer-motion";
-import { 
-  Card, 
-  CardContent, 
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Card,
+  CardContent,
   CardHeader,
-  CardDescription, 
-  CardTitle 
+  CardDescription,
+  CardTitle
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { FiMail, FiLinkedin, FiSend } from "react-icons/fi";
+import { FiMail, FiLinkedin, FiSend, FiCheckCircle, FiAlertCircle } from "react-icons/fi";
+import { Label } from "@/components/ui/label";
 
 interface FormData {
   name: string;
@@ -86,237 +87,284 @@ export default function ContactPage() {
     e.preventDefault();
     
     if (!validateForm()) {
+      // Optionally add focus to the first error field
+      const firstErrorField = Object.keys(errors)[0];
+      if (firstErrorField) {
+        const element = document.getElementById(firstErrorField);
+        element?.focus();
+      }
       return;
     }
     
     setIsSubmitting(true);
+    setSubmitStatus('idle'); // Reset status on new submission
     
     try {
-      // Simulate API call with timeout
+      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      // Success simulation
+      // Success
       setSubmitStatus('success');
-      setSuccessMessage("Message successfully delivered via cyber hawk 🦅");
-      setFormData({
-        name: "",
-        email: "",
-        subject: "",
-        message: ""
-      });
+      setSuccessMessage("Message successfully delivered. I'll be in touch!");
+      setFormData({ name: "", email: "", subject: "", message: "" });
+      setErrors({}); // Clear errors on success
       
       // Reset success message after 5 seconds
       setTimeout(() => {
         setSubmitStatus('idle');
         setSuccessMessage("");
       }, 5000);
-    } catch {
+    } catch (error) {
+      console.error("Submission failed:", error);
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  const inputVariants = {
+    rest: { scale: 1 },
+    focus: { scale: 1.02, transition: { duration: 0.2 } },
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { type: 'spring', stiffness: 100 },
+    },
+  };
   
   return (
     <Layout>
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <motion.h1
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="text-4xl md:text-5xl font-bold mb-4"
-            >
+      <div className="container mx-auto px-4 py-16 md:py-24 min-h-[calc(100vh-var(--header-height))] flex items-center justify-center">
+        <motion.div 
+          className="max-w-4xl w-full"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.div variants={itemVariants} className="text-center mb-12 md:mb-16">
+            <h1 className="text-4xl md:text-5xl font-bold mb-3 text-foreground">
               Get in Touch
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-xl text-muted-foreground max-w-2xl mx-auto"
-            >
-              Have a question or want to collaborate? I&apos;d love to hear from you.
-            </motion.p>
-          </div>
+            </h1>
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+              Have a question or want to collaborate? Reach out below.
+            </p>
+          </motion.div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
-            {/* Contact Form */}
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="lg:col-span-3"
-            >
-              <Card className="border border-border/50 shadow-sm bg-card/50 backdrop-blur-sm">
-                <CardHeader>
-                  <CardTitle>Send Me a Message</CardTitle>
-                  <CardDescription>
-                    Fill out the form below and I&apos;ll get back to you as soon as possible.
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
+            <motion.div variants={itemVariants} className="w-full">
+              <Card className="w-full border border-border/40 shadow-lg bg-card/60 backdrop-blur-lg rounded-lg">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-2xl text-foreground">Send a Message</CardTitle>
+                  <CardDescription className="text-muted-foreground">
+                    Fill out the form and I'll get back to you.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  {submitStatus === 'success' && (
-                    <motion.div 
-                      className="mb-6 p-4 bg-green-100 border border-green-200 text-green-800 rounded-md flex items-center gap-2"
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                      <span>{successMessage}</span>
-                    </motion.div>
-                  )}
+                  <AnimatePresence>
+                    {submitStatus === 'success' && (
+                      <motion.div 
+                        className="mb-4 p-3 bg-green-500/10 border border-green-500/30 text-green-700 dark:text-green-400 rounded-md flex items-center gap-3 text-sm"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <FiCheckCircle className="h-5 w-5 flex-shrink-0" />
+                        <span>{successMessage}</span>
+                      </motion.div>
+                    )}
+                    
+                    {submitStatus === 'error' && (
+                      <motion.div 
+                        className="mb-4 p-3 bg-red-500/10 border border-red-500/30 text-red-700 dark:text-red-400 rounded-md flex items-center gap-3 text-sm"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <FiAlertCircle className="h-5 w-5 flex-shrink-0" />
+                        <span>Something went wrong. Please try again later.</span>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                   
-                  {submitStatus === 'error' && (
-                    <div className="mb-6 p-4 bg-red-100 border border-red-200 text-red-800 rounded-md">
-                      Something went wrong. Please try again later.
-                    </div>
-                  )}
-                  
-                  <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <label htmlFor="name" className="text-sm font-medium">
-                          Name
-                        </label>
-                        <Input
-                          id="name"
-                          name="name"
-                          value={formData.name}
-                          onChange={handleChange}
-                          className={errors.name ? 'border-red-500' : ''}
-                          placeholder="Your name"
-                          disabled={isSubmitting}
-                        />
+                  <form onSubmit={handleSubmit} className="space-y-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <motion.div variants={itemVariants} className="space-y-1.5">
+                        <Label htmlFor="name" className="text-sm font-medium text-muted-foreground">Name</Label>
+                        <motion.div whileFocus="focus" initial="rest" variants={inputVariants}>
+                          <Input
+                            id="name"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            className={`w-full ${errors.name ? 'border-red-500 focus-visible:ring-red-500/40' : 'border-border/30 focus-visible:ring-primary/40'} bg-background/80 focus-visible:ring-2 focus-visible:ring-offset-0`}
+                            placeholder="Your Name"
+                            disabled={isSubmitting}
+                            aria-invalid={!!errors.name}
+                            aria-describedby={errors.name ? "name-error" : undefined}
+                          />
+                        </motion.div>
                         {errors.name && (
-                          <p className="text-sm text-red-500">{errors.name}</p>
+                          <p id="name-error" className="text-xs text-red-500 pt-1">{errors.name}</p>
                         )}
-                      </div>
+                      </motion.div>
                       
-                      <div className="space-y-2">
-                        <label htmlFor="email" className="text-sm font-medium">
-                          Email
-                        </label>
-                        <Input
-                          type="email"
-                          id="email"
-                          name="email"
-                          value={formData.email}
-                          onChange={handleChange}
-                          className={errors.email ? 'border-red-500' : ''}
-                          placeholder="your.email@example.com"
-                          disabled={isSubmitting}
-                        />
+                      <motion.div variants={itemVariants} className="space-y-1.5">
+                        <Label htmlFor="email" className="text-sm font-medium text-muted-foreground">Email</Label>
+                         <motion.div whileFocus="focus" initial="rest" variants={inputVariants}>
+                          <Input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                             className={`w-full ${errors.email ? 'border-red-500 focus-visible:ring-red-500/40' : 'border-border/30 focus-visible:ring-primary/40'} bg-background/80 focus-visible:ring-2 focus-visible:ring-offset-0`}
+                            placeholder="your.email@example.com"
+                            disabled={isSubmitting}
+                            aria-invalid={!!errors.email}
+                            aria-describedby={errors.email ? "email-error" : undefined}
+                          />
+                        </motion.div>
                         {errors.email && (
-                          <p className="text-sm text-red-500">{errors.email}</p>
+                          <p id="email-error" className="text-xs text-red-500 pt-1">{errors.email}</p>
                         )}
-                      </div>
+                      </motion.div>
                     </div>
                     
-                    <div className="space-y-2">
-                      <label htmlFor="subject" className="text-sm font-medium">
-                        Subject
-                      </label>
-                      <Input
-                        id="subject"
-                        name="subject"
-                        value={formData.subject}
-                        onChange={handleChange}
-                        className={errors.subject ? 'border-red-500' : ''}
-                        placeholder="What is this regarding?"
-                        disabled={isSubmitting}
-                      />
+                    <motion.div variants={itemVariants} className="space-y-1.5">
+                      <Label htmlFor="subject" className="text-sm font-medium text-muted-foreground">Subject</Label>
+                       <motion.div whileFocus="focus" initial="rest" variants={inputVariants}>
+                        <Input
+                          id="subject"
+                          name="subject"
+                          value={formData.subject}
+                          onChange={handleChange}
+                           className={`w-full ${errors.subject ? 'border-red-500 focus-visible:ring-red-500/40' : 'border-border/30 focus-visible:ring-primary/40'} bg-background/80 focus-visible:ring-2 focus-visible:ring-offset-0`}
+                          placeholder="Regarding..."
+                          disabled={isSubmitting}
+                           aria-invalid={!!errors.subject}
+                           aria-describedby={errors.subject ? "subject-error" : undefined}
+                        />
+                      </motion.div>
                       {errors.subject && (
-                        <p className="text-sm text-red-500">{errors.subject}</p>
+                        <p id="subject-error" className="text-xs text-red-500 pt-1">{errors.subject}</p>
                       )}
-                    </div>
+                    </motion.div>
                     
-                    <div className="space-y-2">
-                      <label htmlFor="message" className="text-sm font-medium">
-                        Message
-                      </label>
-                      <Textarea
-                        id="message"
-                        name="message"
-                        value={formData.message}
-                        onChange={handleChange}
-                        rows={5}
-                        className={errors.message ? 'border-red-500' : ''}
-                        placeholder="Your message here..."
-                        disabled={isSubmitting}
-                      />
+                    <motion.div variants={itemVariants} className="space-y-1.5">
+                      <Label htmlFor="message" className="text-sm font-medium text-muted-foreground">Message</Label>
+                       <motion.div whileFocus="focus" initial="rest" variants={inputVariants}>
+                        <Textarea
+                          id="message"
+                          name="message"
+                          value={formData.message}
+                          onChange={handleChange}
+                          rows={5}
+                           className={`w-full ${errors.message ? 'border-red-500 focus-visible:ring-red-500/40' : 'border-border/30 focus-visible:ring-primary/40'} bg-background/80 focus-visible:ring-2 focus-visible:ring-offset-0`}
+                          placeholder="Your message..."
+                          disabled={isSubmitting}
+                          aria-invalid={!!errors.message}
+                          aria-describedby={errors.message ? "message-error" : undefined}
+                        />
+                      </motion.div>
                       {errors.message && (
-                        <p className="text-sm text-red-500">{errors.message}</p>
+                        <p id="message-error" className="text-xs text-red-500 pt-1">{errors.message}</p>
                       )}
-                    </div>
+                    </motion.div>
                     
-                    <Button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="w-full flex items-center justify-center gap-2 transition-all duration-200 hover:scale-105 active:scale-100"
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
-                          Sending...
-                        </>
-                      ) : (
-                        <>
-                          Send Message <FiSend className="ml-2" />
-                        </>
-                      )}
-                    </Button>
+                    <motion.div variants={itemVariants}>
+                      <Button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="w-full group flex items-center justify-center gap-2 transition-all duration-300 ease-in-out hover:shadow-md active:scale-[0.98] bg-primary text-primary-foreground hover:bg-primary/90"
+                        aria-live="polite"
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <motion.svg 
+                              className="animate-spin h-5 w-5 text-current" 
+                              xmlns="http://www.w3.org/2000/svg" 
+                              fill="none" 
+                              viewBox="0 0 24 24"
+                              initial={{ rotate: 0 }}
+                              animate={{ rotate: 360 }}
+                              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                            >
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </motion.svg>
+                            <span>Sending...</span>
+                          </>
+                        ) : (
+                          <>
+                            <span>Send Message</span>
+                            <FiSend className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                          </>
+                        )}
+                      </Button>
+                    </motion.div>
                   </form>
                 </CardContent>
               </Card>
             </motion.div>
             
-            {/* Contact Information */}
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="lg:col-span-2 space-y-6"
-            >
-              <Card className="border border-border/50 shadow-sm bg-card/50 backdrop-blur-sm">
-                <CardHeader>
-                  <CardTitle>Contact Information</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <FiMail className="h-5 w-5 text-primary" />
-                    <a 
-                      href="mailto:jairangi11101995@gmail.com" 
-                      className="text-foreground hover:text-primary transition-colors"
-                    >
-                      jairangi11101995@gmail.com
-                    </a>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <FiLinkedin className="h-5 w-5 text-primary" />
-                    <a 
-                      href="https://www.linkedin.com/in/jayrangi/" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-foreground hover:text-primary transition-colors"
-                    >
-                      LinkedIn Profile
-                    </a>
-                  </div>
-                </CardContent>
-              </Card>
+            <motion.div variants={itemVariants} className="w-full space-y-6 md:pt-10">
+              <div className="space-y-5">
+                <h3 className="text-2xl font-semibold text-foreground mb-4">Contact Details</h3>
+                <motion.div 
+                  className="flex items-center gap-3 group"
+                  whileHover={{ scale: 1.03 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
+                  <FiMail className="h-5 w-5 text-primary flex-shrink-0" />
+                  <a 
+                    href="mailto:jairangi11101995@gmail.com" 
+                    className="text-muted-foreground group-hover:text-primary transition-colors duration-200 text-sm sm:text-base break-all"
+                  >
+                    jairangi11101995@gmail.com
+                  </a>
+                </motion.div>
+                <motion.div 
+                  className="flex items-center gap-3 group"
+                  whileHover={{ scale: 1.03 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
+                  <FiLinkedin className="h-5 w-5 text-primary flex-shrink-0" />
+                  <a 
+                    href="https://www.linkedin.com/in/jayrangi/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground group-hover:text-primary transition-colors duration-200 text-sm sm:text-base"
+                  >
+                    LinkedIn Profile
+                  </a>
+                </motion.div>
+              </div>
 
-              {/* Add Map or Image here if desired */}
-              {/* <div className="aspect-video w-full bg-muted rounded-md mt-6">Map placeholder</div> */}
+              <hr className="border-border/30 my-6"/>
+
+              <div className="text-sm text-muted-foreground">
+                <p>I typically respond within 24-48 hours.</p>
+              </div>
             </motion.div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </Layout>
   );

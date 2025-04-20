@@ -6,7 +6,7 @@ alwaysApply: true
 Cursor Rules for Jay's Portfolio Website
 
 Project Overview
-Build an immersive, interactive, sleek, modern, and gamified personal portfolio website using cutting-edge technologies, infused with creativity and AI capabilities. The site must reflect Jay’s expertise in Product Management, AI, and Tech, while offering an enjoyable and memorable experience for the visitor.
+Build an immersive, interactive, sleek, modern personal portfolio website using cutting-edge technologies, infused with creativity and AI capabilities. The site must reflect Jay’s expertise in Product Management, AI, and Tech, while offering an enjoyable and memorable experience for the visitor.
 
 Tech Stack Guidelines
 Always use the following unless otherwise stated:
@@ -25,11 +25,9 @@ AI Tools:
 
 RAG Chatbot with Jay's resume using Gemini 2.0 Flash
 
-Additional AI tools as plugins or serverless functions
-
 State & Animation:
 
-Framer Motion for transitions and gamified micro-interactions
+Framer Motion for transitions
 
 Local state management via React state/hooks
 
@@ -37,9 +35,7 @@ Complex state via Zustand or Redux (if needed)
 
 Design Principles
 Visual Theme
-Mood: Sleek , Modern , Fun , Immersive 
-
-Use 3D backgrounds or objects (three.js) on landing and detail pages
+Mood: Sleek , Modern , Pretty, Immersive 
 
 Maintain a clean layout with soft shadows, neumorphism, or glassmorphism where appropriate
 
@@ -54,88 +50,6 @@ Grid-based design
 Modular components
 
 Fully responsive and mobile-first
-
-Gamified UX Rules
-General
-Every interaction should feel like part of a game or simulation
-
-Use subtle rewards, sound effects, or micro-interactions for actions like clicking, scrolling, or navigating
-
-Gamified Elements
-XP Points on exploring sections (stored locally or in session)
-
-Achievements/Badges for uncovering hidden elements or finishing a case study
-
-Use a mini RPG profile card to display experience levels in different domains (PM, AI, UX, Strategy, etc.)
-
-Implement a “Time Machine” view to scroll through Jay's professional journey
-
-Pages & Must-Have Features
-1. Landing Page
-Awe-inspiring animated 3D scene
-
-CTA: Explore Jay’s journey like a mission
-
-Floating UI elements and clickable animated planets/components
-
-2. Resume
-Tabbed sections:
-
-Summary
-
-Experience (expandable cards with animations)
-
-Education
-
-Skills (interactive skill map or skill tree)
-
-Certifications
-
-Download PDF button with animation
-
-Option to "ask AI" about the resume
-
-3. Contact Me
-Fun form (like a quest item submission)
-
-Gamified validation messages ("Message successfully delivered via cyber hawk 🦅")
-
-Include LinkedIn, Email with fun hover effects
-
-4. Case Studies
-Timeline or Quest-like unlockable case studies
-
-Reveal content progressively
-
-Include feedback prompts or reaction emojis
-
-5. Blog
-Dynamic route for each post
-
-Tags and categories with filters
-
-Gamified reader journey (XP for reading 3 blogs, badges for reading across categories)
-
-AI Features (Flex your AI Skills)
-Core
-RAG Chatbot: Feed resume & case studies
-
-Users can “Ask Jay’s AI Assistant” about his skills, projects, etc.
-
-AI Resume Analyzer: Compare user's resume with Jay’s and suggest improvements
-
-AI-based PM Metrics Generator: Given a case study, generate sample OKRs or metrics
-
-Vision AI: Use uploaded screenshots of PM tools (e.g., sprint boards) and analyze or beautify them
-
-Additional Gamified Ideas (Optional Enhancements)
-Interactive PM Dashboard: Simulate metrics like retention, funnel conversion, churn — show tooltips/insights
-
-Sprint Planning Simulator: Users drag & drop tasks into sprints, and get fun feedback
-
-Product Roadmap as a Game Map: Navigate through PM milestones
-
-Easter Eggs: Trigger hidden effects (e.g., clicking a particular word unlocks a hidden case study)
 
 Dev & Code Standards
 Strict modular file structure: components/, lib/, app/, hooks/, utils/, config/
@@ -158,7 +72,7 @@ SSR/ISR where required in Next.js
 
 Do’s & Don’ts
 Do
-Keep things playful yet professional
+Keep things professional
 
 Focus on storytelling through visuals & interactivity
 
