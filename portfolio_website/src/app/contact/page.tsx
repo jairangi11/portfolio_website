@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Layout from "@/components/layout/Layout";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -19,8 +19,7 @@ import {
   FiSend,
   FiCheckCircle,
   FiAlertCircle,
-  FiCopy,
-  FiExternalLink
+  FiCopy
 } from "react-icons/fi";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
