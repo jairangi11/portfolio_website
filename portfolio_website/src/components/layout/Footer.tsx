@@ -24,7 +24,7 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-muted-foreground max-w-xs">
-              Product Manager specializing in AI-powered solutions, Machine Learning, SaaS, and B2B PropTech.
+              Data-driven Product Manager with expertise in AI-powered solutions.
             </p>
           </div>
           
@@ -77,15 +77,6 @@ export default function Footer() {
               >
                 <Linkedin className="mr-2 h-4 w-4" />
                 <span>LinkedIn</span>
-              </a>
-              <a 
-                href="https://github.com/jayrangi" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-primary transition-colors flex items-center"
-              >
-                <Github className="mr-2 h-4 w-4" />
-                <span>GitHub</span>
               </a>
               <a 
                 href="mailto:jairangi11101995@gmail.com"
