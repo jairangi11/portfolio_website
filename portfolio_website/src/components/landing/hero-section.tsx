@@ -25,7 +25,7 @@ interface HeroSectionProps {
 const skills = ["AI-powered solutions", "Machine Learning", "SaaS", "B2B PropTech"];
 const scrollThreshold = 100; // Threshold for scroll indicator visibility
 
-export function HeroSection({ resumeData, isNavigating }: HeroSectionProps) {
+export function HeroSection({ resumeData }: HeroSectionProps) {
   // Skills animation state (Typewriter effect will handle its own internal logic)
   // const [currentSkillIndex, setCurrentSkillIndex] = useState(0); // Remove this state
   // const intervalIdRef = useRef<NodeJS.Timeout | null>(null); // Remove this ref if Typewriter handles its own timing
