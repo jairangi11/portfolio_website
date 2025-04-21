@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ProfileCard } from "@/components/ui/profile-card";
 import { FiArrowRight } from "react-icons/fi";
+import { TypewriterEffect } from "@/components/ui/typewriter-effect";
 // Assuming resumeData structure is defined elsewhere or passed in
 // import { resumeData } from "@/data/resumeData"; 
 
@@ -25,14 +26,15 @@ const skills = ["AI-powered solutions", "Machine Learning", "SaaS", "B2B PropTec
 const scrollThreshold = 100; // Threshold for scroll indicator visibility
 
 export function HeroSection({ resumeData, isNavigating }: HeroSectionProps) {
-  // Skills animation state
-  const [currentSkillIndex, setCurrentSkillIndex] = useState(0);
-  const intervalIdRef = useRef<NodeJS.Timeout | null>(null);
+  // Skills animation state (Typewriter effect will handle its own internal logic)
+  // const [currentSkillIndex, setCurrentSkillIndex] = useState(0); // Remove this state
+  // const intervalIdRef = useRef<NodeJS.Timeout | null>(null); // Remove this ref if Typewriter handles its own timing
 
   // Scroll position state
   const [scrollPosition, setScrollPosition] = useState(0);
 
-  // Refactored Skill timer animation logic
+  // Remove the old skill rotation useEffect
+  /* 
   useEffect(() => {
     const setupSkillRotation = () => {
       if (intervalIdRef.current !== null) {
@@ -66,8 +68,10 @@ export function HeroSection({ resumeData, isNavigating }: HeroSectionProps) {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, []);
+  */
 
-  // Effect to stop skill animation when navigation starts
+  // Remove the effect to stop skill animation when navigation starts, Typewriter should handle pausing
+  /* 
   useEffect(() => {
     if (isNavigating) {
       if (intervalIdRef.current !== null) {
@@ -76,6 +80,7 @@ export function HeroSection({ resumeData, isNavigating }: HeroSectionProps) {
       }
     }
   }, [isNavigating]);
+  */
   
   // Scroll tracking logic
   useEffect(() => {
@@ -126,27 +131,16 @@ export function HeroSection({ resumeData, isNavigating }: HeroSectionProps) {
               <span className="text-foreground/80 font-normal">Data-driven </span>
               <span className="relative inline-block">
                 <span className="bg-gradient-to-r from-primary/80 to-primary/60 bg-clip-text text-transparent font-semibold">Product Manager</span>
-                <motion.span 
-                  className="absolute bottom-0 left-0 w-full h-[2px] bg-primary/50"
-                  initial={{ width: 0 }}
-                  animate={{ width: "100%" }}
-                  transition={{ duration: 0.7, delay: 0.7 }}
-                />
               </span>
               <span className="text-foreground/80 font-normal"> specializing in </span>
-              <span className="relative">
-                <AnimatePresence mode="wait">
-                  <motion.span
-                    key={currentSkillIndex}
-                    className="text-primary font-medium inline-block min-w-[180px]"
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: -20, opacity: 0 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    {skills[currentSkillIndex]}
-                  </motion.span>
-                </AnimatePresence>
+              <span className="relative inline-block min-w-[200px] md:min-w-[250px] lg:min-w-[300px] min-h-[40px]"> 
+                <TypewriterEffect 
+                  words={skills.map(skill => ({ text: skill, className: "text-primary font-medium" }))} 
+                  cursorClassName="bg-primary"
+                  className="inline-block" // Ensures proper layout
+                  // Pass the isNavigating prop to pause the effect if needed
+                  // isPaused={isNavigating} // Uncomment if TypewriterEffect supports pausing
+                />
               </span>
             </motion.h2>
             
