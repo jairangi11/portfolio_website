@@ -43,21 +43,22 @@ export function TypewriterEffect({
     };
 
     const handleTyping = () => {
+      clearCurrentTimeout(); // Ensure only one timer runs at a time
+
       const currentWord = words[wordIndex].text;
       const currentWordLength = currentWord.length;
       const currentTextLength = text.length;
 
       if (isPaused) {
         // If paused, clear any pending timeout and do nothing
-        clearCurrentTimeout();
-        return;
+        return; // Timeout already cleared at the start
       }
 
       if (isWaiting) {
         // Handle initial delay or delay between words
-        const delay = text.length === 0 && wordIndex === 0 ? startDelay : delayBetweenWords;
+        const delay = (text.length === 0 && wordIndex === 0) ? startDelay : delayBetweenWords;
         timeoutRef.current = setTimeout(() => {
-          setIsWaiting(false);
+          setIsWaiting(false); // End waiting state after delay
         }, delay);
         return; // Wait for the delay to finish
       }
@@ -65,25 +66,30 @@ export function TypewriterEffect({
       if (isDeleting) {
         // Deleting logic
         if (currentTextLength > 0) {
-          setText((prev) => prev.substring(0, prev.length - 1));
-          timeoutRef.current = setTimeout(handleTyping, deleteSpeed);
+          // Schedule next deletion step
+          timeoutRef.current = setTimeout(() => {
+            setText((prev) => prev.substring(0, prev.length - 1)); // Update text, triggering useEffect
+          }, deleteSpeed);
         } else {
-          // Finished deleting, move to the next word
+          // Finished deleting, move to the next word and start waiting
           setIsDeleting(false);
           setWordIndex((prevIndex) => (prevIndex + 1) % words.length);
-          setIsWaiting(true); // Wait before typing the next word
-          timeoutRef.current = setTimeout(handleTyping, 50); // Small delay before starting wait timer
+          setIsWaiting(true); // Trigger useEffect to handle the wait state
+          // No timeout needed here, the state change handles it
         }
       } else {
         // Typing logic
         if (currentTextLength < currentWordLength) {
-          setText((prev) => currentWord.substring(0, prev.length + 1));
-          timeoutRef.current = setTimeout(handleTyping, typingSpeed);
+          // Schedule next typing step
+          timeoutRef.current = setTimeout(() => {
+            setText((prev) => currentWord.substring(0, prev.length + 1)); // Update text, triggering useEffect
+          }, typingSpeed);
         } else {
           // Finished typing, pause then start deleting
-          setIsDeleting(true);
-          setIsWaiting(true); // Use waiting state for pause after typing
-          timeoutRef.current = setTimeout(handleTyping, delayBetweenWords);
+          // Schedule state change to deleting after a pause
+          timeoutRef.current = setTimeout(() => {
+            setIsDeleting(true); // Trigger useEffect to handle deleting state after pause
+          }, delayBetweenWords);
         }
       }
     };
@@ -96,6 +102,7 @@ export function TypewriterEffect({
       clearCurrentTimeout();
     };
   }, [
+    // Rerun useEffect whenever relevant state changes
     text,
     isDeleting,
     isWaiting,
@@ -105,7 +112,7 @@ export function TypewriterEffect({
     deleteSpeed,
     delayBetweenWords,
     startDelay,
-    isPaused // Re-run effect if pause state changes
+    isPaused
   ]);
 
   // Reset if words array changes
