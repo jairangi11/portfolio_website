@@ -168,17 +168,17 @@ export const resumeData = {
   ],
   
   certifications: [
+    { name: "Digital Product Management: Modern Fundamentals by University of Virginia", issuer: "Coursera", logo: "/images/certificate_issuer_logos/coursera.png" },
+    { name: "Machine Learning A-Z: AI, Python & R", issuer: "Udemy", logo: "/images/certificate_issuer_logos/udemy.png" },
+    { name: "Data Science Using Python", issuer: "DataCamp", logo: "/images/certificate_issuer_logos/datacamp.png" },
+    { name: "SQL For Data Science", issuer: "DataCamp", logo: "/images/certificate_issuer_logos/datacamp.png" },
+    { name: "Data Science Using R", issuer: "DataCamp", logo: "/images/certificate_issuer_logos/datacamp.png" },
+    { name: "Marketing And Sales Foundation", issuer: "Kraftshala", logo: "/images/certificate_issuer_logos/kraftshala.png" },
+    { name: "Java", issuer: "Ducat India", logo: "/images/certificate_issuer_logos/ducat.png" },
+    { name: "C++", issuer: "Ducat India", logo: "/images/certificate_issuer_logos/ducat.png" },
     { name: "Adobe XD Essential Training: Design", issuer: "LinkedIn", logo: "/images/certificate_issuer_logos/linkedin.png" },
     { name: "Agile Foundations", issuer: "LinkedIn", logo: "/images/certificate_issuer_logos/linkedin.png" },
-    { name: "C++", issuer: "Ducat India", logo: "/images/certificate_issuer_logos/ducat.png" },
-    { name: "Data Science Using Python", issuer: "DataCamp", logo: "/images/certificate_issuer_logos/datacamp.png" },
-    { name: "Data Science Using R", issuer: "DataCamp", logo: "/images/certificate_issuer_logos/datacamp.png" },
-    { name: "Digital Product Management: Modern Fundamentals by University of Virginia", issuer: "Coursera", logo: "/images/certificate_issuer_logos/coursera.png" },
-    { name: "Java", issuer: "Ducat India", logo: "/images/certificate_issuer_logos/ducat.png" },
-    { name: "Machine Learning A-Z: AI, Python & R", issuer: "Udemy", logo: "/images/certificate_issuer_logos/udemy.png" },
-    { name: "Marketing And Sales Foundation", issuer: "Kraftshala", logo: "/images/certificate_issuer_logos/kraftshala.png" },
-    { name: "SQL For Data Science", issuer: "DataCamp", logo: "/images/certificate_issuer_logos/datacamp.png" },
+    { name: "UX Foundations: Prototyping", issuer: "LinkedIn", logo: "/images/certificate_issuer_logos/linkedin.png" },
     { name: "Technical Analysis Of Financial Markets", issuer: "The Money Roller", logo: "/images/certificate_issuer_logos/the_money_roller.png" },
-    { name: "UX Foundations: Prototyping", issuer: "LinkedIn", logo: "/images/certificate_issuer_logos/linkedin.png" }
   ]
 }; 

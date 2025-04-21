@@ -147,7 +147,6 @@ const CertificationsSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, margin: "-100px 0px" });
   
-  // Use actual certifications directly
   const certifications = resumeData.certifications as Certification[];
   
   return (
@@ -171,24 +170,67 @@ const CertificationsSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.4, delay: 0.1 * index }}
+            className="group"
+            whileHover={{ 
+              y: -5, 
+              transition: { duration: 0.2 } 
+            }}
           >
-            <Card className="h-full border border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 flex flex-col">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50 pointer-events-none" />
-              <CardHeader className="flex-shrink-0">
-                <CardTitle className="text-lg font-semibold leading-snug mb-1">{cert.name}</CardTitle> 
-                <CardDescription className="text-sm flex items-center gap-2 text-muted-foreground">
-                  {cert.logo && (
-                    <Image 
-                      src={cert.logo} 
-                      alt={`${cert.issuer} logo`} 
-                      width={20} 
-                      height={20} 
-                      className="object-contain rounded-sm" 
-                    />
-                  )}
-                  <span className="font-medium">{cert.issuer}</span>
-                </CardDescription>
-              </CardHeader>
+            <Card className="h-full bg-card/40 backdrop-blur-sm group-hover:bg-card/60 border-border/20 transition-all duration-300 overflow-hidden relative">
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0">
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5"></div>
+                <motion.div 
+                  className="absolute top-0 -left-[100%] w-[50%] h-full bg-gradient-to-r from-transparent via-white/10 to-transparent transform rotate-12 skew-x-12"
+                  animate={{
+                    left: ['0%', '200%'],
+                    opacity: [0, 0.3, 0]
+                  }}
+                  transition={{
+                    duration: 1.5,
+                    ease: "easeInOut",
+                    repeat: Infinity,
+                    repeatDelay: 2
+                  }}
+                />
+              </div>
+              
+              <CardContent className="p-5 relative z-10 flex flex-col items-center text-center">
+                <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-transparent via-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                
+                {cert.logo && (
+                  <div className="h-16 mb-4 relative flex items-center justify-center w-full">
+                    <div className="relative w-full h-12 grayscale group-hover:grayscale-0 transition-all duration-300 flex items-center justify-center">
+                      <Image 
+                        src={cert.logo} 
+                        alt={`${cert.issuer} logo`} 
+                        height={48}
+                        width={100}
+                        className="object-contain max-h-12 max-w-[120px]"
+                      />
+                      <motion.div 
+                        className="absolute inset-0 bg-primary/5 rounded-md opacity-0 group-hover:opacity-100"
+                        animate={{ 
+                          boxShadow: ['0 0 0px rgba(var(--primary-rgb), 0)', '0 0 20px rgba(var(--primary-rgb), 0.2)', '0 0 0px rgba(var(--primary-rgb), 0)']
+                        }}
+                        transition={{ 
+                          repeat: Infinity, 
+                          duration: 2.5,
+                          ease: "easeInOut"
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
+                
+                <h3 className="text-foreground font-semibold text-base mb-1 group-hover:text-primary transition-colors duration-200">
+                  {cert.name}
+                </h3> 
+                
+                <p className="text-muted-foreground text-sm font-medium">
+                  {cert.issuer}
+                </p>
+                
+              </CardContent>
             </Card>
           </motion.div>
         ))}
