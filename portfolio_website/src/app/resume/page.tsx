@@ -176,8 +176,12 @@ const CertificationsSection = () => {
               transition: { duration: 0.2 } 
             }}
           >
-            <Card className="h-full bg-card/40 backdrop-blur-sm group-hover:bg-card/60 border-border/20 transition-all duration-300 overflow-hidden relative">
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0">
+            <Card className="h-full border border-border/50 bg-card/50 group-hover:bg-card/60 backdrop-blur-sm shadow-lg group-hover:shadow-xl transition-all duration-300 overflow-hidden relative">
+              {/* Background gradient from Skills card */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50 pointer-events-none z-0" />
+              
+              {/* Existing Shiny overlay effect on hover - adjust z-index if needed */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5"></div>
                 <motion.div 
                   className="absolute top-0 -left-[100%] w-[50%] h-full bg-gradient-to-r from-transparent via-white/10 to-transparent transform rotate-12 skew-x-12"

@@ -192,255 +192,263 @@ export default function ContactPage() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-12 items-start">
-            <div className="w-full md:col-span-3">
+            <div className="w-full md:col-span-3 group">
               <Card className={cn(
-                "w-full border border-border/40 shadow-lg bg-card hover:bg-muted/50 rounded-lg transition-colors duration-200",
+                "relative w-full border border-border/50 bg-card/50 group-hover:bg-card/60 backdrop-blur-sm shadow-lg group-hover:shadow-xl rounded-lg transition-all duration-300 overflow-hidden", 
               )}>
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-2xl text-foreground">Send a Message</CardTitle>
-                  <CardDescription className="text-muted-foreground">
-                    Fill out the form and I&apos;ll get back to you.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <AnimatePresence>
-                    {submitStatus === 'success' && (
-                      <motion.div 
-                        className="mb-4 p-3 bg-green-500/10 border border-green-500/30 text-green-700 dark:text-green-400 rounded-md flex items-center gap-3 text-sm"
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <FiCheckCircle className="h-5 w-5 flex-shrink-0" />
-                        <span>{successMessage}</span>
-                      </motion.div>
-                    )}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50 pointer-events-none z-0" />
+                
+                <div className="relative z-10">
+                  <CardHeader className="pb-4">
+                    <CardTitle className="text-2xl text-foreground">Send a Message</CardTitle>
+                    <CardDescription className="text-muted-foreground">
+                      Fill out the form and I&apos;ll get back to you.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <AnimatePresence>
+                      {submitStatus === 'success' && (
+                        <motion.div 
+                          className="mb-4 p-3 bg-green-500/10 border border-green-500/30 text-green-700 dark:text-green-400 rounded-md flex items-center gap-3 text-sm"
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <FiCheckCircle className="h-5 w-5 flex-shrink-0" />
+                          <span>{successMessage}</span>
+                        </motion.div>
+                      )}
+                      
+                      {submitStatus === 'error' && (
+                        <motion.div 
+                          className="mb-4 p-3 bg-red-500/10 border border-red-500/30 text-red-700 dark:text-red-400 rounded-md flex items-center gap-3 text-sm"
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <FiAlertCircle className="h-5 w-5 flex-shrink-0" />
+                          <span>Something went wrong. Please try again later.</span>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                     
-                    {submitStatus === 'error' && (
-                      <motion.div 
-                        className="mb-4 p-3 bg-red-500/10 border border-red-500/30 text-red-700 dark:text-red-400 rounded-md flex items-center gap-3 text-sm"
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <FiAlertCircle className="h-5 w-5 flex-shrink-0" />
-                        <span>Something went wrong. Please try again later.</span>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                  
-                  <form onSubmit={handleSubmit} className="space-y-5">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <form onSubmit={handleSubmit} className="space-y-5">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="space-y-1.5">
+                          <Label htmlFor="name" className="text-sm font-medium text-muted-foreground">Name</Label>
+                          <motion.div whileFocus="focus" initial="rest" variants={inputVariants}>
+                            <Input
+                              id="name"
+                              name="name"
+                              value={formData.name}
+                              onChange={handleChange}
+                              className={`w-full ${errors.name ? 'border-red-500 focus-visible:ring-red-500/40' : 'border-border/30 focus-visible:ring-primary/40'} bg-background/80 focus-visible:ring-2 focus-visible:ring-offset-0 transition-colors duration-200`}
+                              placeholder="Your Name"
+                              disabled={isSubmitting}
+                              aria-invalid={!!errors.name}
+                              aria-describedby={errors.name ? "name-error" : undefined}
+                            />
+                          </motion.div>
+                          {errors.name && (
+                            <p id="name-error" className="text-xs text-red-500 pt-1">{errors.name}</p>
+                          )}
+                        </div>
+                        
+                        <div className="space-y-1.5">
+                          <Label htmlFor="email" className="text-sm font-medium text-muted-foreground">Email</Label>
+                           <motion.div whileFocus="focus" initial="rest" variants={inputVariants}>
+                            <Input
+                              type="email"
+                              id="email"
+                              name="email"
+                              value={formData.email}
+                              onChange={handleChange}
+                               className={`w-full ${errors.email ? 'border-red-500 focus-visible:ring-red-500/40' : 'border-border/30 focus-visible:ring-primary/40'} bg-background/80 focus-visible:ring-2 focus-visible:ring-offset-0 transition-colors duration-200`}
+                              placeholder="your.email@example.com"
+                              disabled={isSubmitting}
+                              aria-invalid={!!errors.email}
+                              aria-describedby={errors.email ? "email-error" : undefined}
+                            />
+                          </motion.div>
+                          {errors.email && (
+                            <p id="email-error" className="text-xs text-red-500 pt-1">{errors.email}</p>
+                          )}
+                        </div>
+                      </div>
+                      
                       <div className="space-y-1.5">
-                        <Label htmlFor="name" className="text-sm font-medium text-muted-foreground">Name</Label>
-                        <motion.div whileFocus="focus" initial="rest" variants={inputVariants}>
+                        <Label htmlFor="subject" className="text-sm font-medium text-muted-foreground">Subject</Label>
+                         <motion.div whileFocus="focus" initial="rest" variants={inputVariants}>
                           <Input
-                            id="name"
-                            name="name"
-                            value={formData.name}
+                            id="subject"
+                            name="subject"
+                            value={formData.subject}
                             onChange={handleChange}
-                            className={`w-full ${errors.name ? 'border-red-500 focus-visible:ring-red-500/40' : 'border-border/30 focus-visible:ring-primary/40'} bg-background/80 focus-visible:ring-2 focus-visible:ring-offset-0 transition-colors duration-200`}
-                            placeholder="Your Name"
+                             className={`w-full ${errors.subject ? 'border-red-500 focus-visible:ring-red-500/40' : 'border-border/30 focus-visible:ring-primary/40'} bg-background/80 focus-visible:ring-2 focus-visible:ring-offset-0 transition-colors duration-200`}
+                            placeholder="Regarding..."
                             disabled={isSubmitting}
-                            aria-invalid={!!errors.name}
-                            aria-describedby={errors.name ? "name-error" : undefined}
+                             aria-invalid={!!errors.subject}
+                             aria-describedby={errors.subject ? "subject-error" : undefined}
                           />
                         </motion.div>
-                        {errors.name && (
-                          <p id="name-error" className="text-xs text-red-500 pt-1">{errors.name}</p>
+                        {errors.subject && (
+                          <p id="subject-error" className="text-xs text-red-500 pt-1">{errors.subject}</p>
                         )}
                       </div>
                       
                       <div className="space-y-1.5">
-                        <Label htmlFor="email" className="text-sm font-medium text-muted-foreground">Email</Label>
+                        <Label htmlFor="message" className="text-sm font-medium text-muted-foreground">Message</Label>
                          <motion.div whileFocus="focus" initial="rest" variants={inputVariants}>
-                          <Input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={formData.email}
+                          <Textarea
+                            id="message"
+                            name="message"
+                            value={formData.message}
                             onChange={handleChange}
-                             className={`w-full ${errors.email ? 'border-red-500 focus-visible:ring-red-500/40' : 'border-border/30 focus-visible:ring-primary/40'} bg-background/80 focus-visible:ring-2 focus-visible:ring-offset-0 transition-colors duration-200`}
-                            placeholder="your.email@example.com"
+                            rows={5}
+                             className={`w-full ${errors.message ? 'border-red-500 focus-visible:ring-red-500/40' : 'border-border/30 focus-visible:ring-primary/40'} bg-background/80 focus-visible:ring-2 focus-visible:ring-offset-0 transition-colors duration-200`}
+                            placeholder="Your message..."
                             disabled={isSubmitting}
-                            aria-invalid={!!errors.email}
-                            aria-describedby={errors.email ? "email-error" : undefined}
+                            aria-invalid={!!errors.message}
+                            aria-describedby={errors.message ? "message-error" : undefined}
                           />
                         </motion.div>
-                        {errors.email && (
-                          <p id="email-error" className="text-xs text-red-500 pt-1">{errors.email}</p>
+                        {errors.message && (
+                          <p id="message-error" className="text-xs text-red-500 pt-1">{errors.message}</p>
                         )}
                       </div>
-                    </div>
-                    
-                    <div className="space-y-1.5">
-                      <Label htmlFor="subject" className="text-sm font-medium text-muted-foreground">Subject</Label>
-                       <motion.div whileFocus="focus" initial="rest" variants={inputVariants}>
-                        <Input
-                          id="subject"
-                          name="subject"
-                          value={formData.subject}
-                          onChange={handleChange}
-                           className={`w-full ${errors.subject ? 'border-red-500 focus-visible:ring-red-500/40' : 'border-border/30 focus-visible:ring-primary/40'} bg-background/80 focus-visible:ring-2 focus-visible:ring-offset-0 transition-colors duration-200`}
-                          placeholder="Regarding..."
+                      
+                      <div>
+                        <Button
+                          type="submit"
                           disabled={isSubmitting}
-                           aria-invalid={!!errors.subject}
-                           aria-describedby={errors.subject ? "subject-error" : undefined}
-                        />
-                      </motion.div>
-                      {errors.subject && (
-                        <p id="subject-error" className="text-xs text-red-500 pt-1">{errors.subject}</p>
-                      )}
-                    </div>
-                    
-                    <div className="space-y-1.5">
-                      <Label htmlFor="message" className="text-sm font-medium text-muted-foreground">Message</Label>
-                       <motion.div whileFocus="focus" initial="rest" variants={inputVariants}>
-                        <Textarea
-                          id="message"
-                          name="message"
-                          value={formData.message}
-                          onChange={handleChange}
-                          rows={5}
-                           className={`w-full ${errors.message ? 'border-red-500 focus-visible:ring-red-500/40' : 'border-border/30 focus-visible:ring-primary/40'} bg-background/80 focus-visible:ring-2 focus-visible:ring-offset-0 transition-colors duration-200`}
-                          placeholder="Your message..."
-                          disabled={isSubmitting}
-                          aria-invalid={!!errors.message}
-                          aria-describedby={errors.message ? "message-error" : undefined}
-                        />
-                      </motion.div>
-                      {errors.message && (
-                        <p id="message-error" className="text-xs text-red-500 pt-1">{errors.message}</p>
-                      )}
-                    </div>
-                    
-                    <div>
-                      <Button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="w-full group relative overflow-hidden flex items-center justify-center gap-2 transition-all duration-300 ease-in-out hover:shadow-lg active:scale-[0.98] bg-primary text-primary-foreground hover:bg-primary/90 rounded-md py-2.5 px-4 font-semibold cursor-pointer"
-                        aria-live="polite"
-                      >
-                         {isSubmitting ? (
-                          <>
-                            <motion.svg 
-                              className="animate-spin h-5 w-5 text-current" 
-                              xmlns="http://www.w3.org/2000/svg" 
-                              fill="none" 
-                              viewBox="0 0 24 24"
-                              initial={{ rotate: 0 }}
-                              animate={{ rotate: 360 }}
-                              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                            >
-                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </motion.svg>
-                            <span>Sending...</span>
-                          </>
-                        ) : (
-                          <>
-                            <span>Send Message</span>
-                            <FiSend className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                          </>
-                        )}
-                      </Button>
-                    </div>
-                  </form>
-                </CardContent>
+                          className="w-full group relative overflow-hidden flex items-center justify-center gap-2 transition-all duration-300 ease-in-out hover:shadow-lg active:scale-[0.98] bg-primary text-primary-foreground hover:bg-primary/90 rounded-md py-2.5 px-4 font-semibold cursor-pointer"
+                          aria-live="polite"
+                        >
+                           {isSubmitting ? (
+                            <>
+                              <motion.svg 
+                                className="animate-spin h-5 w-5 text-current" 
+                                xmlns="http://www.w3.org/2000/svg" 
+                                fill="none" 
+                                viewBox="0 0 24 24"
+                                initial={{ rotate: 0 }}
+                                animate={{ rotate: 360 }}
+                                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                              >
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                              </motion.svg>
+                              <span>Sending...</span>
+                            </>
+                          ) : (
+                            <>
+                              <span>Send Message</span>
+                              <FiSend className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                            </>
+                          )}
+                        </Button>
+                      </div>
+                    </form>
+                  </CardContent>
+                </div>
               </Card>
             </div>
             
-            <div className="w-full md:col-span-2">
+            <div className="w-full md:col-span-2 group">
               <Card className={cn(
-                "w-full border border-border/40 shadow-lg bg-card hover:bg-muted/50 rounded-lg p-6 transition-colors duration-200",
+                "relative w-full border border-border/50 bg-card/50 group-hover:bg-card/60 backdrop-blur-sm shadow-lg group-hover:shadow-xl rounded-lg transition-all duration-300 overflow-hidden p-6", 
               )}>
-                 <CardHeader className="p-0 mb-5">
-                   <CardTitle className="text-2xl text-foreground">Contact Details</CardTitle>
-                 </CardHeader>
-                 <CardContent className="p-0 space-y-5">
-                  <motion.div 
-                    className="flex items-center justify-between gap-3 group relative"
-                    whileHover="hover"
-                    initial="rest"
-                  >
-                    <div 
-                      className="flex items-center gap-3 cursor-pointer" 
-                      onClick={copyEmailToClipboard}
-                      title="Copy email address"
-                      role="button"
-                      tabIndex={0}
-                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') copyEmailToClipboard(); }}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50 pointer-events-none z-0" />
+
+                <div className="relative z-10">
+                  <CardHeader className="p-0 mb-5">
+                    <CardTitle className="text-2xl text-foreground">Contact Details</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-0 space-y-5">
+                    <motion.div 
+                      className="flex items-center justify-between gap-3 group relative"
+                      whileHover="hover"
+                      initial="rest"
                     >
-                      <FiMail className="h-5 w-5 text-primary flex-shrink-0" />
-                      <span
-                        className="text-muted-foreground group-hover:text-primary transition-colors duration-200 text-sm sm:text-base break-all"
+                      <div 
+                        className="flex items-center gap-3 cursor-pointer" 
+                        onClick={copyEmailToClipboard}
+                        title="Copy email address"
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') copyEmailToClipboard(); }}
                       >
-                        jairangi11101995@gmail.com
-                      </span>
-                    </div>
-                    <motion.button 
-                      onClick={(e) => { 
-                        e.stopPropagation();
-                        copyEmailToClipboard(); 
-                      }}
-                      variants={iconHoverAnim}
-                      whileTap="tap"
-                      className="p-1 text-muted-foreground hover:text-primary transition-colors absolute right-0 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 focus:opacity-100"
-                      aria-label={emailCopied ? "Email copied" : "Copy email"}
-                      title={emailCopied ? "Email copied" : "Copy email"}
+                        <FiMail className="h-5 w-5 text-primary flex-shrink-0" />
+                        <span
+                          className="text-muted-foreground group-hover:text-primary transition-colors duration-200 text-sm sm:text-base break-all"
+                        >
+                          jairangi11101995@gmail.com
+                        </span>
+                      </div>
+                      <motion.button 
+                        onClick={(e) => { 
+                          e.stopPropagation();
+                          copyEmailToClipboard(); 
+                        }}
+                        variants={iconHoverAnim}
+                        whileTap="tap"
+                        className="p-1 text-muted-foreground hover:text-primary transition-colors absolute right-0 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 focus:opacity-100"
+                        aria-label={emailCopied ? "Email copied" : "Copy email"}
+                        title={emailCopied ? "Email copied" : "Copy email"}
+                      >
+                         <AnimatePresence mode="wait">
+                           {emailCopied ? (
+                             <motion.div
+                               key="check"
+                               initial={{ scale: 0.5, opacity: 0 }}
+                               animate={{ scale: 1, opacity: 1 }}
+                               exit={{ scale: 0.5, opacity: 0 }}
+                               transition={{ duration: 0.2 }}
+                             >
+                               <FiCheckCircle className="h-4 w-4 text-green-500" />
+                             </motion.div>
+                           ) : (
+                             <motion.div
+                               key="copy"
+                               initial={{ scale: 0.5, opacity: 0 }}
+                               animate={{ scale: 1, opacity: 1 }}
+                               exit={{ scale: 0.5, opacity: 0 }}
+                               transition={{ duration: 0.2 }}
+                             >
+                               <FiCopy className="h-4 w-4" />
+                             </motion.div>
+                           )}
+                         </AnimatePresence>
+                      </motion.button>
+                    </motion.div>
+
+                    <motion.div 
+                      className="flex items-center justify-between gap-3 group relative"
+                      whileHover="hover"
+                      initial="rest"
                     >
-                       <AnimatePresence mode="wait">
-                         {emailCopied ? (
-                           <motion.div
-                             key="check"
-                             initial={{ scale: 0.5, opacity: 0 }}
-                             animate={{ scale: 1, opacity: 1 }}
-                             exit={{ scale: 0.5, opacity: 0 }}
-                             transition={{ duration: 0.2 }}
-                           >
-                             <FiCheckCircle className="h-4 w-4 text-green-500" />
-                           </motion.div>
-                         ) : (
-                           <motion.div
-                             key="copy"
-                             initial={{ scale: 0.5, opacity: 0 }}
-                             animate={{ scale: 1, opacity: 1 }}
-                             exit={{ scale: 0.5, opacity: 0 }}
-                             transition={{ duration: 0.2 }}
-                           >
-                             <FiCopy className="h-4 w-4" />
-                           </motion.div>
-                         )}
-                       </AnimatePresence>
-                    </motion.button>
-                  </motion.div>
+                       <div className="flex items-center gap-3">
+                         <a
+                           href="https://www.linkedin.com/in/jayrangi/"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           className="flex items-center gap-2 text-muted-foreground group-hover:text-primary transition-colors duration-200 text-sm sm:text-base"
+                         >
+                           <SiLinkedin className="h-5 w-5 text-primary flex-shrink-0" />
+                           <span>LinkedIn Profile</span>
+                         </a>
+                       </div>
+                    </motion.div>
 
-                  <motion.div 
-                    className="flex items-center justify-between gap-3 group relative"
-                    whileHover="hover"
-                    initial="rest"
-                  >
-                     <div className="flex items-center gap-3">
-                       <a
-                         href="https://www.linkedin.com/in/jayrangi/"
-                         target="_blank"
-                         rel="noopener noreferrer"
-                         className="flex items-center gap-2 text-muted-foreground group-hover:text-primary transition-colors duration-200 text-sm sm:text-base"
-                       >
-                         <SiLinkedin className="h-5 w-5 text-primary flex-shrink-0" />
-                         <span>LinkedIn Profile</span>
-                       </a>
-                     </div>
-                  </motion.div>
+                    <hr className="border-border/30 my-6"/>
 
-                  <hr className="border-border/30 my-6"/>
-
-                  <div className="text-sm text-muted-foreground">
-                    <p>I typically respond within 24-48 hours.</p>
-                  </div>
-                </CardContent>
+                    <div className="text-sm text-muted-foreground">
+                      <p>I typically respond within 24-48 hours.</p>
+                    </div>
+                  </CardContent>
+                </div>
               </Card>
             </div>
           </div>

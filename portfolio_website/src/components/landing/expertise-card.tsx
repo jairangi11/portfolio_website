@@ -33,19 +33,23 @@ export function ExpertiseCard({ item }: ExpertiseCardProps) {
       }}
       className="h-full" // Ensure motion div takes full height for consistent layout
     >
-      {/* Updated Card Design */}
-      <Card className="relative h-full border border-border/10 bg-gradient-to-br from-card/60 via-card/50 to-card/60 backdrop-blur-md transition-all duration-300 group overflow-hidden shadow-md hover:shadow-lg hover:border-primary/30">
-        {/* Inner border highlight on hover */}
-        <div className="absolute inset-0 border border-primary/0 group-hover:border-primary/20 rounded-lg transition-colors duration-300 pointer-events-none"></div>
+      {/* Apply styling from Skills card */}
+      <Card className="relative h-full border border-border/50 bg-card/50 group-hover:bg-card/60 backdrop-blur-sm shadow-lg group-hover:shadow-xl transition-all duration-300 group overflow-hidden">
+        {/* Background gradient from Skills card */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50 pointer-events-none z-0" />
+
+        {/* Keep existing Inner border highlight on hover, ensure z-index is appropriate */}
+        <div className="absolute inset-0 border border-primary/0 group-hover:border-primary/20 rounded-lg transition-colors duration-300 pointer-events-none z-10"></div>
         
-        {/* Subtle glow effect */}
+        {/* Keep existing Subtle glow effect, adjust z-index if needed */}
         <motion.div 
-          className="absolute -inset-2 bg-gradient-radial from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-50 transition-opacity duration-400 rounded-xl blur-lg"
+          className="absolute -inset-2 bg-gradient-radial from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-50 transition-opacity duration-400 rounded-xl blur-lg z-10"
           animate={{ opacity: [0, 0.5, 0] }}
           transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
         />
 
-        <CardContent className="p-6 relative z-10 flex flex-col h-full"> {/* Flex column for alignment */}
+        {/* Ensure CardContent is above gradients/effects */}
+        <CardContent className="p-6 relative z-20 flex flex-col h-full"> {/* Flex column for alignment */}
           {/* Modern icon with background */}
           <div className="mb-5">
             <div className="relative inline-flex items-center justify-center w-12 h-12 rounded-lg bg-gradient-to-tr from-background/80 to-background/95 border border-border/20 shadow-inner group-hover:border-primary/30 transition-colors duration-300">
