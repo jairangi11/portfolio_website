@@ -8,28 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { FiDownload, FiArrowRight, FiBriefcase, FiBook, FiStar, FiCpu, FiCalendar, FiMapPin } from "react-icons/fi";
-
-// Sample certification data
-const sampleCertifications: Certification[] = [
-  {
-    name: "AI Product Management",
-    issuer: "Product School",
-    date: "2023",
-    url: "https://example.com/cert1"
-  },
-  {
-    name: "Machine Learning Specialization",
-    issuer: "Stanford Online",
-    date: "2022",
-    url: "https://example.com/cert2"
-  },
-  {
-    name: "Product Analytics Certification",
-    issuer: "Mixpanel University",
-    date: "2021",
-    url: "https://example.com/cert3"
-  }
-];
+import Image from 'next/image';
 
 // Timeline item component
 const TimelineItem = ({ 
@@ -168,10 +147,8 @@ const CertificationsSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, margin: "-100px 0px" });
   
-  // Use sample certifications if resumeData certifications are empty
-  const certifications = resumeData.certifications.length > 0 
-    ? resumeData.certifications as Certification[]
-    : sampleCertifications;
+  // Use actual certifications directly
+  const certifications = resumeData.certifications as Certification[];
   
   return (
     <motion.div 
@@ -183,7 +160,7 @@ const CertificationsSection = () => {
     >
       <div className="mb-12 text-center">
         <h2 className="text-3xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-foreground to-foreground/70">
-          Certifications & Achievements
+          Professional Certifications
         </h2>
       </div>
       
@@ -195,29 +172,23 @@ const CertificationsSection = () => {
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.4, delay: 0.1 * index }}
           >
-            <Card className="h-full border border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
+            <Card className="h-full border border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 flex flex-col">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50 pointer-events-none" />
-              <CardHeader>
-                <CardTitle className="text-xl font-bold">{cert.name}</CardTitle>
-                <CardDescription className="text-base flex items-center gap-1 mt-1">
+              <CardHeader className="flex-shrink-0">
+                <CardTitle className="text-lg font-semibold leading-snug mb-1">{cert.name}</CardTitle> 
+                <CardDescription className="text-sm flex items-center gap-2 text-muted-foreground">
+                  {cert.logo && (
+                    <Image 
+                      src={cert.logo} 
+                      alt={`${cert.issuer} logo`} 
+                      width={20} 
+                      height={20} 
+                      className="object-contain rounded-sm" 
+                    />
+                  )}
                   <span className="font-medium">{cert.issuer}</span>
-                  <span className="mx-1">•</span>
-                  <div className="flex items-center gap-1 text-muted-foreground">
-                    <FiCalendar className="h-3 w-3" />
-                    <span>{cert.date}</span>
-                  </div>
                 </CardDescription>
               </CardHeader>
-              {cert.url && (
-                <CardFooter>
-                  <Button asChild variant="outline" className="group gap-2 border-primary/20 hover:bg-primary/10 transition-colors">
-                    <a href={cert.url} target="_blank" rel="noopener noreferrer">
-                      View Certificate
-                      <FiArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                    </a>
-                  </Button>
-                </CardFooter>
-              )}
             </Card>
           </motion.div>
         ))}

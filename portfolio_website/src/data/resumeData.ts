@@ -21,8 +21,7 @@ export interface Skill {
 export interface Certification {
   name: string;
   issuer: string;
-  date: string;
-  url?: string;
+  logo?: string;
 }
 
 export const resumeData = {
@@ -168,5 +167,18 @@ export const resumeData = {
     { name: "Cloud", type: "industry" }
   ],
   
-  certifications: [] // To be populated
+  certifications: [
+    { name: "Adobe XD Essential Training: Design", issuer: "LinkedIn", logo: "/images/certificate_issuer_logos/linkedin.png" },
+    { name: "Agile Foundations", issuer: "LinkedIn", logo: "/images/certificate_issuer_logos/linkedin.png" },
+    { name: "C++", issuer: "Ducat India", logo: "/images/certificate_issuer_logos/ducat.png" },
+    { name: "Data Science Using Python", issuer: "DataCamp", logo: "/images/certificate_issuer_logos/datacamp.png" },
+    { name: "Data Science Using R", issuer: "DataCamp", logo: "/images/certificate_issuer_logos/datacamp.png" },
+    { name: "Digital Product Management: Modern Fundamentals by University of Virginia", issuer: "Coursera", logo: "/images/certificate_issuer_logos/coursera.png" },
+    { name: "Java", issuer: "Ducat India", logo: "/images/certificate_issuer_logos/ducat.png" },
+    { name: "Machine Learning A-Z: AI, Python & R", issuer: "Udemy", logo: "/images/certificate_issuer_logos/udemy.png" },
+    { name: "Marketing And Sales Foundation", issuer: "Kraftshala", logo: "/images/certificate_issuer_logos/kraftshala.png" },
+    { name: "SQL For Data Science", issuer: "DataCamp", logo: "/images/certificate_issuer_logos/datacamp.png" },
+    { name: "Technical Analysis Of Financial Markets", issuer: "The Money Roller", logo: "/images/certificate_issuer_logos/the_money_roller.png" },
+    { name: "UX Foundations: Prototyping", issuer: "LinkedIn", logo: "/images/certificate_issuer_logos/linkedin.png" }
+  ]
 }; 
