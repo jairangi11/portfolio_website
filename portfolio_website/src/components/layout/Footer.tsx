@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { FaHeart } from "react-icons/fa";
 import { SiLinkedin } from "react-icons/si";
-import { Home, FileText, Briefcase, BookOpen, Mail as LucideMail } from 'lucide-react';
+import { Home, FileText, Briefcase, BookOpen, Mail as LucideMail, ArrowRight } from 'lucide-react';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -49,12 +49,6 @@ export default function Footer() {
                 <Link href="/case-studies" className="text-muted-foreground hover:text-primary transition-colors flex items-center group">
                   <Briefcase className="mr-2 h-4 w-4 transition-opacity duration-200" />
                   Case Studies
-                </Link>
-              </li>
-              <li>
-                <Link href="/blog" className="text-muted-foreground hover:text-primary transition-colors flex items-center group">
-                  <BookOpen className="mr-2 h-4 w-4 transition-opacity duration-200" />
-                  Blog
                 </Link>
               </li>
               <li>
