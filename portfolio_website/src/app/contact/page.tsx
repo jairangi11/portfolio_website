@@ -155,18 +155,16 @@ export default function ContactPage() {
     tap: { scale: 0.9 }
   };
 
-  const shinyEffect = "relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent";
-  
   return (
     <Layout>
       <motion.div 
-        className="container mx-auto px-4 py-16 md:py-24 min-h-[calc(100vh-var(--header-height))] flex items-center justify-center"
+        className="container mx-auto px-4 py-16"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
         <div 
-          className="max-w-4xl w-full"
+          className=""
         >
           <div className="text-center mb-12 md:mb-16">
             <h1 className="text-4xl md:text-5xl font-bold mb-3 text-foreground">
@@ -177,11 +175,10 @@ export default function ContactPage() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
-            <div className="w-full">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-12 items-start">
+            <div className="w-full md:col-span-3">
               <Card className={cn(
-                "w-full border border-border/40 shadow-lg bg-gradient-to-br from-card/60 to-card/80 backdrop-blur-lg rounded-lg",
-                shinyEffect
+                "w-full border border-border/40 shadow-lg bg-card hover:bg-muted/50 rounded-lg transition-colors duration-200",
               )}>
                 <CardHeader className="pb-4">
                   <CardTitle className="text-2xl text-foreground">Send a Message</CardTitle>
@@ -339,10 +336,9 @@ export default function ContactPage() {
               </Card>
             </div>
             
-            <div className="w-full">
+            <div className="w-full md:col-span-2">
               <Card className={cn(
-                "w-full border border-border/40 shadow-lg bg-gradient-to-br from-card/60 to-card/80 backdrop-blur-lg rounded-lg p-6",
-                shinyEffect
+                "w-full border border-border/40 shadow-lg bg-card hover:bg-muted/50 rounded-lg p-6 transition-colors duration-200",
               )}>
                  <CardHeader className="p-0 mb-5">
                    <CardTitle className="text-2xl text-foreground">Contact Details</CardTitle>
