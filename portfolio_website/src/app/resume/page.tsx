@@ -305,16 +305,9 @@ export default function ResumePage() {
                   </div>
                 </CardHeader>
                 <CardContent className="pb-6">
-                  <ul className="space-y-3">
-                    {exp.description.map((item, i) => (
-                      <li key={i} className="flex items-start gap-3 text-muted-foreground">
-                        <div className="mt-1.5">
-                          <div className="h-1.5 w-1.5 rounded-full bg-primary" />
-                        </div>
-                        <span className="leading-relaxed">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {exp.briefSummary} 
+                  </p>
                 </CardContent>
               </Card>
             </TimelineItem>

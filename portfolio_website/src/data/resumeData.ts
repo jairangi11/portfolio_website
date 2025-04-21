@@ -4,6 +4,7 @@ export interface Experience {
   location: string;
   period: string;
   description: string[];
+  briefSummary: string;
 }
 
 export interface Education {
@@ -52,7 +53,8 @@ export const resumeData = {
         "Designed and launched an AI chatbot, increasing lead profile completion from 43% to 62% and boosting engagement by 18%.",
         "Refined AI solutions and GTM strategy based on industry trend analysis.",
         "Collaborated with engineering, design, and sales teams to deliver agile product development and roadmap execution."
-      ]
+      ],
+      briefSummary: "Led technical product management for an AI-powered B2B PropTech platform in the Gulf region, developing predictive models, LLM search, lead qualification tools, and chatbots while collaborating with cross-functional teams for agile delivery."
     },
     {
       title: "Associate Product Manager",
@@ -66,7 +68,8 @@ export const resumeData = {
         "Implemented an AI chatbot, improving CSAT, reducing support load, and enhancing engagement.",
         "Set up KPIs and performance tracking for continuous UX improvement.",
         "Conducted competitive research to improve features and GTM strategy."
-      ]
+      ],
+      briefSummary: "Managed product vision for UX and onboarding across multiple markets, scaled an AI Resume Builder, optimized email campaigns, implemented an AI chatbot, and established performance tracking for continuous improvement."
     },
     {
       title: "Associate Product Manager",
@@ -79,7 +82,8 @@ export const resumeData = {
         "Automated merchant settlement with secure pipelines and error detection systems.",
         "Reduced transaction costs via MDR optimization through vendor negotiations.",
         "Conducted market research to optimize GTM strategy for digital payments."
-      ]
+      ],
+      briefSummary: "Owned the product roadmap for digital payments and wallet features, launched a 'Kids Wallet' initiative with Axis Bank, automated merchant settlements, optimized transaction costs, and conducted market research for GTM strategies."
     },
     {
       title: "Management Trainee - Product",
@@ -90,7 +94,8 @@ export const resumeData = {
         "Optimized matchmaking using behavioral insights, increasing matches by 20% and reducing churn by 15%.",
         "Improved premium engagement with personalized AI-driven VIP features.",
         "Built a predictive CRM model, reducing response time by 15% and improving efficiency."
-      ]
+      ],
+      briefSummary: "Optimized matchmaking algorithms using behavioral insights, enhanced premium user engagement with personalized AI features, and developed a predictive CRM model to improve operational efficiency."
     },
     {
       title: "MBA Internship",
@@ -100,7 +105,8 @@ export const resumeData = {
       description: [
         "Boosted John Jacobs sunglasses sales by 25% through market and inventory optimization.",
         "Defined KPIs for stores to align with GTM strategies."
-      ]
+      ],
+      briefSummary: "Focused on optimizing sales for a specific product line through market analysis and inventory management, and defined key performance indicators for retail stores."
     },
     {
       title: "Software Engineering Intern",
@@ -109,7 +115,8 @@ export const resumeData = {
       period: "01/2017 – 07/2017",
       description: [
         "Developed a remote monitoring system for real-time analytics."
-      ]
+      ],
+      briefSummary: "Contributed to the development of a remote monitoring system designed for real-time data analytics in the energy sector."
     }
   ],
   
