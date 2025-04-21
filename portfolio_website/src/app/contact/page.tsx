@@ -110,21 +110,37 @@ export default function ContactPage() {
     setSubmitStatus('idle'); // Reset status on new submission
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Success
-      setSubmitStatus('success');
-      setSuccessMessage("Message successfully delivered");
-      setFormData({ name: "", email: "", subject: "", message: "" });
-      setErrors({}); // Clear errors on success
-      
-      // Reset success message after 5 seconds
-      setTimeout(() => {
-        setSubmitStatus('idle');
-        setSuccessMessage("");
-      }, 5000);
+      // Replace the simulation with a fetch call to the API route
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      // Check if the request was successful
+      if (response.ok) {
+        // Success
+        setSubmitStatus('success');
+        setSuccessMessage("Message successfully sent!"); // Updated success message
+        setFormData({ name: "", email: "", subject: "", message: "" });
+        setErrors({}); // Clear errors on success
+        
+        // Reset success message after 5 seconds
+        setTimeout(() => {
+          setSubmitStatus('idle');
+          setSuccessMessage("");
+        }, 5000);
+      } else {
+        // Handle server errors (e.g., validation errors, Resend failure)
+        const errorData = await response.json();
+        console.error("Submission failed:", errorData);
+        setSubmitStatus('error');
+         // Optionally, display a more specific error message from errorData.error or errorData.details if available
+      }
     } catch (error) {
+      // Handle network errors or unexpected issues
       console.error("Submission failed:", error);
       setSubmitStatus('error');
     } finally {
