@@ -80,7 +80,7 @@ export default function Header() {
                   <Link href={item.href} target={item.isExternal ? "_blank" : undefined}>
                     <Button
                       variant="ghost"
-                      className="px-4 py-2 relative hover:bg-primary/5 group"
+                      className="px-4 py-2 relative hover:bg-primary/5 group cursor-pointer"
                     >
                       <span className="relative z-10 group-hover:text-primary transition-colors duration-300">
                         {item.title}
@@ -107,7 +107,7 @@ export default function Header() {
             <Button
               asChild
               size="sm"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 group"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 group cursor-pointer"
             >
               <Link href="/contact" className="flex items-center">
                 Get in Touch
@@ -118,7 +118,7 @@ export default function Header() {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden z-50 relative"
+            className="md:hidden z-50 relative cursor-pointer"
             onClick={() => setIsOpen(!isOpen)}
             aria-label={isOpen ? "Close Menu" : "Open Menu"}
           >
@@ -144,7 +144,7 @@ export default function Header() {
                         <li key={item.href}>
                           <Link
                             href={item.href}
-                            className="text-2xl font-medium text-foreground hover:text-primary transition-colors duration-300 block"
+                            className="text-2xl font-medium text-foreground hover:text-primary transition-colors duration-300 block cursor-pointer"
                             onClick={() => setIsOpen(false)}
                             target={item.isExternal ? "_blank" : undefined}
                           >
@@ -159,7 +159,7 @@ export default function Header() {
                 <div className="p-6 w-full border-t border-border/10">
                   <Button
                     asChild
-                    className="w-full bg-primary text-primary-foreground hover:bg-primary/90 group"
+                    className="w-full bg-primary text-primary-foreground hover:bg-primary/90 group cursor-pointer"
                   >
                     <Link href="/contact" onClick={() => setIsOpen(false)} className="flex items-center justify-center">
                       Get in Touch

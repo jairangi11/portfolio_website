@@ -320,7 +320,7 @@ export default function ContactPage() {
                       <Button
                         type="submit"
                         disabled={isSubmitting}
-                        className="w-full group relative overflow-hidden flex items-center justify-center gap-2 transition-all duration-300 ease-in-out hover:shadow-lg active:scale-[0.98] bg-primary text-primary-foreground hover:bg-primary/90 rounded-md py-2.5 px-4 font-semibold"
+                        className="w-full group relative overflow-hidden flex items-center justify-center gap-2 transition-all duration-300 ease-in-out hover:shadow-lg active:scale-[0.98] bg-primary text-primary-foreground hover:bg-primary/90 rounded-md py-2.5 px-4 font-semibold cursor-pointer"
                         aria-live="polite"
                       >
                          {isSubmitting ? (
