@@ -43,8 +43,8 @@ export const caseStudies: CaseStudy[] = [
       title: "E-commerce Director",
       avatar: "/images/testimonials/sarah-johnson.jpg"
     },
-    figmaLink: "#",
-    whimsicalLink: "#"
+    figmaLink: "https://www.google.com",
+    whimsicalLink: "https://www.google.com"
   },
   {
     id: "financial-dashboard",
@@ -66,8 +66,8 @@ export const caseStudies: CaseStudy[] = [
       title: "Head of Financial Analysis",
       avatar: "/images/testimonials/michael-chen.jpg"
     },
-    figmaLink: "#",
-    whimsicalLink: "#"
+    figmaLink: "https://www.google.com",
+    whimsicalLink: "https://www.google.com"
   },
   {
     id: "healthcare-app",
@@ -89,7 +89,7 @@ export const caseStudies: CaseStudy[] = [
       title: "Chief Medical Officer",
       avatar: "/images/testimonials/lisa-patel.jpg"
     },
-    figmaLink: "#",
-    whimsicalLink: "#"
+    figmaLink: "https://www.google.com",
+    whimsicalLink: "https://www.google.com"
   }
 ]; 
