@@ -7,7 +7,7 @@ import { resumeData, type Education, type Certification } from "@/data/resumeDat
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { FiDownload, FiBriefcase, FiBook, FiStar, FiCpu, FiCalendar, FiMapPin } from "react-icons/fi";
+import { FiDownload, FiBriefcase, FiBook, FiStar, FiCpu, FiCalendar, FiMapPin, FiExternalLink } from "react-icons/fi";
 import Image from 'next/image';
 
 // Timeline item component
@@ -283,15 +283,27 @@ export default function ResumePage() {
               isLast={index === resumeData.experience.length - 1 && resumeData.education.length === 0}
               position={index % 2 === 0 ? "right" : "left"}
             >
-              <Card className="border border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden shadow-md hover:shadow-lg transition-all duration-300">
+              <Card className="border border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 group">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50 pointer-events-none" />
                 <CardHeader className="pb-3">
-                  <div className="flex justify-between items-start flex-wrap gap-2">
+                  <div className="flex justify-between items-start flex-wrap gap-2 mb-2">
                     <div>
                       <CardTitle className="text-xl font-bold">{exp.title}</CardTitle>
-                      <CardDescription className="text-base flex items-center gap-1 mt-1">
-                        <span className="font-medium">{exp.company}</span>
-                        <span className="mx-1">•</span>
+                      <CardDescription className="text-base flex items-center flex-wrap gap-x-2 gap-y-1 mt-1">
+                        {exp.website ? (
+                          <a 
+                            href={exp.website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-medium hover:text-primary transition-colors duration-200 flex items-center gap-1"
+                          >
+                            <span>{exp.company}</span>
+                            <FiExternalLink className="h-3.5 w-3.5 opacity-80" />
+                          </a>
+                        ) : (
+                          <span className="font-medium">{exp.company}</span>
+                        )}
+                        <span className="text-muted-foreground hidden sm:inline mx-1">•</span>
                         <div className="flex items-center gap-1 text-muted-foreground">
                           <FiMapPin className="h-3 w-3" />
                           <span>{exp.location}</span>
@@ -303,6 +315,18 @@ export default function ResumePage() {
                       <span>{exp.period}</span>
                     </Badge>
                   </div>
+                  {/* Add Company Logo */}
+                  {exp.logo && (
+                    <div className="mt-2 h-10 relative flex items-center w-24">
+                      <Image 
+                        src={exp.logo} 
+                        alt={`${exp.company} logo`} 
+                        layout="fill"
+                        objectFit="contain"
+                        className="grayscale group-hover:grayscale-0 transition-all duration-300"
+                      />
+                    </div>
+                  )}
                 </CardHeader>
                 <CardContent className="pb-6">
                   <p className="text-muted-foreground leading-relaxed">

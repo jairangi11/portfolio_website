@@ -5,6 +5,8 @@ export interface Experience {
   period: string;
   description: string[];
   briefSummary: string;
+  logo?: string;
+  website?: string;
 }
 
 export interface Education {
@@ -46,6 +48,8 @@ export const resumeData = {
       company: "Quara Holdings",
       location: "Gurgaon, India",
       period: "08/2023 – 03/2025",
+      logo: "/images/company_logos/Quara_holding.png",
+      website: "https://www.quaraholding.com/",
       description: [
         "Spearheaded technical product management for a B2B PropTech insights platform, integrating AI-powered predictive models to estimate property values, rental trends, and market demand across the Gulf region, generating over $100,000 in ARR.",
         "Developed an LLM-powered natural language search feature, increasing search engagement by 35% and query-to-conversion rate by 22%.",
@@ -61,6 +65,8 @@ export const resumeData = {
       company: "foundit (Formerly Monster APAC & ME)",
       location: "Noida, India",
       period: "01/2022 – 08/2023",
+      logo: "/images/company_logos/foundit.png",
+      website: "https://www.foundit.in/",
       description: [
         "Defined and executed product vision for UX and onboarding across 9 markets, increasing profile completeness by 14% and engagement by 8%.",
         "Scaled an AI-enhanced Resume Builder to 100,000+ monthly creations using data insights and CRO techniques.",
@@ -76,6 +82,8 @@ export const resumeData = {
       company: "Freecharge",
       location: "Gurgaon, India",
       period: "02/2021 – 01/2022",
+      logo: "/images/company_logos/Freecharge_logo.png",
+      website: "https://www.freecharge.in/",
       description: [
         "Owned roadmap for digital payments, wallet, and rent payments, generating ₹6L GMV/month.",
         "Designed \"Kids Wallet\" with Axis Bank, expanding into fintech with API integration and compliance.",
@@ -90,6 +98,8 @@ export const resumeData = {
       company: "People Group (Shaadi.com)",
       location: "Mumbai, India",
       period: "06/2020 – 02/2021",
+      logo: "/images/company_logos/Shaadi.png",
+      website: "https://www.shaadi.com/",
       description: [
         "Optimized matchmaking using behavioral insights, increasing matches by 20% and reducing churn by 15%.",
         "Improved premium engagement with personalized AI-driven VIP features.",
@@ -102,6 +112,8 @@ export const resumeData = {
       company: "Lenskart",
       location: "Faridabad, India",
       period: "04/2019 – 05/2019",
+      logo: "/images/company_logos/Lenskart-Logo.png",
+      website: "https://www.lenskart.com/",
       description: [
         "Boosted John Jacobs sunglasses sales by 25% through market and inventory optimization.",
         "Defined KPIs for stores to align with GTM strategies."
@@ -113,6 +125,8 @@ export const resumeData = {
       company: "Petrofac",
       location: "Gurgaon, India",
       period: "01/2017 – 07/2017",
+      logo: "/images/company_logos/Petrofac.png",
+      website: "https://www.petrofac.com/",
       description: [
         "Developed a remote monitoring system for real-time analytics."
       ],
