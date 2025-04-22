@@ -192,9 +192,9 @@ export default function ContactPage() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-12 items-start">
-            <div className="w-full md:col-span-3 group">
+            <div className="w-full md:col-span-3">
               <Card className={cn(
-                "relative w-full border border-border/50 bg-card/50 group-hover:bg-card/60 backdrop-blur-sm shadow-lg group-hover:shadow-xl rounded-lg transition-all duration-300 overflow-hidden", 
+                "relative w-full border border-border/50 bg-card/50 backdrop-blur-sm shadow-lg rounded-lg transition-all duration-300 overflow-hidden",
               )}>
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50 pointer-events-none z-0" />
                 
@@ -356,9 +356,9 @@ export default function ContactPage() {
               </Card>
             </div>
             
-            <div className="w-full md:col-span-2 group">
+            <div className="w-full md:col-span-2">
               <Card className={cn(
-                "relative w-full border border-border/50 bg-card/50 group-hover:bg-card/60 backdrop-blur-sm shadow-lg group-hover:shadow-xl rounded-lg transition-all duration-300 overflow-hidden p-6", 
+                "relative w-full border border-border/50 bg-card/50 backdrop-blur-sm shadow-lg rounded-lg transition-all duration-300 overflow-hidden p-6",
               )}>
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50 pointer-events-none z-0" />
 
@@ -368,7 +368,7 @@ export default function ContactPage() {
                   </CardHeader>
                   <CardContent className="p-0 space-y-5">
                     <motion.div 
-                      className="flex items-center justify-between gap-3 group relative"
+                      className="flex items-center justify-start gap-3 group relative"
                       whileHover="hover"
                       initial="rest"
                     >
@@ -394,7 +394,7 @@ export default function ContactPage() {
                         }}
                         variants={iconHoverAnim}
                         whileTap="tap"
-                        className="p-1 text-muted-foreground hover:text-primary transition-colors absolute right-0 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 focus:opacity-100"
+                        className="p-1 ml-2 text-muted-foreground hover:text-primary transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
                         aria-label={emailCopied ? "Email copied" : "Copy email"}
                         title={emailCopied ? "Email copied" : "Copy email"}
                       >
