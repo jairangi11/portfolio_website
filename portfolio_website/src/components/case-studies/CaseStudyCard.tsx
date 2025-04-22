@@ -9,7 +9,9 @@ import {
   CardHeader 
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { FiCalendar, FiArrowRight } from 'react-icons/fi';
+import { FiArrowRight } from 'react-icons/fi';
+import { RiMindMap } from "react-icons/ri";
+import { SiFigma } from 'react-icons/si';
 import { CaseStudy } from '@/data/caseStudiesData';
 
 interface CaseStudyCardProps {
@@ -26,12 +28,13 @@ export default function CaseStudyCard({ caseStudy, index }: CaseStudyCardProps) 
         duration: 0.5,
         delay: 0.1 * (index + 1)
       }}
+      className="h-full"
     >
-      <Card className="relative h-full border border-border/50 bg-card/50 group-hover:bg-card/60 backdrop-blur-sm shadow-lg group-hover:shadow-xl transition-all duration-300 group overflow-hidden">
+      <Card className="relative h-full border border-border/40 bg-card/50 hover:border-border/60 backdrop-blur-sm shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50 pointer-events-none z-0" />
         
-        <div className="relative z-10">
-          <div className="relative h-52 w-full overflow-hidden">
+        <div className="relative z-10 flex flex-col flex-grow">
+          <div className="relative h-48 w-full overflow-hidden">
             <Image
               src={caseStudy.thumbnailImage || caseStudy.coverImage}
               alt={caseStudy.title}
@@ -40,7 +43,7 @@ export default function CaseStudyCard({ caseStudy, index }: CaseStudyCardProps) 
             />
           </div>
           
-          <CardHeader className="pb-2">
+          <CardHeader className="pb-3 pt-4">
             <div className="flex flex-wrap gap-2 mb-2">
               {caseStudy.tags.slice(0, 3).map((tag, i) => (
                 <Badge 
@@ -62,36 +65,55 @@ export default function CaseStudyCard({ caseStudy, index }: CaseStudyCardProps) 
             </div>
             <Link 
               href={`/case-studies/${caseStudy.id}`} 
-              className="group-hover:text-primary transition-colors"
+              className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
             >
-              <h3 className="text-xl font-bold leading-tight line-clamp-2 transition-colors group-hover:text-primary">
+              <h3 className="text-lg font-semibold leading-snug line-clamp-2 transition-colors group-hover:text-primary">
                 {caseStudy.title}
               </h3>
             </Link>
-            <div className="flex items-center text-sm text-muted-foreground mt-1">
-              <span className="font-medium">{caseStudy.company}</span>
-              <span className="mx-2">•</span>
-              <span className="flex items-center">
-                <FiCalendar className="mr-1 h-3 w-3" />
-                {caseStudy.period}
-              </span>
+            <div className="text-sm text-muted-foreground mt-1 font-medium">
+              {caseStudy.company}
             </div>
           </CardHeader>
           
-          <CardContent>
-            <p className="text-muted-foreground line-clamp-3">
+          <CardContent className="flex-grow pb-3">
+            <p className="text-muted-foreground line-clamp-3 text-sm">
               {caseStudy.summary}
             </p>
           </CardContent>
           
-          <CardFooter>
+          <CardFooter className="pt-3 pb-4 flex justify-between items-center">
             <Link 
               href={`/case-studies/${caseStudy.id}`} 
-              className="text-sm font-medium text-primary flex items-center hover:underline transition-all"
+              className="group text-sm font-medium text-primary flex items-center hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
             >
               View case study
-              <FiArrowRight className="ml-1 h-4 w-4" />
+              <FiArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
+            <div className="flex items-center space-x-3">
+              {caseStudy.figmaLink && (
+                <Link 
+                  href={caseStudy.figmaLink} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  aria-label="View Figma file"
+                  className="text-muted-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-full p-1"
+                >
+                  <SiFigma className="h-4 w-4" />
+                </Link>
+              )}
+              {caseStudy.whimsicalLink && (
+                <Link 
+                  href={caseStudy.whimsicalLink} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  aria-label="View Whimsical board"
+                  className="text-muted-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-full p-1"
+                >
+                  <RiMindMap className="h-4 w-4" />
+                </Link>
+              )}
+            </div>
           </CardFooter>
         </div>
       </Card>

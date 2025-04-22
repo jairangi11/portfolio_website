@@ -18,6 +18,8 @@ export interface CaseStudy {
     title: string;
     avatar?: string;
   };
+  figmaLink?: string;
+  whimsicalLink?: string;
 }
 
 export const caseStudies: CaseStudy[] = [
@@ -40,7 +42,9 @@ export const caseStudies: CaseStudy[] = [
       name: "Sarah Johnson",
       title: "E-commerce Director",
       avatar: "/images/testimonials/sarah-johnson.jpg"
-    }
+    },
+    figmaLink: "#",
+    whimsicalLink: "#"
   },
   {
     id: "financial-dashboard",
@@ -61,7 +65,9 @@ export const caseStudies: CaseStudy[] = [
       name: "Michael Chen",
       title: "Head of Financial Analysis",
       avatar: "/images/testimonials/michael-chen.jpg"
-    }
+    },
+    figmaLink: "#",
+    whimsicalLink: "#"
   },
   {
     id: "healthcare-app",
@@ -82,6 +88,8 @@ export const caseStudies: CaseStudy[] = [
       name: "Dr. Lisa Patel",
       title: "Chief Medical Officer",
       avatar: "/images/testimonials/lisa-patel.jpg"
-    }
+    },
+    figmaLink: "#",
+    whimsicalLink: "#"
   }
 ]; 
