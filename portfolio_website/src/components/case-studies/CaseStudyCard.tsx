@@ -90,17 +90,21 @@ export default function CaseStudyCard({ caseStudy, index }: CaseStudyCardProps) 
               View case study
               <FiArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-3 text-sm text-muted-foreground">
               {caseStudy.figmaLink && (
                 <Link 
                   href={caseStudy.figmaLink} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   aria-label="View Figma file"
-                  className="text-muted-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-full p-1"
+                  className="flex items-center space-x-1 hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md px-1 py-0.5"
                 >
                   <SiFigma className="h-4 w-4 text-pink-500" />
+                  <span>Figma</span>
                 </Link>
+              )}
+              {caseStudy.figmaLink && caseStudy.whimsicalLink && (
+                <span className="text-muted-foreground/50">|</span>
               )}
               {caseStudy.whimsicalLink && (
                 <Link 
@@ -108,9 +112,10 @@ export default function CaseStudyCard({ caseStudy, index }: CaseStudyCardProps) 
                   target="_blank" 
                   rel="noopener noreferrer"
                   aria-label="View Whimsical board"
-                  className="text-muted-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-full p-1"
+                  className="flex items-center space-x-1 hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md px-1 py-0.5"
                 >
                   <RiMindMap className="h-4 w-4 text-blue-500" />
+                  <span>Whimsical</span>
                 </Link>
               )}
             </div>

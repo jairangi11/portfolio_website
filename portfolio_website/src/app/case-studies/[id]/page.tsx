@@ -3,7 +3,7 @@
 import { notFound, useParams } from 'next/navigation';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { FiCalendar, FiTag, FiLink, FiExternalLink } from 'react-icons/fi';
+import { FiTag, FiExternalLink } from 'react-icons/fi';
 import { SiFigma } from 'react-icons/si';
 import { RiMindMap } from "react-icons/ri";
 import Link from 'next/link';
@@ -125,11 +125,12 @@ export default function CaseStudyPage() {
             </motion.div>
           </main>
 
-          <aside className="hidden lg:block lg:col-span-2 sticky top-24 self-start max-h-[calc(100vh-10rem)] overflow-y-auto pl-4">
+          <aside className="hidden lg:block lg:col-span-2 sticky top-24 self-start max-h-[calc(100vh-10rem)] overflow-y-auto overflow-x-hidden">
              <motion.div 
                initial={{ opacity: 0, x: 20 }}
                animate={{ opacity: 1, x: 0 }}
                transition={{ duration: 0.5, delay: 0.3 }}
+               className="pl-4 overflow-hidden"
              >
                 {(currentCaseStudy.figmaLink || currentCaseStudy.whimsicalLink) && (
                   <>
@@ -143,8 +144,8 @@ export default function CaseStudyPage() {
                           className="flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200 group"
                         >
                           <SiFigma className="mr-2 text-pink-500 flex-shrink-0" size={16} />
-                          <span className="truncate group-hover:underline">Figma</span>
-                          <FiExternalLink className="ml-auto text-gray-400 group-hover:text-gray-600 transition-colors duration-200" size={14}/>
+                          <span className="mr-1 truncate group-hover:underline">Figma</span>
+                          <FiExternalLink className="text-gray-400 group-hover:text-gray-600 transition-colors duration-200 flex-shrink-0" size={14}/>
                         </a>
                       )}
                       {currentCaseStudy.whimsicalLink && currentCaseStudy.whimsicalLink !== '#' && (
@@ -155,8 +156,8 @@ export default function CaseStudyPage() {
                           className="flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200 group"
                         >
                           <RiMindMap className="mr-2 text-blue-500 flex-shrink-0" size={16} /> 
-                          <span className="truncate group-hover:underline">Whimsical</span>
-                           <FiExternalLink className="ml-auto text-gray-400 group-hover:text-gray-600 transition-colors duration-200" size={14}/>
+                          <span className="mr-1 truncate group-hover:underline">Whimsical</span>
+                           <FiExternalLink className="text-gray-400 group-hover:text-gray-600 transition-colors duration-200 flex-shrink-0" size={14}/>
                         </a>
                       )}
                     </div>
