@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import { 
   Card, 
   CardContent, 
@@ -21,6 +22,15 @@ interface CaseStudyCardProps {
 }
 
 export default function CaseStudyCard({ caseStudy, index }: CaseStudyCardProps) {
+  const router = useRouter();
+
+  const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target instanceof Element && e.target.closest('a, button')) {
+      return; 
+    }
+    router.push(`/case-studies/${caseStudy.id}`);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -31,7 +41,10 @@ export default function CaseStudyCard({ caseStudy, index }: CaseStudyCardProps) 
       }}
       className="h-full"
     >
-      <Card className="group relative h-full border border-border/40 bg-card/50 hover:border-border/60 backdrop-blur-sm shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col">
+      <Card 
+        className="group relative h-full border border-border/40 bg-card/50 hover:border-border/60 backdrop-blur-sm shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col cursor-pointer"
+        onClick={handleCardClick}
+      >
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50 pointer-events-none z-0" />
         
         <div className="relative z-10 flex flex-col flex-grow">
@@ -64,14 +77,9 @@ export default function CaseStudyCard({ caseStudy, index }: CaseStudyCardProps) 
                 </Badge>
               )}
             </div>
-            <Link 
-              href={`/case-studies/${caseStudy.id}`} 
-              className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
-            >
-              <h3 className="text-lg font-semibold leading-snug line-clamp-2 transition-colors group-hover:text-primary">
-                {caseStudy.title}
-              </h3>
-            </Link>
+            <h3 className="text-lg font-semibold leading-snug line-clamp-2 transition-colors group-hover:text-primary">
+              {caseStudy.title}
+            </h3>
             <div className="text-sm text-muted-foreground mt-1 font-medium">
               {caseStudy.company}
             </div>
@@ -92,6 +100,7 @@ export default function CaseStudyCard({ caseStudy, index }: CaseStudyCardProps) 
                   rel="noopener noreferrer"
                   aria-label="View Figma file"
                   className="flex items-center space-x-1 hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md p-1 group/link"
+                  onClick={(e) => e.stopPropagation()}
                 >
                   <SiFigma className="h-4 w-4 text-pink-500 transition-transform group-hover/link:scale-110" />
                   <span className="hidden sm:inline text-xs">Figma</span>
@@ -107,6 +116,7 @@ export default function CaseStudyCard({ caseStudy, index }: CaseStudyCardProps) 
                   rel="noopener noreferrer"
                   aria-label="View Whimsical board"
                   className="flex items-center space-x-1 hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md p-1 group/link"
+                  onClick={(e) => e.stopPropagation()}
                 >
                   <RiMindMap className="h-4 w-4 text-blue-500 transition-transform group-hover/link:scale-110" />
                   <span className="hidden sm:inline text-xs">Whimsical</span>
@@ -122,30 +132,16 @@ export default function CaseStudyCard({ caseStudy, index }: CaseStudyCardProps) 
                   rel="noopener noreferrer"
                   aria-label="View Google Sheets file"
                   className="flex items-center space-x-1 hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md p-1 group/link"
+                  onClick={(e) => e.stopPropagation()}
                 >
                   <SiGooglesheets className="h-4 w-4 text-green-500 transition-transform group-hover/link:scale-110" />
                   <span className="hidden sm:inline text-xs">Sheets</span>
                 </Link>
               )}
             </div>
-
-            <Link 
-              href={`/case-studies/${caseStudy.id}`} 
-              aria-label={`View case study for ${caseStudy.title}`}
-              passHref
-              legacyBehavior
-            >
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                asChild 
-                className="text-primary hover:text-primary/80 focus-visible:ring-offset-background rounded-full"
-              >
-                <a>
-                  <FiArrowRight className="h-5 w-5" />
-                </a>
-              </Button>
-            </Link>
+            <div className="text-primary opacity-70 group-hover:opacity-100 transition-opacity">
+              <FiArrowRight className="h-5 w-5" />
+            </div>
           </CardFooter>
         </div>
       </Card>

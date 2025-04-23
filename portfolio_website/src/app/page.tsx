@@ -197,7 +197,9 @@ export default function Home() {
       <HeroSection resumeData={heroResumeData} isNavigating={isNavigating} />
 
       {/* Render Companies Section */}
-      <CompaniesSection companies={companies} isNavigating={isNavigating} />
+      <div id="companies-section">
+        <CompaniesSection companies={companies} isNavigating={isNavigating} />
+      </div>
 
       {/* Render Expertise Section */}
       <ExpertiseSection 

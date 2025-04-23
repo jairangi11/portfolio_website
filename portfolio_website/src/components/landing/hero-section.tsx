@@ -94,6 +94,13 @@ export function HeroSection({ resumeData }: HeroSectionProps) {
     };
   }, []);
 
+  const handleScrollDown = () => {
+    const section = document.getElementById('companies-section');
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
     <section className="relative min-h-[85vh] overflow-hidden bg-background">
       {/* Simple background elements */}
@@ -195,6 +202,7 @@ export function HeroSection({ resumeData }: HeroSectionProps) {
               exit={{ opacity: 0, y: 10 }}
               transition={{ duration: 0.4, ease: "easeInOut" }}
               className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center cursor-pointer group"
+              onClick={handleScrollDown}
             >
               <motion.svg
                 width="24"
