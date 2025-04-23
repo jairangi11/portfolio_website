@@ -13,6 +13,8 @@ import { FiArrowRight } from 'react-icons/fi';
 import { RiMindMap } from "react-icons/ri";
 import { SiFigma, SiGooglesheets } from 'react-icons/si';
 import { CaseStudy } from '@/data/caseStudiesData';
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 interface CaseStudyCardProps {
   caseStudy: CaseStudy;
@@ -30,7 +32,7 @@ export default function CaseStudyCard({ caseStudy, index }: CaseStudyCardProps) 
       }}
       className="h-full"
     >
-      <Card className="relative h-full border border-border/40 bg-card/50 hover:border-border/60 backdrop-blur-sm shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col">
+      <Card className="group relative h-full border border-border/40 bg-card/50 hover:border-border/60 backdrop-blur-sm shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50 pointer-events-none z-0" />
         
         <div className="relative z-10 flex flex-col flex-grow">
@@ -39,7 +41,7 @@ export default function CaseStudyCard({ caseStudy, index }: CaseStudyCardProps) 
               src={caseStudy.thumbnailImage || caseStudy.coverImage}
               alt={caseStudy.title}
               fill
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              className="object-cover transition-transform duration-500 hover:scale-105"
             />
           </div>
           
@@ -49,7 +51,7 @@ export default function CaseStudyCard({ caseStudy, index }: CaseStudyCardProps) 
                 <Badge 
                   key={i} 
                   variant="outline" 
-                  className="bg-primary/10 text-primary hover:bg-primary/20 transition-colors border-primary/20"
+                  className="bg-primary/10 text-primary hover:bg-primary/20 transition-colors border-primary/20 text-xs px-2 py-0.5"
                 >
                   {tag}
                 </Badge>
@@ -57,7 +59,7 @@ export default function CaseStudyCard({ caseStudy, index }: CaseStudyCardProps) 
               {caseStudy.tags.length > 3 && (
                 <Badge 
                   variant="outline" 
-                  className="bg-muted/30 text-muted-foreground border-muted/20"
+                  className="bg-muted/30 text-muted-foreground border-muted/20 text-xs px-2 py-0.5"
                 >
                   +{caseStudy.tags.length - 3}
                 </Badge>
@@ -82,29 +84,22 @@ export default function CaseStudyCard({ caseStudy, index }: CaseStudyCardProps) 
             </p>
           </CardContent>
           
-          <CardFooter className="pt-3 pb-4 flex justify-between items-center">
-            <Link 
-              href={`/case-studies/${caseStudy.id}`} 
-              className="group text-sm font-medium text-primary flex items-center hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
-            >
-              View case study
-              <FiArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Link>
-            <div className="flex items-center space-x-3 text-sm text-muted-foreground">
+          <CardFooter className="pt-4 pb-4 flex justify-between items-center border-t border-border/20 mt-auto">
+            <div className="flex items-center space-x-2 text-sm text-muted-foreground">
               {caseStudy.figmaLink && (
                 <Link 
                   href={caseStudy.figmaLink} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   aria-label="View Figma file"
-                  className="flex items-center space-x-1 hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md px-1 py-0.5"
+                  className="flex items-center space-x-1 hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md p-1 group/link"
                 >
-                  <SiFigma className="h-4 w-4 text-pink-500" />
-                  <span>Figma</span>
+                  <SiFigma className="h-4 w-4 text-pink-500 transition-transform group-hover/link:scale-110" />
+                  <span className="hidden sm:inline text-xs">Figma</span>
                 </Link>
               )}
               {caseStudy.figmaLink && caseStudy.whimsicalLink && (
-                <span className="text-muted-foreground/50">|</span>
+                <span className="text-muted-foreground/30">|</span>
               )}
               {caseStudy.whimsicalLink && (
                 <Link 
@@ -112,14 +107,14 @@ export default function CaseStudyCard({ caseStudy, index }: CaseStudyCardProps) 
                   target="_blank" 
                   rel="noopener noreferrer"
                   aria-label="View Whimsical board"
-                  className="flex items-center space-x-1 hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md px-1 py-0.5"
+                  className="flex items-center space-x-1 hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md p-1 group/link"
                 >
-                  <RiMindMap className="h-4 w-4 text-blue-500" />
-                  <span>Whimsical</span>
+                  <RiMindMap className="h-4 w-4 text-blue-500 transition-transform group-hover/link:scale-110" />
+                  <span className="hidden sm:inline text-xs">Whimsical</span>
                 </Link>
               )}
-              {(caseStudy.figmaLink || caseStudy.whimsicalLink) && caseStudy.sheetsLink && (
-                <span className="text-muted-foreground/50">|</span>
+              {((caseStudy.figmaLink || caseStudy.whimsicalLink)) && caseStudy.sheetsLink && (
+                <span className="text-muted-foreground/30">|</span>
               )}
               {caseStudy.sheetsLink && (
                 <Link 
@@ -127,13 +122,31 @@ export default function CaseStudyCard({ caseStudy, index }: CaseStudyCardProps) 
                   target="_blank" 
                   rel="noopener noreferrer"
                   aria-label="View Google Sheets file"
-                  className="flex items-center space-x-1 hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md px-1 py-0.5"
+                  className="flex items-center space-x-1 hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md p-1 group/link"
                 >
-                  <SiGooglesheets className="h-4 w-4 text-green-500" />
-                  <span>Sheets</span>
+                  <SiGooglesheets className="h-4 w-4 text-green-500 transition-transform group-hover/link:scale-110" />
+                  <span className="hidden sm:inline text-xs">Sheets</span>
                 </Link>
               )}
             </div>
+
+            <Link 
+              href={`/case-studies/${caseStudy.id}`} 
+              aria-label={`View case study for ${caseStudy.title}`}
+              passHref
+              legacyBehavior
+            >
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                asChild 
+                className="text-primary hover:text-primary/80 focus-visible:ring-offset-background rounded-full"
+              >
+                <a>
+                  <FiArrowRight className="h-5 w-5" />
+                </a>
+              </Button>
+            </Link>
           </CardFooter>
         </div>
       </Card>
