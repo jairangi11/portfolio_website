@@ -13,7 +13,6 @@ import { FiArrowRight } from 'react-icons/fi';
 import { RiMindMap } from "react-icons/ri";
 import { SiFigma, SiGooglesheets } from 'react-icons/si';
 import { CaseStudy } from '@/data/caseStudiesData';
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 interface CaseStudyCardProps {

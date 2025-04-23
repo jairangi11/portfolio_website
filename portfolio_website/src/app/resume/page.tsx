@@ -22,7 +22,6 @@ const TimelineItem = ({
 }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, margin: "-100px 0px" });
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
   return (
     <div
       ref={ref}
