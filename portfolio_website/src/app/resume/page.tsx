@@ -22,30 +22,35 @@ const TimelineItem = ({
 }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, margin: "-100px 0px" });
-  
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
   return (
-    <div ref={ref} className={`relative mb-20 flex items-start ${position === "left" ? "flex-row-reverse" : "flex-row"}`}>
-      {/* Line */}
-      {!isLast && (
-        <div className="absolute left-1/2 top-10 -translate-x-1/2 w-0.5 h-[calc(100%+5rem)] bg-gradient-to-b from-primary/80 to-primary/20 dark:from-primary/60 dark:to-primary/5" />
-      )}
-      
-      {/* Center dot */}
-      <div className="absolute left-1/2 top-3 -translate-x-1/2 flex items-center justify-center w-6 h-6 z-10">
-        <motion.div 
-          initial={{ scale: 0, opacity: 0 }} 
-          animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
-          transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.1 }}
-          className="w-3 h-3 rounded-full bg-primary shadow-glow"
-        />
+    <div
+      ref={ref}
+      className={`relative mb-10 flex items-start 
+        sm:mb-20 
+        ${position === "left" ? "sm:flex-row-reverse flex-col" : "sm:flex-row flex-col"}
+      `}
+    >
+      {/* Timeline line and dot only on sm+ */}
+      <div className="hidden sm:block">
+        {!isLast && (
+          <div className="absolute left-1/2 top-10 -translate-x-1/2 w-0.5 h-[calc(100%+5rem)] bg-gradient-to-b from-primary/80 to-primary/20 dark:from-primary/60 dark:to-primary/5" />
+        )}
+        <div className="absolute left-1/2 top-3 -translate-x-1/2 flex items-center justify-center w-6 h-6 z-10">
+          <motion.div 
+            initial={{ scale: 0, opacity: 0 }} 
+            animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.1 }}
+            className="w-3 h-3 rounded-full bg-primary shadow-glow"
+          />
+        </div>
       </div>
-      
       {/* Content */}
       <motion.div
         initial={{ opacity: 0, x: position === "left" ? 20 : -20 }}
         animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: position === "left" ? 20 : -20 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className={`w-[calc(50%-2rem)] mx-8 ${position === "left" ? "text-left" : "text-left"}`}
+        className={`w-full sm:w-[calc(50%-2rem)] mx-0 sm:mx-8 text-left`}
       >
         {children}
       </motion.div>
