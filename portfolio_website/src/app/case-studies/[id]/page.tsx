@@ -1,9 +1,10 @@
 "use client";
 
+import { useState } from 'react';
 import { notFound, useParams } from 'next/navigation';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { FiTag, FiExternalLink } from 'react-icons/fi';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FiTag, FiExternalLink, FiList, FiLink, FiX } from 'react-icons/fi';
 import { SiFigma, SiGooglesheets } from 'react-icons/si';
 import { RiMindMap } from "react-icons/ri";
 import Link from 'next/link';
@@ -20,6 +21,9 @@ export default function CaseStudyPage() {
   const id = params.id;
   const currentCaseStudy = caseStudies.find(study => study.id === id);
 
+  const [isStudiesDrawerOpen, setIsStudiesDrawerOpen] = useState(false);
+  const [isLinksDrawerOpen, setIsLinksDrawerOpen] = useState(false);
+
   if (!currentCaseStudy) {
     notFound();
   }
@@ -29,6 +33,22 @@ export default function CaseStudyPage() {
   const sectionVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+  };
+
+  const hasProjectLinks = (currentCaseStudy?.figmaLink && currentCaseStudy.figmaLink !== '#') ||
+                         (currentCaseStudy?.whimsicalLink && currentCaseStudy.whimsicalLink !== '#') ||
+                         (currentCaseStudy?.sheetsLink && currentCaseStudy.sheetsLink !== '#');
+
+  const drawerVariants = {
+    hidden: { y: "100%", opacity: 0 },
+    visible: { y: "0%", opacity: 1, transition: { type: "spring", damping: 25, stiffness: 150 } },
+    exit: { y: "100%", opacity: 0, transition: { duration: 0.3 } }
+  };
+
+  const backdropVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
+    exit: { opacity: 0 }
   };
 
   return (
@@ -178,6 +198,151 @@ export default function CaseStudyPage() {
             </motion.div>
           </aside>
         </div>
+
+        <div className="lg:hidden fixed bottom-4 right-4 z-40 flex flex-col gap-3">
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setIsStudiesDrawerOpen(true)}
+            className="bg-gray-800 text-white p-3 rounded-full shadow-lg hover:bg-gray-700 transition-colors"
+            aria-label="Show other case studies"
+          >
+            <FiList size={20} />
+          </motion.button>
+          {hasProjectLinks && (
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => setIsLinksDrawerOpen(true)}
+              className="bg-indigo-600 text-white p-3 rounded-full shadow-lg hover:bg-indigo-500 transition-colors"
+              aria-label="Show project links"
+            >
+              <FiLink size={20} />
+            </motion.button>
+          )}
+        </div>
+
+        <AnimatePresence>
+          {isStudiesDrawerOpen && (
+            <>
+              <motion.div
+                key="studies-backdrop"
+                variants={backdropVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                onClick={() => setIsStudiesDrawerOpen(false)}
+                className="fixed inset-0 bg-black/30 z-50 lg:hidden"
+              />
+              <motion.div
+                key="studies-drawer"
+                variants={drawerVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                className="fixed bottom-0 left-0 right-0 z-50 bg-white p-6 rounded-t-2xl shadow-2xl max-h-[70vh] overflow-y-auto lg:hidden"
+              >
+                 <div className="flex justify-between items-center mb-4 pb-2 border-b">
+                   <h3 className="text-lg font-semibold text-gray-800">Other Case Studies</h3>
+                   <button
+                     onClick={() => setIsStudiesDrawerOpen(false)}
+                     className="text-gray-500 hover:text-gray-800"
+                     aria-label="Close"
+                   >
+                     <FiX size={24} />
+                   </button>
+                 </div>
+                <nav>
+                  <ul>
+                    {otherCaseStudies.map((study) => (
+                      <li key={study.id} className="mb-2">
+                        <Link
+                          href={`/case-studies/${study.id}`}
+                          className="block py-2 text-gray-700 hover:text-indigo-600 transition-colors duration-200"
+                          onClick={() => setIsStudiesDrawerOpen(false)}
+                        >
+                          {study.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </nav>
+              </motion.div>
+            </>
+          )}
+
+          {isLinksDrawerOpen && hasProjectLinks && (
+             <>
+              <motion.div
+                key="links-backdrop"
+                variants={backdropVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                onClick={() => setIsLinksDrawerOpen(false)}
+                className="fixed inset-0 bg-black/30 z-50 lg:hidden"
+              />
+              <motion.div
+                key="links-drawer"
+                variants={drawerVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                className="fixed bottom-0 left-0 right-0 z-50 bg-white p-6 rounded-t-2xl shadow-2xl max-h-[70vh] overflow-y-auto lg:hidden"
+              >
+                 <div className="flex justify-between items-center mb-4 pb-2 border-b">
+                   <h3 className="text-lg font-semibold text-gray-800">Project Links</h3>
+                   <button
+                     onClick={() => setIsLinksDrawerOpen(false)}
+                     className="text-gray-500 hover:text-gray-800"
+                     aria-label="Close"
+                   >
+                     <FiX size={24} />
+                   </button>
+                 </div>
+                <div className="space-y-4">
+                   {currentCaseStudy.figmaLink && currentCaseStudy.figmaLink !== '#' && (
+                     <a
+                       href={currentCaseStudy.figmaLink}
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       className="flex items-center text-gray-700 hover:text-indigo-600 transition-colors duration-200 group"
+                     >
+                       <SiFigma className="mr-3 text-pink-500 flex-shrink-0" size={18} />
+                       <span className="mr-1 group-hover:underline">Figma Design</span>
+                       <FiExternalLink className="text-gray-400 group-hover:text-gray-600 transition-colors duration-200 flex-shrink-0 ml-auto" size={16}/>
+                     </a>
+                   )}
+                   {currentCaseStudy.whimsicalLink && currentCaseStudy.whimsicalLink !== '#' && (
+                      <a
+                       href={currentCaseStudy.whimsicalLink}
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       className="flex items-center text-gray-700 hover:text-indigo-600 transition-colors duration-200 group"
+                     >
+                       <RiMindMap className="mr-3 text-blue-500 flex-shrink-0" size={18} />
+                       <span className="mr-1 group-hover:underline">Whimsical Board</span>
+                        <FiExternalLink className="text-gray-400 group-hover:text-gray-600 transition-colors duration-200 flex-shrink-0 ml-auto" size={16}/>
+                     </a>
+                   )}
+                   {currentCaseStudy.sheetsLink && currentCaseStudy.sheetsLink !== '#' && (
+                      <a
+                       href={currentCaseStudy.sheetsLink}
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       className="flex items-center text-gray-700 hover:text-indigo-600 transition-colors duration-200 group"
+                     >
+                       <SiGooglesheets className="mr-3 text-green-500 flex-shrink-0" size={18} />
+                       <span className="mr-1 group-hover:underline">Google Sheet</span>
+                        <FiExternalLink className="text-gray-400 group-hover:text-gray-600 transition-colors duration-200 flex-shrink-0 ml-auto" size={16}/>
+                     </a>
+                   )}
+                 </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+
       </div>
     </Layout>
   );
