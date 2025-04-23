@@ -69,9 +69,9 @@ export function ProfileCard({
   }, []);
 
   return (
-    <div className="relative flex justify-center items-center w-full h-full perspective-1000" ref={cardRef}>
+    <div className="relative flex justify-center items-center w-full h-full perspective-1000 px-4 sm:px-0" ref={cardRef}>
       <motion.div
-        className="relative w-[500px] h-[625px] rounded-2xl overflow-visible"
+        className="relative w-full max-w-[500px] h-auto rounded-2xl overflow-visible"
         style={{
           transformStyle: "preserve-3d",
           willChange: "transform",
@@ -95,8 +95,8 @@ export function ProfileCard({
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(60,60,60,0.3),rgba(0,0,0,0))] rounded-2xl z-30" />
         
         {/* Accent Design Elements */}
-        <div className="absolute top-0 right-0 w-60 h-60 bg-zinc-500/10 rounded-full blur-3xl -translate-y-12 translate-x-12 opacity-40 z-40" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-zinc-400/10 rounded-full blur-3xl translate-y-8 -translate-x-8 opacity-40 z-40" />
+        <div className="absolute top-0 right-0 w-40 h-40 sm:w-60 sm:h-60 bg-zinc-500/10 rounded-full blur-3xl -translate-y-12 translate-x-12 opacity-40 z-40" />
+        <div className="absolute bottom-0 left-0 w-32 h-32 sm:w-48 sm:h-48 bg-zinc-400/10 rounded-full blur-3xl translate-y-8 -translate-x-8 opacity-40 z-40" />
         
         {/* Enhanced Shine effect */}
         <motion.div 
@@ -117,15 +117,15 @@ export function ProfileCard({
         />
         
         {/* Card Content */}
-        <div className="relative w-full h-full p-9 flex flex-col text-white z-50">
+        <div className="relative w-full h-full p-6 sm:p-9 flex flex-col text-white z-50">
           {/* Header */}
-          <div className="flex justify-between items-start mb-8">
+          <div className="flex justify-between items-start mb-6 sm:mb-8">
             <div>
-              <div className="text-3xl font-bold tracking-tight text-white">{title}</div>
-              <div className="text-2xl font-semibold text-white mt-2">{name}</div>
-              <div className="text-base text-zinc-300 font-medium mt-2">{subtitle}</div>
+              <div className="text-2xl sm:text-3xl font-bold tracking-tight text-white">{title}</div>
+              <div className="text-xl sm:text-2xl font-semibold text-white mt-1 sm:mt-2">{name}</div>
+              <div className="text-sm sm:text-base text-zinc-300 font-medium mt-1 sm:mt-2">{subtitle}</div>
             </div>
-            <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-zinc-700 shadow-lg bg-zinc-800 flex items-center justify-center">
+            <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-2 border-zinc-700 shadow-lg bg-zinc-800 flex items-center justify-center shrink-0">
               {!imageError ? (
                 <Image 
                   src={imagePath} 
@@ -148,22 +148,22 @@ export function ProfileCard({
           </div>
           
           {/* Current Role */}
-          <div className="mb-10">
-            <div className="flex items-center mb-4">
-              <FiBriefcase className="w-5 h-5 text-zinc-400 mr-2.5" />
-              <div className="text-base font-medium text-white">Latest Role</div>
+          <div className="mb-8 sm:mb-10">
+            <div className="flex items-center mb-3 sm:mb-4">
+              <FiBriefcase className="w-4 h-4 sm:w-5 sm:h-5 text-zinc-400 mr-2 sm:mr-2.5" />
+              <div className="text-sm sm:text-base font-medium text-white">Latest Role</div>
             </div>
-            <div className="bg-zinc-900/80 rounded-xl p-5 border border-zinc-800 backdrop-blur-sm shadow-inner">
-              <div className="text-lg font-medium text-white">
+            <div className="bg-zinc-900/80 rounded-xl p-4 sm:p-5 border border-zinc-800 backdrop-blur-sm shadow-inner">
+              <div className="text-base sm:text-lg font-medium text-white">
                 {resumeData.experience[0].title}
               </div>
-              <div className="text-sm text-zinc-300 mt-2">
+              <div className="text-xs sm:text-sm text-zinc-300 mt-1 sm:mt-2">
                 {resumeData.experience[0].company}
               </div>
-              <div className="text-sm text-zinc-400 mt-1">
+              <div className="text-xs sm:text-sm text-zinc-400 mt-0.5 sm:mt-1">
                 {resumeData.experience[0].period}
               </div>
-              <div className="text-sm text-zinc-300 mt-3 leading-relaxed line-clamp-3">
+              <div className="text-xs sm:text-sm text-zinc-300 mt-2 sm:mt-3 leading-relaxed line-clamp-2 sm:line-clamp-3">
                 Led AI product initiatives for PropTech insights platform, developing LLM-powered search features and predictive models.
               </div>
             </div>
@@ -171,13 +171,13 @@ export function ProfileCard({
           
           {/* Key Skills */}
           <div>
-            <div className="flex items-center mb-4">
-              <FiAward className="w-5 h-5 text-zinc-400 mr-2.5" />
-              <div className="text-base font-medium text-white">Key Skills</div>
+            <div className="flex items-center mb-3 sm:mb-4">
+              <FiAward className="w-4 h-4 sm:w-5 sm:h-5 text-zinc-400 mr-2 sm:mr-2.5" />
+              <div className="text-sm sm:text-base font-medium text-white">Key Skills</div>
             </div>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-2 sm:gap-3">
               {keySkills.map((skill, index) => (
-                <div key={index} className="text-sm bg-zinc-800 rounded-full px-4 py-2 border border-zinc-700 shadow-sm">
+                <div key={index} className="text-xs sm:text-sm bg-zinc-800 rounded-full px-3 py-1.5 sm:px-4 sm:py-2 border border-zinc-700 shadow-sm">
                   {skill.name}
                 </div>
               ))}

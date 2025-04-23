@@ -173,7 +173,8 @@ export function HeroSection({ resumeData }: HeroSectionProps) {
           
           {/* Profile Card Column */}
           <motion.div 
-            className="md:col-span-5 flex justify-center md:justify-end h-[420px] md:h-auto"
+            // Add margin-top on mobile (default), remove fixed height on mobile
+            className="md:col-span-5 flex justify-center md:justify-end mt-12 md:mt-0 h-auto" 
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.7 }}
