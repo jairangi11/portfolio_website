@@ -11,7 +11,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { FiArrowRight } from 'react-icons/fi';
 import { RiMindMap } from "react-icons/ri";
-import { SiFigma } from 'react-icons/si';
+import { SiFigma, SiGooglesheets } from 'react-icons/si';
 import { CaseStudy } from '@/data/caseStudiesData';
 
 interface CaseStudyCardProps {
@@ -116,6 +116,21 @@ export default function CaseStudyCard({ caseStudy, index }: CaseStudyCardProps) 
                 >
                   <RiMindMap className="h-4 w-4 text-blue-500" />
                   <span>Whimsical</span>
+                </Link>
+              )}
+              {(caseStudy.figmaLink || caseStudy.whimsicalLink) && caseStudy.sheetsLink && (
+                <span className="text-muted-foreground/50">|</span>
+              )}
+              {caseStudy.sheetsLink && (
+                <Link 
+                  href={caseStudy.sheetsLink} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  aria-label="View Google Sheets file"
+                  className="flex items-center space-x-1 hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md px-1 py-0.5"
+                >
+                  <SiGooglesheets className="h-4 w-4 text-green-500" />
+                  <span>Sheets</span>
                 </Link>
               )}
             </div>

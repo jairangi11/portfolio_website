@@ -4,7 +4,7 @@ import { notFound, useParams } from 'next/navigation';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { FiTag, FiExternalLink } from 'react-icons/fi';
-import { SiFigma } from 'react-icons/si';
+import { SiFigma, SiGooglesheets } from 'react-icons/si';
 import { RiMindMap } from "react-icons/ri";
 import Link from 'next/link';
 import { caseStudies } from '@/data/caseStudiesData';
@@ -132,7 +132,7 @@ export default function CaseStudyPage() {
                transition={{ duration: 0.5, delay: 0.3 }}
                className="pl-4 overflow-hidden"
              >
-                {(currentCaseStudy.figmaLink || currentCaseStudy.whimsicalLink) && (
+                {(currentCaseStudy.figmaLink || currentCaseStudy.whimsicalLink || currentCaseStudy.sheetsLink) && (
                   <>
                     <h3 className="text-sm font-semibold uppercase text-gray-500 mb-4 tracking-wider">Project Links</h3>
                     <div className="space-y-3">
@@ -157,6 +157,18 @@ export default function CaseStudyPage() {
                         >
                           <RiMindMap className="mr-2 text-blue-500 flex-shrink-0" size={16} /> 
                           <span className="mr-1 truncate group-hover:underline">Whimsical</span>
+                           <FiExternalLink className="text-gray-400 group-hover:text-gray-600 transition-colors duration-200 flex-shrink-0" size={14}/>
+                        </a>
+                      )}
+                      {currentCaseStudy.sheetsLink && currentCaseStudy.sheetsLink !== '#' && (
+                         <a 
+                          href={currentCaseStudy.sheetsLink} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200 group"
+                        >
+                          <SiGooglesheets className="mr-2 text-green-500 flex-shrink-0" size={16} /> 
+                          <span className="mr-1 truncate group-hover:underline">Sheets</span>
                            <FiExternalLink className="text-gray-400 group-hover:text-gray-600 transition-colors duration-200 flex-shrink-0" size={14}/>
                         </a>
                       )}

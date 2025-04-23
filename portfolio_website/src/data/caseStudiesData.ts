@@ -20,6 +20,7 @@ export interface CaseStudy {
   };
   figmaLink?: string;
   whimsicalLink?: string;
+  sheetsLink?: string;
 }
 
 export const caseStudies: CaseStudy[] = [
@@ -44,7 +45,8 @@ export const caseStudies: CaseStudy[] = [
       avatar: "/images/testimonials/sarah-johnson.jpg"
     },
     figmaLink: "https://www.google.com",
-    whimsicalLink: "https://www.google.com"
+    whimsicalLink: "https://www.google.com",
+    sheetsLink: "https://www.google.com"
   },
   {
     id: "financial-dashboard",
@@ -67,7 +69,8 @@ export const caseStudies: CaseStudy[] = [
       avatar: "/images/testimonials/michael-chen.jpg"
     },
     figmaLink: "https://www.google.com",
-    whimsicalLink: "https://www.google.com"
+    whimsicalLink: "https://www.google.com",
+    sheetsLink: "https://www.google.com"
   },
   {
     id: "healthcare-app",
@@ -90,6 +93,7 @@ export const caseStudies: CaseStudy[] = [
       avatar: "/images/testimonials/lisa-patel.jpg"
     },
     figmaLink: "https://www.google.com",
-    whimsicalLink: "https://www.google.com"
+    whimsicalLink: "https://www.google.com",
+    sheetsLink: "https://www.google.com"
   }
 ]; 
