@@ -8,7 +8,7 @@ import { HeroSection } from "@/components/landing/hero-section";
 import { CompaniesSection } from "@/components/landing/companies-section";
 import { ExpertiseSection } from "@/components/landing/expertise-section";
 import { CtaSection } from "@/components/landing/cta-section";
-import { FiCpu, FiLayers, FiCode, FiGrid, FiTool } from "react-icons/fi";
+import { FiCpu, FiLayers, FiCode, FiGrid } from "react-icons/fi";
 
 // Define types for dynamic expertise data
 interface ExpertiseArea {
