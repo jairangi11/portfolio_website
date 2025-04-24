@@ -9,14 +9,12 @@ import { resumeData } from "@/data/resumeData";
 interface ProfileCardProps {
   name?: string;
   title?: string;
-  subtitle?: string;
   imagePath?: string;
 }
 
 export function ProfileCard({
   name = resumeData.name,
   title = resumeData.title,
-  subtitle = "AI/ML Product Manager",
   imagePath = "/images/Jay Rangi.jpg" // Adding leading slash for public directory
 }: ProfileCardProps) {
   const [rotateX, setRotateX] = useState(0);
@@ -27,11 +25,11 @@ export function ProfileCard({
 
   // Define the specific skills to display
   const keySkills = [
-    { name: "Product Management" },
-    { name: "AI/ML" },
+    { name: "Product Strategy" },
+    { name: "AI/ML Products" },
     { name: "GTM Strategy" },
-    { name: "SaaS" }, // Corrected Saas to SaaS
-    { name: "Growth Strategy" },
+    { name: "SaaS Platforms" }, 
+    { name: "Data-Driven Decisions" },
   ];
     
 
@@ -123,7 +121,6 @@ export function ProfileCard({
             <div>
               <div className="text-2xl sm:text-3xl font-bold tracking-tight text-white">{title}</div>
               <div className="text-xl sm:text-2xl font-semibold text-white mt-1 sm:mt-2">{name}</div>
-              <div className="text-sm sm:text-base text-zinc-300 font-medium mt-1 sm:mt-2">{subtitle}</div>
             </div>
             <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-2 border-zinc-700 shadow-lg bg-zinc-800 flex items-center justify-center shrink-0">
               {!imageError ? (
@@ -164,7 +161,7 @@ export function ProfileCard({
                 {resumeData.experience[0].period}
               </div>
               <div className="text-xs sm:text-sm text-zinc-300 mt-2 sm:mt-3 leading-relaxed line-clamp-2 sm:line-clamp-3">
-                Led AI product initiatives for PropTech insights platform, developing LLM-powered search features and predictive models.
+                Spearheaded technical product management for an AI-driven PropTech platform, developing predictive models, LLM search, and chatbots in collaboration with cross-functional teams.
               </div>
             </div>
           </div>

@@ -23,7 +23,25 @@ interface HeroSectionProps {
 }
 
 // Define skills array within the component or pass as prop if needed elsewhere
-const skills = ["AI-powered solutions", "Machine Learning", "SaaS", "B2B PropTech"];
+const skills = [
+  "AI & ML Products", 
+  "Product Strategy", 
+  "Roadmapping", 
+  "Data-Driven Decisions", 
+  "User Research", 
+  "A/B Testing", 
+  "Growth Hacking", 
+  "Agile Methodologies", 
+  "SaaS Platforms", 
+  "Fintech Solutions", 
+  "PropTech Innovation", 
+  "Go-to-Market Strategy", 
+  "API Integration", 
+  "Stakeholder Management",
+  "Competitive Analysis",
+  "Pricing & Monetization",
+  "Wireframing & Prototyping"
+];
 // Scroll threshold can be moved to ScrollIndicator or kept here if used elsewhere
 const scrollThreshold = 100; 
 
@@ -189,7 +207,6 @@ export function HeroSection({ resumeData }: HeroSectionProps) {
             <ProfileCard 
               name={resumeData.name} // Passed via props
               title={resumeData.title} // Passed via props
-              subtitle="AI/ML Product Manager" // Keep subtitle specific here or add to props if dynamic
             />
           </motion.div>
         </div>

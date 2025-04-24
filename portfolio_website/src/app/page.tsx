@@ -32,24 +32,18 @@ const getExpertiseAreas = (): ExpertiseArea[] => {
     product: {
       title: "Product Management & Strategy",
       icon: <FiLayers className="h-6 w-6" />,
-      description: "Defining product vision, creating strategic roadmaps, managing backlogs (including KPIs), and leading Go-to-Market strategies with a focus on growth.",
+      description: "Setting product vision, developing strategic roadmaps, managing feature backlogs, defining and tracking key KPIs, and leading effective Go-to-Market strategies for growth.",
     },
     tech: { // Combine relevant technical types
       title: "Technical Proficiency",
       icon: <FiCode className="h-6 w-6" />,
-      description: "Developing robust solutions using Python, SQL, API integrations, Cloud technologies, and applying Agile methodologies for efficient development.",
+      description: "Building robust and scalable solutions through proficiency in full-stack development, database management, API integrations, cloud platforms, and agile development practices.",
     },
     industry: {
       title: "Industry Expertise",
       icon: <FiGrid className="h-6 w-6" />,
-      description: "Applying product and technical skills within SaaS, Fintech, PropTech, and E-commerce domains to address specific industry challenges.",
+      description: "Applying product and technical expertise across diverse sectors including SaaS, Fintech, PropTech, E-commerce, and HR-tech to solve unique industry challenges.",
     },
-     // Add a category for tools/design if needed, or merge into tech/product
-     tools: {
-       title: "Tools & Analytics",
-       icon: <FiTool className="h-6 w-6" />, // Example, replace if needed
-       description: "Utilizing Power BI, Tableau, Mixpanel, CleverTap, Adobe Analytics, Figma, and JIRA for analysis, design, and project management."
-     }
   };
 
   // Group skills by category
@@ -64,10 +58,6 @@ const getExpertiseAreas = (): ExpertiseArea[] => {
     if (skill.name === 'KPIs') {
       categoryKey = 'product';
     }
-     // Consolidate tools/design
-     if (['tools', 'design'].includes(skill.type)) {
-       categoryKey = 'tools';
-     }
 
     if (!groupedSkills[categoryKey]) {
       groupedSkills[categoryKey] = [];
@@ -92,14 +82,6 @@ const getExpertiseAreas = (): ExpertiseArea[] => {
   const finalAreas = primaryKeys
     .map(key => expertiseItems.find(item => item.title === areasMap[key].title))
     .filter((item): item is ExpertiseArea => item !== undefined); // Type guard
-
-   // If we have fewer than 4, add 'Tools & Analytics' if available
-   if (finalAreas.length < 4) {
-     const toolsArea = expertiseItems.find(item => item.title === "Tools & Analytics");
-     if (toolsArea) {
-       finalAreas.push(toolsArea);
-     }
-   }
 
    // Limit to 4 if more were generated
    return finalAreas.slice(0, 4);
