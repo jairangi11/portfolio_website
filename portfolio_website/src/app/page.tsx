@@ -194,7 +194,7 @@ export default function Home() {
   return (
     <Layout>
       {/* Render Hero Section */}
-      <HeroSection resumeData={heroResumeData} isNavigating={isNavigating} />
+      <HeroSection resumeData={heroResumeData} />
 
       {/* Render Companies Section */}
       <div id="companies-section">

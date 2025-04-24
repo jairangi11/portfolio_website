@@ -18,82 +18,81 @@ interface ResumeSummary {
 
 interface HeroSectionProps {
   resumeData: ResumeSummary; // Use a specific type for needed data
-  isNavigating: boolean;
+  // isNavigating is no longer needed here unless passed to Typewriter directly
+  // isNavigating: boolean; 
 }
 
 // Define skills array within the component or pass as prop if needed elsewhere
 const skills = ["AI-powered solutions", "Machine Learning", "SaaS", "B2B PropTech"];
-const scrollThreshold = 100; // Threshold for scroll indicator visibility
+// Scroll threshold can be moved to ScrollIndicator or kept here if used elsewhere
+const scrollThreshold = 100; 
 
-export function HeroSection({ resumeData }: HeroSectionProps) {
-  // Skills animation state (Typewriter effect will handle its own internal logic)
-  // const [currentSkillIndex, setCurrentSkillIndex] = useState(0); // Remove this state
-  // const intervalIdRef = useRef<NodeJS.Timeout | null>(null); // Remove this ref if Typewriter handles its own timing
+// New component for the scroll indicator
+interface ScrollIndicatorProps {
+  handleScrollDown: () => void;
+}
 
-  // Scroll position state
+function ScrollIndicator({ handleScrollDown }: ScrollIndicatorProps) {
   const [scrollPosition, setScrollPosition] = useState(0);
 
-  // Remove the old skill rotation useEffect
-  /* 
-  useEffect(() => {
-    const setupSkillRotation = () => {
-      if (intervalIdRef.current !== null) {
-        clearInterval(intervalIdRef.current);
-      }
-      intervalIdRef.current = setInterval(() => {
-        if (document.hidden) return;
-        setCurrentSkillIndex((prevIndex) => (prevIndex + 1) % skills.length);
-      }, 3000);
-    };
-    
-    setupSkillRotation();
-
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        if (intervalIdRef.current !== null) {
-          clearInterval(intervalIdRef.current);
-          intervalIdRef.current = null;
-        }
-      } else {
-        setupSkillRotation(); 
-      }
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-
-    return () => {
-      if (intervalIdRef.current !== null) {
-        clearInterval(intervalIdRef.current);
-      }
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-    };
-  }, []);
-  */
-
-  // Remove the effect to stop skill animation when navigation starts, Typewriter should handle pausing
-  /* 
-  useEffect(() => {
-    if (isNavigating) {
-      if (intervalIdRef.current !== null) {
-        clearInterval(intervalIdRef.current);
-        intervalIdRef.current = null;
-      }
-    }
-  }, [isNavigating]);
-  */
-  
-  // Scroll tracking logic
+  // Scroll tracking logic moved here
   useEffect(() => {
     const handleScroll = () => {
       setScrollPosition(window.scrollY);
     };
-    setScrollPosition(window.scrollY);
+    // Set initial position
+    handleScroll(); 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
+  return (
+    <AnimatePresence>
+      {scrollPosition < scrollThreshold && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 10 }}
+          transition={{ duration: 0.4, ease: "easeInOut" }}
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center cursor-pointer group z-30" // Ensure high z-index
+          onClick={handleScrollDown} // Use passed handler
+        >
+          <motion.svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="text-foreground/40 group-hover:text-foreground/60 transition-colors duration-300"
+            animate={{ y: ["0%", "20%", "0%"] }}
+            transition={{ duration: 1.5, repeat: Infinity, repeatType: "loop", ease: "easeInOut" }}
+          >
+            <path
+              d="M19.5 8.25L12 15.75L4.5 8.25"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </motion.svg>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+export function HeroSection({ resumeData }: HeroSectionProps) {
+  // Skills animation state (Typewriter effect will handle its own internal logic)
+  // Remove scroll position state from HeroSection
+  // const [scrollPosition, setScrollPosition] = useState(0);
+
+  // Removed the scroll tracking useEffect from HeroSection
+  
+  // Scroll tracking logic is now in ScrollIndicator component
+
+  // Function to scroll to the next section
   const handleScrollDown = () => {
     const section = document.getElementById('companies-section');
     if (section) {
@@ -102,6 +101,7 @@ export function HeroSection({ resumeData }: HeroSectionProps) {
   };
 
   return (
+    // Make sure the parent section is relative for absolute positioning of the indicator
     <section className="relative min-h-[85vh] overflow-hidden bg-background">
       {/* Simple background elements */}
       <div className="absolute inset-0 z-0 opacity-15">
@@ -194,37 +194,8 @@ export function HeroSection({ resumeData }: HeroSectionProps) {
           </motion.div>
         </div>
         
-        <AnimatePresence>
-          {scrollPosition < scrollThreshold && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center cursor-pointer group"
-              onClick={handleScrollDown}
-            >
-              <motion.svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="text-foreground/40 group-hover:text-foreground/60 transition-colors duration-300"
-                animate={{ y: ["0%", "20%", "0%"] }}
-                transition={{ duration: 1.5, repeat: Infinity, repeatType: "loop", ease: "easeInOut" }}
-              >
-                <path
-                  d="M19.5 8.25L12 15.75L4.5 8.25"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </motion.svg>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* Render the isolated ScrollIndicator component */}
+        <ScrollIndicator handleScrollDown={handleScrollDown} />
       </div>
     </section>
   );
