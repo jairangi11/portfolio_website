@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback, Children, useMemo } from 'react';
-import { motion, useMotionValue, useAnimationFrame } from 'framer-motion';
+import { motion, useMotionValue, useAnimationFrame, useAnimation } from 'framer-motion';
 
 interface InfiniteCarouselProps {
   children: React.ReactNode;
@@ -22,8 +22,11 @@ export function InfiniteCarousel({
   const carouselInnerRef = useRef<HTMLDivElement>(null);
   const [carouselWidth, setCarouselWidth] = useState(0);
   const [shouldAnimate, setShouldAnimate] = useState(true);
+  const [isDragging, setIsDragging] = useState(false); // Track drag state
 
   const baseX = useMotionValue(0);
+  // Use animation controls for smoother start/stop/resume
+  const controls = useAnimation(); 
 
   // Duplicate children for seamless looping
   const duplicatedChildren = useMemo(() => Children.toArray(children), [children]);
@@ -56,7 +59,7 @@ export function InfiniteCarousel({
   }, [updateCarouselWidths, duplicatedChildren]); // Re-run if children change
 
   useAnimationFrame((time, delta) => {
-    if (!shouldAnimate || !carouselWidth || isNavigating || scrollSpeed === 0) return;
+    if (!shouldAnimate || isDragging || !carouselWidth || isNavigating || scrollSpeed === 0) return;
 
     const moveBy = (delta / 1000) * scrollSpeed;
     let newBaseX = baseX.get() + moveBy;
@@ -75,14 +78,74 @@ export function InfiniteCarousel({
     baseX.set(newBaseX);
   });
 
+  useEffect(() => {
+    controls.start({
+      x: baseX.get(), // Start from the current motion value
+      transition: {
+        type: 'spring', // Use spring for smoother transitions after drag
+        stiffness: 300, 
+        damping: 50, 
+        mass: 0.5, 
+      }
+    });
+  }, [baseX, controls]); // Re-run when baseX changes or controls are initialized
+
   const handleMouseEnter = () => {
-    if (isNavigating) return;
+    if (isNavigating || isDragging) return; // Don't pause if currently dragging
     setShouldAnimate(false);
   };
 
   const handleMouseLeave = () => {
-    if (isNavigating) return;
+    if (isNavigating || isDragging) return; // Don't resume if currently dragging
     setShouldAnimate(true);
+  };
+
+  // Drag Handlers
+  const handleDragStart = () => {
+    if (isNavigating) return;
+    setIsDragging(true);
+    setShouldAnimate(false); // Explicitly stop animation loop
+    controls.stop(); // Stop any ongoing motion animation
+  };
+
+  const handleDragEnd = () => {
+    if (isNavigating) return;
+    setIsDragging(false);
+    
+    // No need to manually set baseX here as drag updates it.
+    // The wrap logic needs to be applied correctly after drag.
+    let finalX = baseX.get();
+    const containerWidth = carouselRef.current?.offsetWidth || 0;
+    const dragOutOfBoundsRatio = 0.1; // Allow dragging slightly out of bounds
+
+    // Apply wrap logic based on drag end position immediately for seamless loop
+    if (carouselWidth > 0) { // Ensure carouselWidth is calculated
+        if (scrollSpeed < 0) { // Scrolling left
+            if (finalX < -carouselWidth * (1 + dragOutOfBoundsRatio)) {
+                // If dragged far left beyond one loop, wrap back
+                finalX = (finalX % carouselWidth); 
+            } else if (finalX > containerWidth * dragOutOfBoundsRatio) {
+                // If dragged right past the start edge, wrap around
+                 finalX = (finalX % carouselWidth) - carouselWidth;
+            }
+        } else { // Scrolling right (if implemented)
+            if (finalX > containerWidth * dragOutOfBoundsRatio) {
+                 // If dragged far right beyond the start, wrap back
+                 finalX = (finalX % carouselWidth) - carouselWidth;
+            } else if (finalX < -carouselWidth * (1 + dragOutOfBoundsRatio)) {
+                // If dragged left past the end edge, wrap around
+                 finalX = (finalX % carouselWidth);
+            }
+        }
+         // Immediately set the motion value to the wrapped position
+         baseX.set(finalX); 
+    }
+
+    // Resume animation only if mouse is not over the element
+    // Check if mouse is still over after drag ends
+    if (carouselRef.current && !carouselRef.current.matches(':hover')) {
+      setShouldAnimate(true);
+    }
   };
 
   return (
@@ -101,21 +164,14 @@ export function InfiniteCarousel({
       {/* Inner carousel */}
       <motion.div
         ref={carouselInnerRef}
-        className={`flex ${innerClassName}`}
+        className={`flex cursor-grab active:cursor-grabbing ${innerClassName}`}
         style={{ x: baseX }}
         drag={isNavigating ? false : "x"}
-        dragConstraints={carouselRef}
-        onDragEnd={() => {
-          if (isNavigating) return;
-          
-          const finalX = baseX.get();
-          // Apply immediate wrap logic based on drag end position
-          if (finalX < -carouselWidth) {
-            baseX.set(finalX % carouselWidth);
-          } else if (finalX > 0) {
-            baseX.set((finalX % carouselWidth) - carouselWidth);
-          }
-        }}
+        dragConstraints={{ left: -carouselWidth * 1.5, right: carouselWidth * 0.5 }}
+        dragElastic={0.1}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+        animate={controls}
       >
         {/* Render duplicated children */}
         {[...duplicatedChildren, ...duplicatedChildren].map((child, index) => (
