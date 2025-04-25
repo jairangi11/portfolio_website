@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { notFound, useParams } from 'next/navigation';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiTag, FiExternalLink, FiList, FiLink, FiX } from 'react-icons/fi';
-import { SiFigma, SiGooglesheets } from 'react-icons/si';
+import { FiTag, FiExternalLink, FiList, FiLink, FiX, FiLayout } from 'react-icons/fi';
+import { SiGooglesheets } from 'react-icons/si';
 import { RiMindMap } from "react-icons/ri";
 import Link from 'next/link';
 import { caseStudies } from '@/data/caseStudiesData';
@@ -163,8 +163,8 @@ export default function CaseStudyPage() {
                           rel="noopener noreferrer" 
                           className="flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200 group"
                         >
-                          <SiFigma className="mr-2 text-pink-500 flex-shrink-0" size={16} />
-                          <span className="mr-1 truncate group-hover:underline">Figma</span>
+                          <FiLayout className="mr-2 text-purple-500 flex-shrink-0" size={16} />
+                          <span className="mr-1 truncate group-hover:underline">Wireframes</span>
                           <FiExternalLink className="text-gray-400 group-hover:text-gray-600 transition-colors duration-200 flex-shrink-0" size={14}/>
                         </a>
                       )}
@@ -308,8 +308,8 @@ export default function CaseStudyPage() {
                        rel="noopener noreferrer"
                        className="flex items-center text-gray-700 hover:text-indigo-600 transition-colors duration-200 group"
                      >
-                       <SiFigma className="mr-3 text-pink-500 flex-shrink-0" size={18} />
-                       <span className="mr-1 group-hover:underline">Figma Design</span>
+                       <FiLayout className="mr-3 text-purple-500 flex-shrink-0" size={18} />
+                       <span className="mr-1 group-hover:underline">Wireframes</span>
                        <FiExternalLink className="text-gray-400 group-hover:text-gray-600 transition-colors duration-200 flex-shrink-0 ml-auto" size={16}/>
                      </a>
                    )}

@@ -45,7 +45,7 @@ export const resumeData = {
   experience: [
     {
       title: "Product Manager - AI",
-      company: "Quara Holdings",
+      company: "Quara Holding",
       location: "Gurgaon, India",
       period: "08/2023 – 03/2025",
       logo: "/images/company_logos/Quara_holding.png",

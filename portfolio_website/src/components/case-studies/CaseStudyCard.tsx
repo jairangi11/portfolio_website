@@ -10,9 +10,9 @@ import {
   CardHeader 
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { FiArrowRight } from 'react-icons/fi';
+import { FiArrowRight, FiLayout } from 'react-icons/fi';
 import { RiMindMap } from "react-icons/ri";
-import { SiFigma, SiGooglesheets } from 'react-icons/si';
+import { SiGooglesheets } from 'react-icons/si';
 import { CaseStudy } from '@/data/caseStudiesData';
 
 interface CaseStudyCardProps {
@@ -47,12 +47,13 @@ export default function CaseStudyCard({ caseStudy, index }: CaseStudyCardProps) 
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50 pointer-events-none z-0" />
         
         <div className="relative z-10 flex flex-col flex-grow">
-          <div className="relative h-48 w-full overflow-hidden">
+          <div className="relative h-48 w-full overflow-hidden bg-muted/20">
             <Image
               src={caseStudy.thumbnailImage || caseStudy.coverImage}
-              alt={caseStudy.title}
+              alt={`${caseStudy.title} cover image`}
               fill
-              className="object-cover transition-transform duration-500 hover:scale-105"
+              className="object-contain transition-transform duration-500 group-hover:scale-105 p-2"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </div>
           
@@ -97,12 +98,12 @@ export default function CaseStudyCard({ caseStudy, index }: CaseStudyCardProps) 
                   href={caseStudy.figmaLink} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  aria-label="View Figma file"
+                  aria-label="View Interactive Wireframes"
                   className="flex items-center space-x-1 hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md p-1 group/link"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <SiFigma className="h-4 w-4 text-pink-500 transition-transform group-hover/link:scale-110" />
-                  <span className="hidden sm:inline text-xs">Figma</span>
+                  <FiLayout className="h-4 w-4 text-purple-500 transition-transform group-hover/link:scale-110" />
+                  <span className="hidden sm:inline text-xs">Wireframes</span>
                 </Link>
               )}
               {caseStudy.figmaLink && caseStudy.whimsicalLink && (

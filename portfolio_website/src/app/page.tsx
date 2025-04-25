@@ -93,7 +93,7 @@ export default function Home() {
   const expertiseItems = getExpertiseAreas();
   const companies = [
     {
-      name: "Quara Holdings",
+      name: "Quara Holding",
       logo: "/images/company_logos/Quara_holding.png",
       role: "Product Manager - AI",
       period: "08/2023 – 03/2025",
