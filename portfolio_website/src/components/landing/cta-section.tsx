@@ -76,8 +76,8 @@ export function CtaSection({ containerVariants, itemVariants }: CtaSectionProps)
             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground tracking-tight"
             variants={itemVariants}
           >
-            Let&apos;s Build <span className="relative inline-block">
-              <span className="bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">Something</span>
+            Let&apos;s <span className="relative inline-block">
+              <span className="bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">Build</span>
               <motion.span 
                 className="absolute -bottom-2 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary/70 to-transparent"
                 initial={{ width: 0, opacity: 0 }}
@@ -85,14 +85,14 @@ export function CtaSection({ containerVariants, itemVariants }: CtaSectionProps)
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: 0.4 }} 
               />
-            </span> Amazing
+            </span> Great Products
           </motion.h2>
           
           <motion.p
             variants={itemVariants}
             className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed"
           >
-            Have a project in mind or looking for a Product leader to drive AI innovation? Let&apos;s connect.
+             Seeking a product leader passionate about crafting exceptional user experiences and driving innovation? Let&apos;s discuss how I can contribute to your team.
           </motion.p>
           
           <motion.div

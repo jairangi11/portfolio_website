@@ -1,15 +1,18 @@
 "use client";
 
 import { useState, useMemo } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { caseStudies } from '@/data/caseStudiesData';
 import Layout from '@/components/layout/Layout';
 import CaseStudyCard from '@/components/case-studies/CaseStudyCard';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { FiFilter, FiX } from 'react-icons/fi';
 import { cn } from '@/lib/utils';
 
 export default function CaseStudiesPage() {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
 
   const allTags = useMemo(() => {
     const tagsSet = new Set<string>();
@@ -53,6 +56,18 @@ export default function CaseStudiesPage() {
     }
   };
 
+  const drawerVariants = {
+    hidden: { y: "100%", opacity: 0 },
+    visible: { y: "0%", opacity: 1, transition: { type: "spring", damping: 25, stiffness: 150 } },
+    exit: { y: "100%", opacity: 0, transition: { duration: 0.3 } }
+  };
+
+  const backdropVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
+    exit: { opacity: 0 }
+  };
+
   return (
     <Layout>
       <motion.main 
@@ -77,7 +92,7 @@ export default function CaseStudiesPage() {
         </div>
 
         <motion.div 
-          className="mb-16 p-4 rounded-lg bg-card/30 backdrop-blur-sm border border-border/20 flex flex-wrap justify-center gap-3"
+          className="mb-16 p-4 rounded-lg bg-card/30 backdrop-blur-sm border border-border/20 hidden md:flex flex-wrap justify-center gap-3"
           variants={tagContainerVariants}
           initial="hidden"
           animate="visible"
@@ -105,6 +120,22 @@ export default function CaseStudiesPage() {
             </motion.div>
           ))}
         </motion.div>
+
+        <div className="mb-8 text-center md:hidden"> 
+          <Button 
+            variant="outline"
+            onClick={() => setIsFilterDrawerOpen(true)}
+            className="inline-flex items-center gap-2 bg-card/50 border-border/40 hover:bg-accent"
+          >
+            <FiFilter className="h-4 w-4" />
+            Filter by Tag
+            {selectedTags.length > 0 && (
+              <span className="ml-1.5 inline-block bg-primary text-primary-foreground text-xs font-bold px-2 py-0.5 rounded-full">
+                {selectedTags.length}
+              </span>
+            )}
+          </Button>
+        </div>
 
         <motion.div
           layout
@@ -134,6 +165,67 @@ export default function CaseStudiesPage() {
           )}
         </motion.div>
       </motion.main>
+
+      <AnimatePresence>
+        {isFilterDrawerOpen && (
+          <>
+            <motion.div
+              key="filter-backdrop"
+              variants={backdropVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              onClick={() => setIsFilterDrawerOpen(false)}
+              className="fixed inset-0 bg-black/50 z-40 md:hidden"
+            />
+            <motion.div
+              key="filter-drawer"
+              variants={drawerVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border rounded-t-2xl shadow-2xl max-h-[60vh] overflow-y-auto md:hidden"
+            >
+               <div className="flex justify-between items-center p-4 border-b border-border sticky top-0 bg-background z-10">
+                 <h3 className="text-lg font-semibold text-foreground">Filter by Tag</h3>
+                 <Button
+                   variant="ghost"
+                   size="icon"
+                   onClick={() => setIsFilterDrawerOpen(false)}
+                   className="text-muted-foreground hover:text-foreground"
+                   aria-label="Close filters"
+                 >
+                   <FiX size={20} />
+                 </Button>
+               </div>
+               <div className="p-6 flex flex-wrap gap-3">
+                  {allTags.map(tag => (
+                    <Badge
+                      key={tag}
+                      variant="outline"
+                      className={cn(
+                        "cursor-pointer transition-all duration-200 ease-in-out",
+                        "px-3 py-1 text-sm rounded-full border",
+                        selectedTags.includes(tag)
+                          ? 'bg-primary text-primary-foreground border-primary hover:bg-primary/90'
+                          : 'bg-secondary text-secondary-foreground border-border hover:bg-secondary/80'
+                      )}
+                      onClick={() => handleTagClick(tag)}
+                    >
+                      {tag}
+                    </Badge>
+                  ))}
+               </div>
+               <div className="p-4 sticky bottom-0 bg-background border-t border-border mt-auto">
+                 <Button onClick={() => setIsFilterDrawerOpen(false)} className="w-full">
+                   View Results ({filteredStudies.length})
+                 </Button>
+               </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
     </Layout>
   );
 } 
