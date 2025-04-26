@@ -12,12 +12,6 @@ export interface CaseStudy {
   approach: string;
   results: string;
   learnings: string;
-  testimonial?: {
-    quote: string;
-    name: string;
-    title: string;
-    avatar?: string;
-  };
   figmaLink?: string;
   whimsicalLink?: string;
   sheetsLink?: string;
@@ -38,12 +32,6 @@ export const caseStudies: CaseStudy[] = [
     approach: "The project started with in-depth interviews with internal payroll specialists and key clients to identify critical pain points. We adopted an agile methodology, delivering incremental improvements and gathering feedback continuously. Key focus areas included API optimization and database query refinement.",
     results: "The optimized platform reduced average payroll processing time by 30%, decreased error rates by 25%, and significantly improved client satisfaction scores related to payroll services. The changes also allowed Deel to onboard larger clients more efficiently.",
     learnings: "This project underscored the criticality of regulatory understanding in Fintech product development. It also highlighted the importance of internal user feedback (payroll specialists) in refining complex B2B platform functionalities.",
-    testimonial: {
-      quote: "The improvements to the payroll system have been a game-changer for our operations, allowing us to scale efficiently while maintaining accuracy.",
-      name: "Alex Chen",
-      title: "VP of Operations, Deel",
-      avatar: "/images/testimonials/placeholder-avatar.png" // Placeholder
-    },
     figmaLink: "https://www.google.com",
     whimsicalLink: "https://www.google.com",
     sheetsLink: "https://www.google.com"
@@ -80,12 +68,6 @@ export const caseStudies: CaseStudy[] = [
     approach: "User research, including usability testing of the existing flow and competitive analysis, informed the redesign. Iterative prototyping and A/B testing were used to validate design decisions and optimize the conversion funnel.",
     results: "The new onboarding flow reduced the average time to complete merchant setup by 50%. More significantly, the rate of successful merchant activations increased by 35%, expanding Google Pay's merchant network.",
     learnings: "This project emphasized the impact of streamlined UX on conversion rates, especially in onboarding processes. Simplifying complex requirements into user-friendly steps is crucial for adoption.",
-    testimonial: {
-        quote: "Simplifying the merchant onboarding has directly contributed to faster growth of our payment ecosystem. The user-centric approach made a tangible difference.",
-        name: "Priya Sharma",
-        title: "Product Lead, Google Pay",
-        avatar: "/images/testimonials/placeholder-avatar.png" // Placeholder
-      },
     figmaLink: "https://www.google.com",
     whimsicalLink: "https://www.google.com",
     sheetsLink: "https://www.google.com"
@@ -122,12 +104,6 @@ export const caseStudies: CaseStudy[] = [
     approach: "Extensive market research, competitor analysis, and workshops with clients and psychometricians guided the product strategy. The approach prioritized a modular architecture to allow for flexible integration of new assessment types.",
     results: "The new platform strategy positioned SHL for future growth, leading to the successful launch of pilot modules that received positive feedback for candidate experience and data richness. (Note: Specific metrics relate to post-launch phases beyond this strategic period).",
     learnings: "Developing products in the psychometric assessment space requires a deep integration of technology, user experience, and scientific rigor. Balancing innovation with established assessment validity is crucial.",
-    testimonial: {
-        quote: "The strategic vision for the new platform set a clear direction, enabling us to innovate while staying true to our core strengths in assessment science.",
-        name: "David Woodward",
-        title: "Chief Product Officer, SHL",
-        avatar: "/images/testimonials/placeholder-avatar.png" // Placeholder
-      },
     figmaLink: "https://www.google.com",
     whimsicalLink: "https://www.google.com",
     sheetsLink: "https://www.google.com"
@@ -146,6 +122,60 @@ export const caseStudies: CaseStudy[] = [
     approach: "The design process focused on understanding user motivations and applying game mechanics relevant to a rewards context. We prototyped and tested various gamification concepts before rolling out features iteratively.",
     results: "The introduction of gamification led to a 30% increase in daily active users and a 20% rise in the redemption rate of loyalty points. User feedback indicated a more enjoyable and engaging app experience.",
     learnings: "Effective gamification requires more than just adding points and badges; it needs to align with user goals and the core purpose of the application. Thoughtful design is key to avoiding gimmickry.",
+    figmaLink: "https://www.google.com",
+    whimsicalLink: "https://www.google.com",
+    sheetsLink: "https://www.google.com"
+  },
+  {
+    id: "aws-lambda-developer-ux",
+    title: "AWS Lambda Developer Experience Enhancement",
+    company: "AWS (Sample)",
+    period: "Sample Period",
+    summary: "Improved the AWS Lambda developer experience by redesigning the console interface for function creation and monitoring, reducing configuration errors by 20%.",
+    tags: ["Cloud Computing", "Developer Tools", "B2B SaaS", "UX Improvement", "Serverless"],
+    coverImage: "/images/case-studies/aws.png",
+    thumbnailImage: "/images/case-studies/aws.png",
+    challenge: "Developers, especially those new to serverless, found the initial setup and monitoring of Lambda functions complex, leading to frequent configuration mistakes and increased support tickets.",
+    solution: "I led the initiative to simplify the Lambda console workflow. This included introducing guided setup wizards, improving error message clarity, and creating a more intuitive dashboard for monitoring function performance and logs.",
+    approach: "Conducted extensive user interviews and usability testing with developers across different experience levels. Analyzed support ticket data to pinpoint common pain points. Iterated on designs using Figma prototypes and gathered feedback from internal teams and beta users.",
+    results: "The redesigned console led to a 20% reduction in reported configuration errors for new Lambda functions and a 15% decrease in support tickets related to initial setup. Developer satisfaction scores for the Lambda console increased significantly.",
+    learnings: "Developer tools require a deep understanding of technical workflows. Simplifying complex configurations without sacrificing power requires careful UX design and clear documentation. Direct developer feedback is invaluable.",
+    figmaLink: "https://www.google.com",
+    whimsicalLink: "https://www.google.com",
+    sheetsLink: "https://www.google.com"
+  },
+  {
+    id: "spotify-podcast-discovery",
+    title: "Spotify Podcast Discovery & Personalization",
+    company: "Spotify (Sample)",
+    period: "Sample Period",
+    summary: "Enhanced Spotify's podcast discovery features using ML personalization, leading to a 25% increase in podcast listening hours among targeted user segments.",
+    tags: ["Streaming", "Social Media", "AI/ML", "Recommendation Systems", "Mobile App"],
+    coverImage: "/images/case-studies/spotify.png",
+    thumbnailImage: "/images/case-studies/spotify.png",
+    challenge: "With a rapidly growing podcast catalog, users struggled to discover new podcasts relevant to their interests beyond the top charts, limiting engagement and content exploration.",
+    solution: "I product managed the development and integration of a personalized podcast recommendation engine. This involved refining algorithms based on listening history, user-provided interests, and collaborative filtering, and surfacing these recommendations in dedicated UI sections.",
+    approach: "Worked closely with data science teams to define recommendation models and success metrics. Utilized A/B testing extensively to compare different algorithm variations and UI presentations. Gathered qualitative feedback through user surveys.",
+    results: "The personalized recommendations resulted in a 25% increase in average podcast listening time for users engaging with the new features and a 15% increase in follows for recommended podcasts.",
+    learnings: "Personalization in content discovery requires balancing algorithmic accuracy with serendipity. Effective A/B testing infrastructure is crucial for iterating on recommendation systems at scale. Understanding different content consumption patterns (music vs. podcasts) is key.",
+    figmaLink: "https://www.google.com",
+    whimsicalLink: "https://www.google.com",
+    sheetsLink: "https://www.google.com"
+  },
+  {
+    id: "fitbit-stress-management-feature",
+    title: "Fitbit Integrated Stress Management Tools",
+    company: "Fitbit (Sample)",
+    period: "Sample Period",
+    summary: "Launched an integrated stress management feature set within the Fitbit app, utilizing biometric data and guided exercises, achieving a 40% user adoption rate within the first 3 months.",
+    tags: ["Health Tech", "Wearables", "Mobile App", "Wellness", "Data Analytics"],
+    coverImage: "/images/case-studies/fitbit.png",
+    thumbnailImage: "/images/case-studies/fitbit.png",
+    challenge: "Users expressed interest in holistic wellness features beyond physical activity tracking. Integrating meaningful stress management tools required careful handling of sensitive data and ensuring clinical validity.",
+    solution: "I defined the product requirements for a new stress management suite, incorporating sensor data (like EDA scans) to provide a daily Stress Management Score, guided breathing exercises, and mindfulness content integration.",
+    approach: "Collaborated with health experts, data scientists, and UX researchers to design features grounded in science and user needs. Focused on clear data visualization and actionable insights. Ensured compliance with health data privacy regulations.",
+    results: "The feature set achieved a 40% adoption rate among active Fitbit Premium users within three months of launch. Users completing guided sessions reported a perceptible reduction in stress levels in post-session surveys.",
+    learnings: "Health tech features demand a high degree of scientific rigor and user trust. Communicating complex biometric data in an understandable and actionable way is critical. Privacy and ethical considerations are paramount.",
     figmaLink: "https://www.google.com",
     whimsicalLink: "https://www.google.com",
     sheetsLink: "https://www.google.com"
