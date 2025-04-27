@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deel Settings - Wireframe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Mimic shadcn/ui styles (Same as other pages) */
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .card { background-color: white; border-radius: 0.5rem; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1); }
+        .nav-item { display: flex; align-items: center; padding: 0.75rem 1rem; border-radius: 0.375rem; color: #475569; transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out; font-weight: 500; cursor: pointer; text-decoration: none; }
+        .nav-item:hover { background-color: #f1f5f9; color: #0f172a; }
+        .nav-item.active { background-color: #e2e8f0; color: #0f172a; font-weight: 600; }
+        .nav-icon { margin-right: 0.75rem; width: 1.25rem; height: 1.25rem; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.5rem 1rem; border-radius: 0.375rem; font-weight: 600; font-size: 0.875rem; transition: background-color 0.2s ease-in-out, opacity 0.2s ease-in-out; cursor: pointer; }
+        .btn-primary { background-color: #2563eb; color: white; }
+        .btn-primary:hover { background-color: #1d4ed8; }
+        .btn-secondary { background-color: #e2e8f0; color: #0f172a; border: 1px solid #cbd5e1; }
+        .btn-secondary:hover { background-color: #cbd5e1; }
+        .btn-danger { background-color: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; }
+        .btn-danger:hover { background-color: #fecaca; }
+        .input { padding: 0.5rem 0.75rem; border: 1px solid #cbd5e1; border-radius: 0.375rem; font-size: 0.875rem; width: 100%; }
+        .input:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 1px #2563eb; }
+        .label { display: block; font-weight: 500; font-size: 0.875rem; color: #334155; margin-bottom: 0.25rem; }
+        .switch { position: relative; display: inline-block; width: 34px; height: 20px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: #2563eb; }
+        input:checked + .slider:before { transform: translateX(14px); }
+         /* Fade in for cards */
+        @keyframes cardFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animated-card { animation: cardFadeIn 0.4s ease-out forwards; opacity: 0; }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="text-slate-800">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+         <aside class="w-64 bg-white border-r border-slate-200 flex flex-col p-4 flex-shrink-0">
+            <div class="text-2xl font-bold text-slate-900 mb-8">deel.</div>
+            <nav class="flex-grow space-y-1">
+                <a href="./admin_dashboard.html" class="nav-item">
+                    <i class="fas fa-home nav-icon"></i> Home
+                </a>
+                <a href="./payroll_run_list.html" class="nav-item">
+                   <i class="fas fa-file-contract nav-icon"></i> Payroll Runs
+                </a>
+                 <a href="./people_list.html" class="nav-item">
+                   <i class="fas fa-users nav-icon"></i> People
+                </a>
+                <a href="./compliance_center.html" class="nav-item">
+                    <i class="fas fa-shield-alt nav-icon"></i> Compliance Center
+                </a>
+                 <a href="./reporting_dashboard.html" class="nav-item">
+                    <i class="fas fa-chart-bar nav-icon"></i> Reporting
+                </a>
+                <a href="./settings_page.html" class="nav-item active"> <!-- Active state -->
+                    <i class="fas fa-cog nav-icon"></i> Settings
+                </a>
+            </nav>
+            <div class="mt-auto border-t border-slate-200 pt-4">
+                 <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-semibold mr-3">JD</div>
+                    <div>
+                        <div class="text-sm font-semibold text-slate-800">John Doe</div>
+                        <div class="text-xs text-slate-500">Payroll Specialist</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto p-8">
+            <header class="mb-6">
+                <h1 class="text-3xl font-bold text-slate-900">Settings</h1>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Settings Section: Profile -->
+                <div class="md:col-span-2">
+                    <div class="card p-6 mb-6 animated-card" style="animation-delay: 0.1s;">
+                        <h2 class="text-xl font-semibold text-slate-800 mb-4">Profile Information</h2>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label for="firstName" class="label">First Name</label>
+                                <input type="text" id="firstName" value="John" class="input">
+                            </div>
+                            <div>
+                                <label for="lastName" class="label">Last Name</label>
+                                <input type="text" id="lastName" value="Doe" class="input">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                             <label for="email" class="label">Email Address</label>
+                             <input type="email" id="email" value="john.doe@example.com" class="input" disabled>
+                             <p class="text-xs text-slate-500 mt-1">Email cannot be changed.</p>
+                        </div>
+                         <div class="mb-4">
+                             <label for="jobTitle" class="label">Job Title</label>
+                             <input type="text" id="jobTitle" value="Payroll Specialist" class="input">
+                        </div>
+                        <div class="text-right">
+                            <button class="btn btn-primary">Save Profile</button>
+                        </div>
+                    </div>
+
+                    <!-- Settings Section: Security -->
+                     <div class="card p-6 mb-6 animated-card" style="animation-delay: 0.2s;">
+                        <h2 class="text-xl font-semibold text-slate-800 mb-4">Security</h2>
+                         <div class="mb-4">
+                            <button class="btn btn-secondary">Change Password</button>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="font-medium text-slate-700">Two-Factor Authentication (2FA)</p>
+                                <p class="text-sm text-slate-500">Enhance your account security.</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                         </div>
+                         <div class="mt-4 border-t pt-4">
+                             <h3 class="font-semibold text-slate-700 mb-2">Active Sessions</h3>
+                             <div class="text-sm text-slate-600 mb-2">Chrome on Windows 11 - Current Session</div>
+                             <button class="btn btn-secondary btn-sm text-xs">Sign out all other sessions</button>
+                         </div>
+                    </div>
+
+                     <!-- Settings Section: Notifications -->
+                    <div class="card p-6 mb-6 animated-card" style="animation-delay: 0.3s;">
+                        <h2 class="text-xl font-semibold text-slate-800 mb-4">Notifications</h2>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="font-medium text-slate-700">Payroll Run Updates</p>
+                                    <p class="text-sm text-slate-500">Get notified about payroll cycle progress.</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                             </div>
+                             <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="font-medium text-slate-700">Compliance Alerts</p>
+                                    <p class="text-sm text-slate-500">Receive important compliance notifications.</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                             </div>
+                             <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="font-medium text-slate-700">System Announcements</p>
+                                    <p class="text-sm text-slate-500">Updates about Deel platform changes.</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider"></span>
+                                </label>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Section: Account/Billing (Placeholder) -->
+                <div class="md:col-span-1">
+                     <div class="card p-6 sticky top-8 animated-card" style="animation-delay: 0.4s;"> <!-- Sticky sidebar card -->
+                         <h2 class="text-xl font-semibold text-slate-800 mb-4">Account</h2>
+                         <div class="mb-4">
+                             <p class="label">Subscription Plan</p>
+                             <p class="font-semibold text-slate-700">Deel Premium</p>
+                             <button class="text-sm text-blue-600 hover:underline mt-1">Manage Subscription</button>
+                         </div>
+                          <div class="mb-4">
+                             <p class="label">Organization Name</p>
+                             <p class="font-semibold text-slate-700">Global Corp Inc.</p>
+                         </div>
+                          <div class="border-t pt-4">
+                             <button class="btn btn-danger w-full">Delete Account</button>
+                              <p class="text-xs text-slate-500 mt-2 text-center">This action cannot be undone.</p>
+                          </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+</body>
+</html> 

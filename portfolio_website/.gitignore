@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Project specific files to ignore
+implementation_plan.md
+redundant_code.md
+resume.md
+references/
