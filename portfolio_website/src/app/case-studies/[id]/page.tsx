@@ -117,7 +117,7 @@ export default function CaseStudyPage() {
                   src={currentCaseStudy.coverImage}
                   alt={currentCaseStudy.title}
                   fill
-                  className="object-cover transition-transform duration-500 ease-in-out hover:scale-105"
+                  className="object-contain transition-transform duration-500 ease-in-out hover:scale-105"
                   priority
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 800px"
                 />
