@@ -65,18 +65,18 @@ Ensure the flow clearly shows decision points, loops for corrections/rejections,
 *   **System:** Web Application (React/Next.js Frontend) - Handles UI, user interactions.
 *   **System:** API Gateway - Routes requests.
 *   **System:** Authentication Service - Manages logins, sessions, permissions (RBAC).
-*   **System:** Core Payroll Service (Microservice) - *OPTIMIZED*
+*   **System:** Core Payroll Service (Microservice) - 
     *   Handles core gross-to-net calculation logic.
     *   Interacts with Compliance & Validation Services.
     *   Manages payroll run state.
-*   **System:** Automated Compliance Service (Microservice) - *NEW/ENHANCED*
+*   **System:** Automated Compliance Service (Microservice) - 
     *   Contains country-specific rule engine.
     *   Provides compliance checks/calculations to Core Payroll Service.
     *   Manages alert generation.
-*   **System:** Data Validation Service (Microservice) - *ENHANCED*
+*   **System:** Data Validation Service (Microservice) - 
     *   Performs input validation (format, logic).
     *   Used by Web App (on input) and Core Payroll Service (during processing).
-*   **System:** Reporting & Analytics Service (Microservice) - *ENHANCED*
+*   **System:** Reporting & Analytics Service (Microservice) - 
     *   Generates standard & custom reports.
     *   Handles data aggregation & consolidation.
     *   Serves data to Finance Dashboard.

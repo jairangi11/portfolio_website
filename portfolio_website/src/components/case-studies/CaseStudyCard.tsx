@@ -93,9 +93,9 @@ export default function CaseStudyCard({ caseStudy, index }: CaseStudyCardProps) 
           
           <CardFooter className="pt-4 pb-4 flex justify-between items-center border-t border-border/20 mt-auto">
             <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-              {caseStudy.figmaLink && (
+              {caseStudy.wireframeLink && (
                 <Link 
-                  href={caseStudy.figmaLink} 
+                  href={caseStudy.wireframeLink} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   aria-label="View Interactive Wireframes"
@@ -106,7 +106,7 @@ export default function CaseStudyCard({ caseStudy, index }: CaseStudyCardProps) 
                   <span className="hidden sm:inline text-xs">Wireframes</span>
                 </Link>
               )}
-              {caseStudy.figmaLink && caseStudy.whimsicalLink && (
+              {caseStudy.wireframeLink && caseStudy.whimsicalLink && (
                 <span className="text-muted-foreground/30">|</span>
               )}
               {caseStudy.whimsicalLink && (
@@ -122,7 +122,7 @@ export default function CaseStudyCard({ caseStudy, index }: CaseStudyCardProps) 
                   <span className="hidden sm:inline text-xs">Whimsical</span>
                 </Link>
               )}
-              {((caseStudy.figmaLink || caseStudy.whimsicalLink)) && caseStudy.sheetsLink && (
+              {((caseStudy.wireframeLink || caseStudy.whimsicalLink)) && caseStudy.sheetsLink && (
                 <span className="text-muted-foreground/30">|</span>
               )}
               {caseStudy.sheetsLink && (
