@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireframe - Lambda Observability (Default)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Add Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Mimic AWS Console Font */
+        body {
+            font-family: 'Amazon Ember', 'Helvetica Neue', sans-serif;
+            background-color: #f8f9fa; /* Light gray background */
+            color: #16191f; /* Slightly darker default text */
+        }
+        .aws-header {
+            background-color: #232f3e; /* AWS dark blue */
+            color: white;
+        }
+        .aws-sidebar {
+            background-color: #eaeded; /* AWS light gray */
+            border-right: 1px solid #dee2e6;
+        }
+        .aws-content-area {
+            background-color: #ffffff; /* White content area */
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .aws-tab {
+            border-bottom: 3px solid transparent; /* Slightly thicker border */
+            padding: 10px 15px;
+            cursor: pointer;
+            color: #5f6b7a; /* AWS muted text */
+            transition: all 0.2s ease-in-out;
+            text-decoration: none; /* Remove underline from links */
+            display: inline-block; /* Needed for links */
+        }
+        .aws-tab:hover {
+             background-color: #f1f3f3; /* Subtle hover */
+             color: #16191f;
+        }
+        .aws-tab.active {
+            border-bottom-color: #ec7211; /* AWS orange */
+            color: #0d1a26; /* AWS dark text */
+            font-weight: 600; /* Semibold */
+            background-color: transparent; /* Ensure active tab isn't highlighted on hover */
+        }
+        .aws-card {
+            border: 1px solid #e7e9ec; /* Lighter border */
+            border-radius: 4px;
+            background-color: #ffffff; /* White card background */
+            padding: 1rem 1.5rem; /* Slightly more padding */
+            margin-bottom: 1.5rem; /* Increased spacing */
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+        .aws-placeholder { /* Keeping for sidebar, removing from charts */
+            background-color: #e9ecef;
+            border: 1px dashed #ced4da;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            min-height: 100px;
+        }
+        /* Chart container */
+        .chart-container {
+            position: relative;
+            height: 150px; /* Adjust height as needed */
+            width: 100%;
+        }
+        .aws-button { /* Base button style */
+             padding: 6px 12px;
+             border-radius: 3px;
+             font-size: 0.9em;
+             border: 1px solid #adb5bd;
+             cursor: pointer;
+             transition: background-color 0.2s ease;
+             background-color: #ffffff;
+             color: #16191f;
+        }
+        .aws-button:hover {
+             background-color: #f8f9fa;
+        }
+        .aws-input {
+             border: 1px solid #adb5bd;
+             border-radius: 3px;
+             padding: 6px 10px;
+             font-size: 0.9em;
+        }
+        .log-placeholder { /* Specific placeholder for logs/traces */
+             background-color: #f8f9fa;
+             border: 1px dashed #dee2e6;
+             color: #6c757d;
+             padding: 2rem;
+             text-align: center;
+             border-radius: 3px;
+             min-height: 150px;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+        }
+
+    </style>
+</head>
+<body class="text-sm">
+
+    <!-- Simplified AWS Header Placeholder -->
+    <header class="aws-header p-2 flex justify-between items-center shadow-md">
+        <span class="font-semibold text-base">AWS Lambda</span>
+        <span class="text-xs">user@example.com | N. Virginia ▼</span>
+    </header>
+
+    <div class="flex h-[calc(100vh-48px)]"> <!-- Adjusted height for header -->
+        <!-- Simplified AWS Sidebar Placeholder -->
+        <aside class="aws-sidebar w-16 p-2 pt-4 space-y-4">
+            <!-- Icons would go here -->
+            <div class="aws-placeholder h-8 w-8 mx-auto rounded"></div>
+            <div class="aws-placeholder h-8 w-8 mx-auto rounded"></div>
+            <div class="aws-placeholder h-8 w-8 mx-auto rounded"></div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 p-6 overflow-auto"> <!-- Increased padding -->
+            <!-- Breadcrumbs / Function Title -->
+            <div class="mb-2 text-xs text-gray-600">
+                <a href="#" class="hover:underline">Lambda</a> > <a href="#" class="hover:underline">Functions</a> > my-example-function
+            </div>
+            <h1 class="text-2xl font-semibold mb-5">my-example-function</h1>
+
+            <!-- Function Tabs -->
+            <div class="flex border-b border-gray-300 mb-6">
+                <a href="#" class="aws-tab">Code</a> <!-- Link placeholder -->
+                <a href="1_observability_default.html" class="aws-tab active">Observability</a>
+                <a href="5_test_tab_enhanced.html" class="aws-tab">Test</a>
+                <a href="3_config_add_trigger.html" class="aws-tab">Configuration</a> <!-- Link to first config example -->
+                <a href="#" class="aws-tab">Aliases</a> <!-- Link placeholder -->
+                <a href="#" class="aws-tab">Versions</a> <!-- Link placeholder -->
+            </div>
+
+            <!-- Observability Tab Content -->
+            <div class="space-y-6">
+
+                <!-- Filters/Time Range Selector -->
+                <div class="aws-card flex justify-between items-center p-3">
+                    <div class="flex space-x-3 items-center">
+                        <button class="aws-button">Filter Logs</button>
+                        <input type="text" placeholder="Search Logs..." class="aws-input">
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <span class="text-gray-700">Time Range:</span>
+                        <select class="aws-input">
+                            <option>Last 15 minutes</option>
+                            <option>Last 1 hour</option>
+                            <option>Last 3 hours</option>
+                            <option>Custom</option>
+                        </select>
+                        <button class="aws-button">Refresh</button>
+                        <button class="aws-button">Pause</button>
+                    </div>
+                </div>
+
+                <!-- Metrics Section -->
+                <div class="aws-card">
+                    <h2 class="font-semibold text-lg mb-4">Key Metrics</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <!-- Chart Containers -->
+                        <div>
+                            <h3 class="text-center font-medium text-sm mb-2">Invocations</h3>
+                            <div class="chart-container"><canvas id="invocationsChart"></canvas></div>
+                        </div>
+                        <div>
+                            <h3 class="text-center font-medium text-sm mb-2">Errors</h3>
+                            <div class="chart-container"><canvas id="errorsChart"></canvas></div>
+                        </div>
+                        <div>
+                             <h3 class="text-center font-medium text-sm mb-2">Duration (Avg)</h3>
+                            <div class="chart-container"><canvas id="durationChart"></canvas></div>
+                        </div>
+                        <div>
+                             <h3 class="text-center font-medium text-sm mb-2">Throttles</h3>
+                            <div class="chart-container"><canvas id="throttlesChart"></canvas></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Logs Section -->
+                <div class="aws-card">
+                    <h2 class="font-semibold text-lg mb-3">Logs</h2>
+                    <div class="log-placeholder">
+                        Near real-time log stream...
+                    </div>
+                </div>
+
+                <!-- Traces Section -->
+                <div class="aws-card">
+                    <h2 class="font-semibold text-lg mb-3">Traces (X-Ray Enabled)</h2>
+                    <div class="log-placeholder">
+                         Trace summaries/links...
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+<script>
+    // Sample Data (Replace with actual data fetching logic if needed)
+    const labels = ['-1h', '-45m', '-30m', '-15m', 'Now'];
+    const randomData = () => labels.map(() => Math.floor(Math.random() * 100));
+    const randomDurationData = () => labels.map(() => Math.floor(Math.random() * 500) + 50); // Simulate ms
+
+    // Chart Configuration Defaults
+    const chartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+            y: { beginAtZero: true, ticks: { font: { size: 10 } } },
+            x: { ticks: { font: { size: 10 } } }
+        },
+        elements: { line: { tension: 0.3 } } // Smoother lines
+    };
+
+    // Init Charts
+    new Chart(document.getElementById('invocationsChart'), {
+        type: 'line',
+        data: { labels: labels, datasets: [{ label: 'Invocations', data: randomData(), borderColor: '#2e72b8', backgroundColor: 'rgba(46, 114, 184, 0.1)', fill: true }] },
+        options: chartOptions
+    });
+    new Chart(document.getElementById('errorsChart'), {
+        type: 'line',
+        data: { labels: labels, datasets: [{ label: 'Errors', data: randomData().map(d => Math.floor(d/10)), borderColor: '#d13212', backgroundColor: 'rgba(209, 50, 18, 0.1)', fill: true }] },
+        options: chartOptions
+    });
+     new Chart(document.getElementById('durationChart'), {
+        type: 'line',
+        data: { labels: labels, datasets: [{ label: 'Duration (ms)', data: randomDurationData(), borderColor: '#1d8102', backgroundColor: 'rgba(29, 129, 2, 0.1)', fill: true }] },
+        options: chartOptions
+    });
+    new Chart(document.getElementById('throttlesChart'), {
+        type: 'line',
+        data: { labels: labels, datasets: [{ label: 'Throttles', data: randomData().map(d => Math.floor(d/20)), borderColor: '#ff8c00', backgroundColor: 'rgba(255, 140, 0, 0.1)', fill: true }] },
+        options: chartOptions
+    });
+</script>
+
+</body>
+</html> 

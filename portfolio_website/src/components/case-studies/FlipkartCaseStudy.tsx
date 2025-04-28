@@ -301,7 +301,7 @@ const FlipkartCaseStudy: React.FC<FlipkartCaseStudyProps> = ({ study }) => {
           <FiCheckSquare />
         )}
 
-         {renderDetailedSection("Detailed Design (Conceptual)",
+         {renderDetailedSection("Detailed Design",
            <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="func-req">
               <AccordionTrigger className="text-lg font-medium hover:no-underline">Functional Requirements</AccordionTrigger>
@@ -350,7 +350,7 @@ const FlipkartCaseStudy: React.FC<FlipkartCaseStudyProps> = ({ study }) => {
               </AccordionContent>
             </AccordionItem>
              <AccordionItem value="wireframes-desc">
-              <AccordionTrigger className="text-lg font-medium hover:no-underline">Wireframes (Conceptual)</AccordionTrigger>
+              <AccordionTrigger className="text-lg font-medium hover:no-underline">Wireframes</AccordionTrigger>
               <AccordionContent className="pt-4">
                   {renderBulletList(detailedData.detailedDesign.wireframesDescription)}
               </AccordionContent>

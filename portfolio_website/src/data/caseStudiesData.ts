@@ -1,5 +1,6 @@
 import { DeelCaseStudyDetails } from "./deel-global-payroll-data";
 import { FlipkartCaseStudyDetails } from './flipkart-logistics-optimization-data';
+import { AwsLambdaCaseStudyDetails, awsLambdaCaseStudyDetails } from './aws-lambda-developer-ux-data';
 
 export interface CaseStudy {
   id: string;
@@ -15,7 +16,7 @@ export interface CaseStudy {
   sheetsLink?: string;
 
   // Field for detailed content, specific to Deel for now
-  detailedData?: DeelCaseStudyDetails | FlipkartCaseStudyDetails;
+  detailedData?: DeelCaseStudyDetails | FlipkartCaseStudyDetails | AwsLambdaCaseStudyDetails;
 }
 
 // Import the detailed data
@@ -105,9 +106,10 @@ export const caseStudies: CaseStudy[] = [
     tags: ["Cloud Computing", "Developer Tools", "B2B SaaS", "UX Improvement", "Serverless"],
     coverImage: "/images/case-studies/aws.png",
     thumbnailImage: "/images/case-studies/aws.png",
-    wireframeLink: "https://www.google.com",
-    whimsicalLink: "https://www.google.com",
-    sheetsLink: "https://www.google.com"
+    wireframeLink: "https://jairangi11.github.io/portfolio_website/case-studies-content/aws-lambda-developer-ux/wireframes/1_observability_default.html",
+    whimsicalLink: "https://whimsical.com/portfolio-case-study-SWF4dwiPDQzafhAw97XLgD@8ADn3nfZACayAssTti3ccZQkS6vN1iYZsH7h",
+    sheetsLink: "https://docs.google.com/spreadsheets/d/1dvkhd_cTUowoIkTEK_Y-sWOoyN6zIDNAmgq2wTSjC-Y/edit?usp=sharing",
+    detailedData: awsLambdaCaseStudyDetails // Assign the AWS detailed data
   },
   {
     id: "spotify-podcast-discovery",

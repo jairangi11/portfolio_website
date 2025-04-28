@@ -17,6 +17,12 @@ import { Badge } from "@/components/ui/badge";
 import DeelCaseStudy from '@/components/case-studies/DeelCaseStudy';
 import FlipkartCaseStudy from '@/components/case-studies/FlipkartCaseStudy';
 import GenericCaseStudy from '@/components/case-studies/GenericCaseStudy';
+import AWSLambdaDeveloperUX from '@/components/case-studies/AWSLambdaDeveloperUX';
+
+// Import specific detail types
+import { DeelCaseStudyDetails } from '@/data/deel-global-payroll-data';
+import { AwsLambdaCaseStudyDetails } from '@/data/aws-lambda-developer-ux-data';
+import { FlipkartCaseStudyDetails } from '@/data/flipkart-logistics-optimization-data';
 
 const sectionVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -61,11 +67,14 @@ export default function CaseStudyPage() {
   const renderCaseStudyContent = (study: CaseStudy) => {
     switch (study.id) {
       case 'deel-global-payroll':
-        // Type assertion is safe here because we load specific data in caseStudiesData.ts
-        return <DeelCaseStudy study={study as CaseStudy & { detailedData: import('@/data/deel-global-payroll-data').DeelCaseStudyDetails }} />;
+        // Use specific type assertion
+        return <DeelCaseStudy study={study as CaseStudy & { detailedData: DeelCaseStudyDetails }} />;
       case 'flipkart-logistics-optimization':
-        // Type assertion is safe here
-        return <FlipkartCaseStudy study={study as CaseStudy & { detailedData: import('@/data/flipkart-logistics-optimization-data').FlipkartCaseStudyDetails }} />;
+        // Use specific type assertion
+        return <FlipkartCaseStudy study={study as CaseStudy & { detailedData: FlipkartCaseStudyDetails }} />;
+      case 'aws-lambda-developer-ux':
+        // Use specific type assertion
+        return <AWSLambdaDeveloperUX study={study as CaseStudy & { detailedData: AwsLambdaCaseStudyDetails }} />;
       // Add cases for other specific studies here...
       default:
         // Check if detailedData exists conceptually, even if not rendered specifically
@@ -150,7 +159,9 @@ export default function CaseStudyPage() {
               </motion.div>
 
               {/* Detailed Content Section (Conditional Rendering) */}
-              {renderCaseStudyContent(currentCaseStudy)}
+              <motion.div variants={sectionVariants} className="mb-12">
+                {renderCaseStudyContent(currentCaseStudy)}
+              </motion.div>
 
             </motion.div>
           </main>
