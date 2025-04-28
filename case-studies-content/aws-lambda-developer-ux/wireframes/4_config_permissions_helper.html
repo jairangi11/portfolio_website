@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireframe - Lambda Config (Permissions Helper)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Mimic AWS Console Font */
+        body {
+            font-family: 'Amazon Ember', 'Helvetica Neue', sans-serif;
+            background-color: #f8f9fa;
+            color: #16191f;
+        }
+        .aws-header {
+            background-color: #232f3e;
+            color: white;
+        }
+        .aws-sidebar {
+            background-color: #eaeded;
+            border-right: 1px solid #dee2e6;
+        }
+        .aws-content-area {
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .aws-tab {
+            border-bottom: 3px solid transparent;
+            padding: 10px 15px;
+            cursor: pointer;
+            color: #5f6b7a;
+            transition: all 0.2s ease-in-out;
+            text-decoration: none;
+            display: inline-block;
+        }
+         .aws-tab:hover {
+             background-color: #f1f3f3;
+             color: #16191f;
+        }
+        .aws-tab.active {
+            border-bottom-color: #ec7211;
+            color: #0d1a26;
+            font-weight: 600;
+            background-color: transparent;
+        }
+        .aws-card {
+            border: 1px solid #e7e9ec;
+            border-radius: 4px;
+            background-color: #ffffff;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+        .aws-placeholder { /* Keeping for sidebar */
+            background-color: #e9ecef;
+            border: 1px dashed #ced4da;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            min-height: 100px;
+            text-align: center;
+        }
+        .aws-link {
+            color: #006ce8;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .aws-link:hover {
+            text-decoration: underline;
+        }
+        .aws-button-primary {
+            background-color: #ec7211;
+            color: white;
+            padding: 6px 12px; /* Smaller padding for helper buttons */
+            border-radius: 3px;
+            border: 1px solid #ec7211;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            font-size: 0.85em;
+             font-weight: 500;
+        }
+        .aws-button-primary:hover {
+            background-color: #d96a0f;
+            border-color: #d96a0f;
+        }
+        .aws-button-secondary {
+            background-color: #ffffff;
+            color: #16191f;
+            padding: 8px 15px;
+            border-radius: 3px;
+            border: 1px solid #adb5bd;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            font-weight: 500;
+        }
+        .aws-button-secondary:hover {
+             background-color: #f8f9fa;
+        }
+        .aws-info-box {
+            background-color: #e6f3ff;
+            border: 1px solid #b8d7f9;
+            border-left: 4px solid #007bff;
+            color: #004085;
+            padding: 1rem 1.5rem;
+            border-radius: 4px;
+            margin-top: 1.5rem;
+        }
+        .config-sidebar-link {
+            display: block;
+            padding: 8px 12px;
+            border-radius: 3px;
+            cursor: pointer;
+            text-decoration: none;
+            color: #16191f;
+            transition: background-color 0.15s ease;
+        }
+        .config-sidebar-link:hover {
+            background-color: #dee2e6;
+        }
+        .config-sidebar-link.active {
+             background-color: #e6f3ff; /* Light blue active background */
+             font-weight: 600;
+             color: #004085;
+        }
+         .config-sidebar-link.active:hover {
+             background-color: #d1e7ff;
+        }
+    </style>
+</head>
+<body class="text-sm">
+
+    <!-- Simplified AWS Header Placeholder -->
+    <header class="aws-header p-2 flex justify-between items-center shadow-md">
+        <span class="font-semibold text-base">AWS Lambda</span>
+        <span class="text-xs">user@example.com | N. Virginia ▼</span>
+    </header>
+
+    <div class="flex h-[calc(100vh-48px)]">
+        <!-- Simplified AWS Sidebar Placeholder -->
+         <aside class="aws-sidebar w-16 p-2 pt-4 space-y-4">
+            <div class="aws-placeholder h-8 w-8 mx-auto rounded"></div>
+            <div class="aws-placeholder h-8 w-8 mx-auto rounded"></div>
+            <div class="aws-placeholder h-8 w-8 mx-auto rounded"></div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 p-6 overflow-auto">
+             <!-- Breadcrumbs / Function Title -->
+            <div class="mb-2 text-xs text-gray-600">
+                <a href="#" class="hover:underline">Lambda</a> > <a href="#" class="hover:underline">Functions</a> > my-example-function
+            </div>
+            <h1 class="text-2xl font-semibold mb-5">my-example-function</h1>
+
+            <!-- Function Tabs -->
+            <div class="flex border-b border-gray-300 mb-6">
+                <a href="#" class="aws-tab">Code</a>
+                <a href="1_observability_default.html" class="aws-tab">Observability</a>
+                <a href="5_test_tab_enhanced.html" class="aws-tab">Test</a>
+                <a href="3_config_add_trigger.html" class="aws-tab active">Configuration</a>
+                <a href="#" class="aws-tab">Aliases</a>
+                <a href="#" class="aws-tab">Versions</a>
+            </div>
+
+            <!-- Configuration Tab Content -->
+            <div class="grid grid-cols-12 gap-6">
+                <!-- Config Sidebar (Placeholder) -->
+                <div class="col-span-3">
+                     <nav class="space-y-1">
+                        <a href="#" class="config-sidebar-link">General configuration</a>
+                        <a href="3_config_add_trigger.html" class="config-sidebar-link">Triggers</a>
+                        <a href="4_config_permissions_helper.html" class="config-sidebar-link active">Permissions</a>
+                        <a href="#" class="config-sidebar-link">Environment variables</a>
+                        <a href="#" class="config-sidebar-link">Tags</a>
+                        <a href="#" class="config-sidebar-link">VPC</a>
+                        <a href="#" class="config-sidebar-link">Monitoring and operations tools</a>
+                        <a href="#" class="config-sidebar-link">Concurrency</a>
+                        <a href="#" class="config-sidebar-link">Asynchronous invocation</a>
+                        <a href="#" class="config-sidebar-link">State machines</a>
+                    </nav>
+                </div>
+
+                <!-- Permissions Section -->
+                <div class="col-span-9">
+                    <h2 class="text-xl font-semibold mb-5">Permissions</h2>
+
+                    <!-- Execution Role Section -->
+                    <div class="aws-card mb-6">
+                        <h3 class="font-semibold text-base mb-3">Execution role</h3>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="mb-1">Role name: <span class="font-mono bg-gray-100 px-1 rounded text-xs">my-example-function-role-xyz</span></p>
+                                <p class="text-xs text-gray-600 mb-3">Lambda uses this role to get permissions to access AWS services and resources.</p>
+                                <p class="font-semibold text-sm mb-2">Attached Policies:</p>
+                                <ul class="list-disc list-inside text-sm space-y-1 text-gray-700">
+                                    <li>AWSLambdaBasicExecutionRole</li>
+                                    <!-- More policies would be listed here -->
+                                </ul>
+                            </div>
+                            <div>
+                                <a href="#" class="aws-button-secondary text-sm">View role on IAM console</a> <!-- Link added -->
+                            </div>
+                        </div>
+
+                        <!-- IAM Permission Helper -->
+                        <div class="aws-info-box mt-6">
+                            <h4 class="font-bold mb-2 text-base">💡 Simplified IAM Permission Helper</h4>
+                            <p class="mb-4 text-sm">Based on your function's code and configured triggers, we suggest adding the following permissions to your execution role for optimal functionality:</p>
+
+                            <div class="space-y-4">
+                                <!-- Suggestion based on Trigger -->
+                                <div class="bg-white p-4 rounded border border-gray-300 shadow-sm">
+                                    <p class="font-semibold text-sm mb-1">For SQS Trigger:</p>
+                                    <ul class="list-disc list-inside text-xs space-y-1 mb-3 ml-4 text-gray-600">
+                                        <li>`sqs:ReceiveMessage`</li>
+                                        <li>`sqs:DeleteMessage`</li>
+                                        <li>`sqs:GetQueueAttributes`</li>
+                                    </ul>
+                                    <button class="aws-button-primary">Add SQS Permissions</button>
+                                    <a href="#" class="aws-link text-xs ml-2">Learn more</a>
+                                </div>
+
+                                <!-- Suggestion based on Code Analysis (Example) -->
+                                <div class="bg-white p-4 rounded border border-gray-300 shadow-sm">
+                                    <p class="font-semibold text-sm mb-1">For DynamoDB SDK Usage (Detected in Code):</p>
+                                     <ul class="list-disc list-inside text-xs space-y-1 mb-2 ml-4 text-gray-600">
+                                        <li>`dynamodb:PutItem`</li>
+                                        <li>`dynamodb:GetItem`</li>
+                                        <li>`dynamodb:UpdateItem`</li>
+                                    </ul>
+                                    <p class="text-xs text-gray-500 mb-3 italic">(Requires access to table: `my-data-table`)</p>
+                                    <button class="aws-button-primary">Add DynamoDB Permissions</button>
+                                    <a href="#" class="aws-link text-xs ml-2">Learn more</a>
+                                    <p class="text-xs text-gray-500 mt-2">Note: Code analysis suggestions are experimental.</p>
+                                </div>
+                            </div>
+
+                            <p class="text-xs mt-4 text-gray-600">Adding permissions modifies the attached policies of the execution role (<span class="font-mono bg-gray-100 px-1 rounded text-xs">my-example-function-role-xyz</span>).</p>
+                        </div>
+                    </div>
+
+                    <!-- Resource summary placeholder -->
+                    <div class="aws-card">
+                        <h3 class="font-semibold text-base mb-3">Resource summary</h3>
+                         <div class="text-center py-6 text-gray-500">
+                            Permissions boundary, etc.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+</body>
+</html> 
