@@ -22,28 +22,6 @@ import DeelCaseStudy from '@/components/case-studies/DeelCaseStudy';
 import FlipkartCaseStudy from '@/components/case-studies/FlipkartCaseStudy';
 import GenericCaseStudy from '@/components/case-studies/GenericCaseStudy';
 
-const renderBulletList = (items: string[], className?: string) => (
-  <ul className={cn("list-disc list-inside space-y-1 text-gray-700", className)}>
-    {items.map((item, index) => <li key={index}>{item}</li>)}
-  </ul>
-);
-
-const renderDetailedSection = (title: string, content: React.ReactNode, icon?: React.ReactNode) => (
-  <motion.div variants={sectionVariants} className="mb-8">
-    <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300 rounded-lg overflow-hidden">
-      <CardHeader className="border-b border-gray-100 px-6 py-4 bg-gray-50/50">
-        <CardTitle className="text-xl font-semibold text-gray-800 flex items-center">
-          {icon && <span className="mr-3 text-gray-500">{icon}</span>}
-          {title}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="p-6 text-gray-700 leading-relaxed">
-        {content}
-      </CardContent>
-    </Card>
-  </motion.div>
-);
-
 const sectionVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
@@ -52,14 +30,6 @@ const sectionVariants = {
 type CaseStudyPageParams = {
   id: string;
 };
-
-function hasDeelDetailedData(study: CaseStudy): study is CaseStudy & { detailedData: DeelCaseStudyDetails } {
-  return study.id === 'deel-global-payroll' && study.detailedData !== undefined;
-}
-
-function hasFlipkartDetailedData(study: CaseStudy): study is CaseStudy & { detailedData: FlipkartCaseStudyDetails } {
-  return study.id === 'flipkart-logistics-optimization' && study.detailedData !== undefined;
-}
 
 export default function CaseStudyPage() {
   const params = useParams<CaseStudyPageParams>();
@@ -90,144 +60,6 @@ export default function CaseStudyPage() {
     visible: { opacity: 1 },
     exit: { opacity: 0 }
   };
-
-  const renderMarketTrendsTable = (trends: FlipkartCaseStudyDetails['research']['marketTrends']['trendsTable']) => (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="text-gray-600">Area</TableHead>
-          <TableHead className="text-gray-600">Key Trend/Observation</TableHead>
-          <TableHead className="text-gray-600">Relevance</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody className="[&>tr:nth-child(odd)]:bg-gray-50/50">
-        {trends.map((trend, i) => (
-          <TableRow key={i}>
-            <TableCell className="font-medium">{trend.area}</TableCell>
-            <TableCell>{trend.trend}</TableCell>
-            <TableCell>{trend.relevance}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  );
-
-  const renderFlipkartPersonasTable = (personas: FlipkartCaseStudyDetails['research']['primaryResearch']['personasTable']) => (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="text-gray-600">Attribute</TableHead>
-          <TableHead className="text-gray-600">Anxious Anaya</TableHead>
-          <TableHead className="text-gray-600">Operations Om</TableHead>
-          <TableHead className="text-gray-600">Support Samira</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody className="[&>tr:nth-child(odd)]:bg-gray-50/50">
-        {personas.map((persona, i) => (
-          <TableRow key={i}>
-            <TableCell className="font-medium">{persona.attribute}</TableCell>
-            <TableCell>{persona.anxiousAnaya}</TableCell>
-            <TableCell>{persona.operationsOm}</TableCell>
-            <TableCell>{persona.supportSamira}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  );
-
-  const renderFlipkartCompetitorsTable = (competitors: FlipkartCaseStudyDetails['research']['competitorAnalysis']['competitorsTable']) => (
-     <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="text-gray-600">Competitor</TableHead>
-          <TableHead className="text-gray-600">Strengths</TableHead>
-          <TableHead className="text-gray-600">Weaknesses</TableHead>
-          <TableHead className="text-gray-600">Relevance</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody className="[&>tr:nth-child(odd)]:bg-gray-50/50">
-        {competitors.map((comp, i) => (
-          <TableRow key={i}>
-            <TableCell className="font-medium">{comp.competitor}</TableCell>
-            <TableCell>{comp.strengths}</TableCell>
-            <TableCell>{comp.weaknesses}</TableCell>
-            <TableCell>{comp.relevance}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  );
-
-  const renderMetricsTable = (kpis: FlipkartCaseStudyDetails['metricsMeasurement']['kpisByCategory']) => (
-     <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="text-gray-600">Category</TableHead>
-          <TableHead className="text-gray-600">KPI</TableHead>
-          <TableHead className="text-gray-600">Target</TableHead>
-          <TableHead className="text-gray-600">Measurement</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody className="[&>tr:nth-child(odd)]:bg-gray-50/50">
-        {kpis.map((kpi, i) => (
-          <TableRow key={i}>
-            <TableCell className="font-medium">{kpi.category}</TableCell>
-            <TableCell>{kpi.kpi}</TableCell>
-            <TableCell>{kpi.target}</TableCell>
-            <TableCell>{kpi.measurementMethod}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  );
-
-  const renderRolloutTable = (rollout: FlipkartCaseStudyDetails['goToMarket']['rolloutPlan']) => (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="text-gray-600">Phase</TableHead>
-          <TableHead className="text-gray-600">Activities</TableHead>
-          <TableHead className="text-gray-600">Focus</TableHead>
-          <TableHead className="text-gray-600">Duration</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody className="[&>tr:nth-child(odd)]:bg-gray-50/50">
-        {rollout.map((phase, i) => (
-          <TableRow key={i}>
-            <TableCell className="font-medium">{phase.phase}</TableCell>
-            <TableCell>{phase.activities}</TableCell>
-            <TableCell>{phase.focus}</TableCell>
-            <TableCell>{phase.duration}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  );
-
-  const renderRisksTable = (risks: FlipkartCaseStudyDetails['risksMitigation']['riskAnalysis']['risks']) => (
-     <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="text-gray-600">Category</TableHead>
-          <TableHead className="text-gray-600">Description</TableHead>
-          <TableHead className="text-gray-600">Likelihood</TableHead>
-          <TableHead className="text-gray-600">Impact</TableHead>
-          <TableHead className="text-gray-600">Mitigation</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody className="[&>tr:nth-child(odd)]:bg-gray-50/50">
-        {risks.map((risk, i) => (
-          <TableRow key={i}>
-            <TableCell className="font-medium">{risk.category}</TableCell>
-            <TableCell>{risk.description}</TableCell>
-            <TableCell>{risk.likelihood}</TableCell>
-            <TableCell>{risk.impact}</TableCell>
-            <TableCell>{risk.mitigation}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  );
 
   // Function to render the appropriate detailed content component
   const renderCaseStudyContent = (study: CaseStudy) => {

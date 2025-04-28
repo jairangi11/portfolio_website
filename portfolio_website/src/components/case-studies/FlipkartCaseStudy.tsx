@@ -50,18 +50,18 @@ const renderFlipkartPersonasTable = (personas: FlipkartPersona[]) => (
       <TableHeader>
         <TableRow>
           <TableHead className="text-gray-600">Attribute</TableHead>
-          <TableHead className="text-gray-600">Anxious Anaya</TableHead>
-          <TableHead className="text-gray-600">Operations Om</TableHead>
-          <TableHead className="text-gray-600">Support Samira</TableHead>
+          <TableHead className="text-gray-600">Frequent Online Shopper</TableHead>
+          <TableHead className="text-gray-600">Logistics Operations Manager</TableHead>
+          <TableHead className="text-gray-600">Customer Support Agent</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody className="[&>tr:nth-child(odd)]:bg-gray-50/50">
         {personas.map((persona, i) => (
           <TableRow key={i}>
             <TableCell className="font-medium">{persona.attribute}</TableCell>
-            <TableCell>{persona.anxiousAnaya}</TableCell>
-            <TableCell>{persona.operationsOm}</TableCell>
-            <TableCell>{persona.supportSamira}</TableCell>
+            <TableCell>{persona.frequentOnlineShopper}</TableCell>
+            <TableCell>{persona.logisticsOperationsManager}</TableCell>
+            <TableCell>{persona.customerSupportAgent}</TableCell>
           </TableRow>
         ))}
       </TableBody>
@@ -253,25 +253,25 @@ const FlipkartCaseStudy: React.FC<FlipkartCaseStudyProps> = ({ study }) => {
             <div>
               <h4 className="font-semibold text-gray-800 mb-1">Refined User Personas</h4>
                <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value="persona-anaya">
-                   <AccordionTrigger className="text-md font-medium hover:no-underline text-blue-700">Anxious Anaya (Shopper)</AccordionTrigger>
+                <AccordionItem value="persona-shopper">
+                   <AccordionTrigger className="text-md font-medium hover:no-underline text-blue-700">Frequent Online Shopper</AccordionTrigger>
                    <AccordionContent className="pt-2 space-y-1 text-sm">
-                     <p><strong>Goals:</strong> {detailedData.solutionFraming.userPersonasRefined.anxiousAnaya.goals}</p>
-                     <p><strong>Pain Points:</strong> {detailedData.solutionFraming.userPersonasRefined.anxiousAnaya.painPoints}</p>
+                     <p><strong>Goals:</strong> {detailedData.solutionFraming.userPersonasRefined.frequentOnlineShopper.goals}</p>
+                     <p><strong>Pain Points:</strong> {detailedData.solutionFraming.userPersonasRefined.frequentOnlineShopper.painPoints}</p>
                    </AccordionContent>
                  </AccordionItem>
-                 <AccordionItem value="persona-om">
-                   <AccordionTrigger className="text-md font-medium hover:no-underline text-purple-700">Operations Om (Logistics Mgr)</AccordionTrigger>
+                 <AccordionItem value="persona-manager">
+                   <AccordionTrigger className="text-md font-medium hover:no-underline text-purple-700">Logistics Operations Manager</AccordionTrigger>
                     <AccordionContent className="pt-2 space-y-1 text-sm">
-                     <p><strong>Goals:</strong> {detailedData.solutionFraming.userPersonasRefined.operationsOm.goals}</p>
-                     <p><strong>Pain Points:</strong> {detailedData.solutionFraming.userPersonasRefined.operationsOm.painPoints}</p>
+                     <p><strong>Goals:</strong> {detailedData.solutionFraming.userPersonasRefined.logisticsOperationsManager.goals}</p>
+                     <p><strong>Pain Points:</strong> {detailedData.solutionFraming.userPersonasRefined.logisticsOperationsManager.painPoints}</p>
                    </AccordionContent>
                  </AccordionItem>
-                  <AccordionItem value="persona-samira">
-                   <AccordionTrigger className="text-md font-medium hover:no-underline text-green-700">Support Samira (Agent)</AccordionTrigger>
+                  <AccordionItem value="persona-agent">
+                   <AccordionTrigger className="text-md font-medium hover:no-underline text-green-700">Customer Support Agent</AccordionTrigger>
                     <AccordionContent className="pt-2 space-y-1 text-sm">
-                     <p><strong>Goals:</strong> {detailedData.solutionFraming.userPersonasRefined.supportSamira.goals}</p>
-                     <p><strong>Pain Points:</strong> {detailedData.solutionFraming.userPersonasRefined.supportSamira.painPoints}</p>
+                     <p><strong>Goals:</strong> {detailedData.solutionFraming.userPersonasRefined.customerSupportAgent.goals}</p>
+                     <p><strong>Pain Points:</strong> {detailedData.solutionFraming.userPersonasRefined.customerSupportAgent.painPoints}</p>
                    </AccordionContent>
                  </AccordionItem>
                </Accordion>

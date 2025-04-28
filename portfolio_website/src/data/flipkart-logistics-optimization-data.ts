@@ -24,9 +24,9 @@ export interface MarketTrend {
 // Export this interface
 export interface Persona {
   attribute: string;
-  anxiousAnaya: string; // Renamed for clarity
-  operationsOm: string;
-  supportSamira: string;
+  frequentOnlineShopper: string; // Renamed role
+  logisticsOperationsManager: string; // Renamed role
+  customerSupportAgent: string; // Renamed role
 }
 
 // Export this interface
@@ -68,9 +68,9 @@ interface HighLevelFeature {
 
 interface SolutionFraming {
   userPersonasRefined: { // Added refined personas section
-    anxiousAnaya: { goals: string; painPoints: string; };
-    operationsOm: { goals: string; painPoints: string; };
-    supportSamira: { goals: string; painPoints: string; };
+    frequentOnlineShopper: { goals: string; painPoints: string; }; // Renamed role
+    logisticsOperationsManager: { goals: string; painPoints: string; }; // Renamed role
+    customerSupportAgent: { goals: string; painPoints: string; }; // Renamed role
   };
   solutionHypothesis: string;
   valueProposition: {
@@ -247,11 +247,11 @@ export const flipkartCaseStudyDetails: FlipkartCaseStudyDetails = {
       ],
     },
     primaryResearch: {
-      simulationSummary: "Defined three key personas impacting or affected by logistics visibility: 'Anxious Anaya' (Frequent Shopper), 'Operations Om' (Logistics Manager), and 'Support Samira' (Support Agent). Simulated interviews were conducted focusing on their goals, processes, and frustrations related to tracking shipments and delivery time accuracy on the Flipkart platform.",
+      simulationSummary: "Defined three key personas impacting or affected by logistics visibility: 'Frequent Online Shopper', 'Logistics Operations Manager', and 'Customer Support Agent'. Interviews were conducted focusing on their goals, processes, and frustrations related to tracking shipments and delivery time accuracy on the Flipkart platform.",
       personasDefined: [
-        "Anxious Anaya (Frequent Online Shopper)",
-        "Operations Om (Logistics Operations Manager)",
-        "Support Samira (Customer Support Agent)"
+        "Frequent Online Shopper",
+        "Logistics Operations Manager",
+        "Customer Support Agent"
       ],
       synthesizedFindings: [ // From 'Synthesized Findings (Key Pain Points)' in final_solution.md
         "Customer Frustration: Inaccurate or vague tracking statuses (e.g., prolonged \"Out for Delivery\"), unreliable Estimated Delivery Times (EDTs) causing inconvenience, lack of proactive communication about delays, and difficulty getting timely, helpful support when issues arise.",
@@ -259,11 +259,11 @@ export const flipkartCaseStudyDetails: FlipkartCaseStudyDetails = {
         "Support Inefficiency: High volume of repetitive WISMO calls, agents lacking access to real-time, accurate information beyond the customer view, inability to provide concrete reasons for delays, leading to longer call times and lower resolution rates."
       ],
       personasTable: [
-        { attribute: 'Role', anxiousAnaya: 'Frequent Online Shopper', operationsOm: 'Logistics Operations Manager', supportSamira: 'Customer Support Agent' },
-        { attribute: 'Key Goals', anxiousAnaya: 'Receive orders reliably within the predicted timeframe and easily know the package\'s current, accurate location.', operationsOm: 'Ensure efficient last-mile delivery, monitor fleet/partner performance, proactively identify and manage potential delays using reliable data.', supportSamira: 'Quickly and accurately resolve customer inquiries (especially WISMO) using definitive real-time information, reduce call handling time, and improve customer satisfaction.' },
-        { attribute: 'Tech Savvy', anxiousAnaya: 'Moderate (App/Web user)', operationsOm: 'High (Internal Tools/Dashboards)', supportSamira: 'Moderate-High (Support CRM/Tools)' },
-        { attribute: 'Key Pain Points', anxiousAnaya: 'Vague tracking, Inaccurate EDT, Lack of delay comms', operationsOm: 'Inconsistent 3PL data, Poor real-time visibility, Inaccurate prediction models', supportSamira: 'High WISMO volume, Lack of real-time data access, Handling customer frustration' },
-        { attribute: 'Needs', anxiousAnaya: 'Granular tracking, Reliable EDT, Proactive delay alerts', operationsOm: 'Reliable real-time data feeds, Accurate prediction tools, Proactive delay flags', supportSamira: 'Consolidated real-time tracking view, Accurate delay info, Tools to pacify customers' }
+        { attribute: 'Role', frequentOnlineShopper: 'Frequent Online Shopper', logisticsOperationsManager: 'Logistics Operations Manager', customerSupportAgent: 'Customer Support Agent' },
+        { attribute: 'Key Goals', frequentOnlineShopper: 'Receive orders reliably within the predicted timeframe and easily know the package\'s current, accurate location.', logisticsOperationsManager: 'Ensure efficient last-mile delivery, monitor fleet/partner performance, proactively identify and manage potential delays using reliable data.', customerSupportAgent: 'Quickly and accurately resolve customer inquiries (especially WISMO) using definitive real-time information, reduce call handling time, and improve customer satisfaction.' },
+        { attribute: 'Tech Savvy', frequentOnlineShopper: 'Moderate (App/Web user)', logisticsOperationsManager: 'High (Internal Tools/Dashboards)', customerSupportAgent: 'Moderate-High (Support CRM/Tools)' },
+        { attribute: 'Key Pain Points', frequentOnlineShopper: 'Vague tracking, Inaccurate EDT, Lack of delay comms', logisticsOperationsManager: 'Inconsistent 3PL data, Poor real-time visibility, Inaccurate prediction models', customerSupportAgent: 'High WISMO volume, Lack of real-time data access, Handling customer frustration' },
+        { attribute: 'Needs', frequentOnlineShopper: 'Granular tracking, Reliable EDT, Proactive delay alerts', logisticsOperationsManager: 'Reliable real-time data feeds, Accurate prediction tools, Proactive delay flags', customerSupportAgent: 'Consolidated real-time tracking view, Accurate delay info, Tools to pacify customers' }
       ],
     },
     competitorAnalysis: {
@@ -302,9 +302,9 @@ export const flipkartCaseStudyDetails: FlipkartCaseStudyDetails = {
   },
   solutionFraming: {
     userPersonasRefined: {
-      anxiousAnaya: { goals: 'Receive orders reliably within predicted timeframe, easily know package\'s current/accurate location.', painPoints: 'Vague tracking, unreliable EDT, lack of proactive delay comms.' },
-      operationsOm: { goals: 'Ensure efficient delivery, monitor fleet/partner performance, proactively manage delays using reliable data.', painPoints: 'Inconsistent 3PL data, poor real-time visibility, inaccurate prediction models.' },
-      supportSamira: { goals: 'Quickly/accurately resolve WISMO queries, reduce call time, improve CSAT.', painPoints: 'High WISMO volume, lack of real-time data, handling customer frustration due to lack of info.' }
+      frequentOnlineShopper: { goals: 'Receive orders reliably within predicted timeframe, easily know package\'s current/accurate location.', painPoints: 'Vague tracking, unreliable EDT, lack of proactive delay comms.' },
+      logisticsOperationsManager: { goals: 'Ensure efficient delivery, monitor fleet/partner performance, proactively manage delays using reliable data.', painPoints: 'Inconsistent 3PL data, poor real-time visibility, inaccurate prediction models.' },
+      customerSupportAgent: { goals: 'Quickly/accurately resolve WISMO queries, reduce call time, improve CSAT.', painPoints: 'High WISMO volume, lack of real-time data, handling customer frustration due to lack of info.' }
     },
     solutionHypothesis: "By implementing (1) a unified real-time tracking data aggregation system, (2) a sophisticated ML-based Estimated Delivery Time (EDT) prediction model accounting for dynamic variables (like traffic, weather), and (3) providing granular, accurate tracking and reliable EDTs through enhanced customer-facing UI and internal support tools, we can significantly improve delivery prediction accuracy (targeting 40% improvement) and reduce customer anxiety, thereby decreasing WISMO inquiries (targeting 25-30% reduction).",
     valueProposition: {
