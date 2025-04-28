@@ -598,7 +598,7 @@ const AWSLambdaDeveloperUX: React.FC<AWSLambdaDeveloperUXProps> = ({ study }) =>
                     className="group inline-flex items-center text-gray-800 hover:text-purple-600 transition-colors duration-200 mb-3"
                     >
                     <h4 className="font-semibold flex items-center">
-                        <FiLayout className="mr-2 text-purple-500 flex-shrink-0"/> HTML Wireframes
+                        <FiLayout className="mr-2 text-purple-500 flex-shrink-0"/> Wireframes
                     </h4>
                      <FiExternalLink className="ml-1.5 text-purple-500 opacity-70 group-hover:opacity-100" size={14}/>
                 </a>

@@ -14,22 +14,30 @@ export default function CaseStudiesPage() {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
 
+  // Filter studies to only include those with detailedData
+  const visibleStudies = useMemo(() => 
+    caseStudies.filter(study => study.detailedData)
+  , []);
+
   const allTags = useMemo(() => {
     const tagsSet = new Set<string>();
-    caseStudies.forEach(study => {
+    // Use visibleStudies to populate tags
+    visibleStudies.forEach(study => {
       study.tags.forEach(tag => tagsSet.add(tag));
     });
     return Array.from(tagsSet).sort();
-  }, []);
+  }, [visibleStudies]);
 
   const filteredStudies = useMemo(() => {
     if (selectedTags.length === 0) {
-      return caseStudies;
+      // Start with visibleStudies
+      return visibleStudies;
     }
-    return caseStudies.filter(study =>
+    // Filter from visibleStudies
+    return visibleStudies.filter(study =>
       selectedTags.every(tag => study.tags.includes(tag))
     );
-  }, [selectedTags]);
+  }, [selectedTags, visibleStudies]);
 
   const handleTagClick = (tag: string) => {
     setSelectedTags(prevTags =>

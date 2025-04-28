@@ -357,9 +357,7 @@ export const awsLambdaCaseStudyDetails: AwsLambdaCaseStudyDetails = {
             { id: 2, description: "Function View - Observability Tab (Log Interaction): Demonstrating log filtering/searching." },
             { id: 3, description: "Function View - Configuration Tab > Triggers (Add Trigger UI): Streamlined modal/section for adding trigger (e.g., SQS)." },
             { id: 4, description: "Function View - Configuration Tab > Permissions (IAM Helper Active): Showing IAM Helper suggestions." },
-            { id: 5, description: "Function View - Test Tab (Enhanced View): Showing saved events list, templates, results area." },
-            { id: 6, description: "(Component) - Contextual Help Tooltip: Example of an activated tooltip." },
-            { id: 7, description: "(Component) - Inline Validation Hint: Example of a non-blocking validation message." }
+            { id: 5, description: "Function View - Test Tab (Enhanced View): Showing saved events list, templates, results area." }
         ]
     }
   },

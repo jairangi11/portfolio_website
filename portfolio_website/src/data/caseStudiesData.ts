@@ -75,33 +75,9 @@ export const caseStudies: CaseStudy[] = [
     sheetsLink: "https://www.google.com"
   },
   {
-    id: "shl-assessment-platform",
-    title: "SHL Next-Gen Assessment Platform",
-    company: "SHL",
-    summary: "Led the product strategy for SHL's next-generation talent assessment platform, focusing on improved candidate experience and richer analytics for employers.",
-    tags: ["HR Tech", "Talent Assessment", "SaaS", "Product Strategy"],
-    coverImage: "/images/case-studies/shl.png",
-    thumbnailImage: "/images/case-studies/shl.png",
-    wireframeLink: "https://www.google.com",
-    whimsicalLink: "https://www.google.com",
-    sheetsLink: "https://www.google.com"
-  },
-  {
-    id: "tickit-rewards-engagement",
-    title: "Tickit Rewards Program Gamification",
-    company: "Tickit",
-    summary: "Introduced gamification elements into the Tickit rewards app, boosting daily active users by 30% and increasing reward redemption rates by 20%.",
-    tags: ["Loyalty Programs", "Gamification", "Mobile App", "User Engagement"],
-    coverImage: "/images/case-studies/tickit.png",
-    thumbnailImage: "/images/case-studies/tickit.png",
-    wireframeLink: "https://www.google.com",
-    whimsicalLink: "https://www.google.com",
-    sheetsLink: "https://www.google.com"
-  },
-  {
     id: "aws-lambda-developer-ux",
     title: "AWS Lambda Developer Experience Enhancement",
-    company: "AWS (Sample)",
+    company: "AWS",
     summary: "Improved the AWS Lambda developer experience by redesigning the console interface for function creation and monitoring, reducing configuration errors by 20%.",
     tags: ["Cloud Computing", "Developer Tools", "B2B SaaS", "UX Improvement", "Serverless"],
     coverImage: "/images/case-studies/aws.png",
@@ -114,7 +90,7 @@ export const caseStudies: CaseStudy[] = [
   {
     id: "spotify-podcast-discovery",
     title: "Spotify Podcast Discovery & Personalization",
-    company: "Spotify (Sample)",
+    company: "Spotify",
     summary: "Enhanced Spotify's podcast discovery features using ML personalization, leading to a 25% increase in podcast listening hours among targeted user segments.",
     tags: ["Streaming", "Social Media", "AI/ML", "Recommendation Systems", "Mobile App"],
     coverImage: "/images/case-studies/spotify.png",
@@ -126,7 +102,7 @@ export const caseStudies: CaseStudy[] = [
   {
     id: "optum-prior-auth-optimization",
     title: "Optum Prior Authorization Workflow Optimization",
-    company: "Optum (Sample)",
+    company: "Optum",
     summary: "Developed and launched an AI-assisted prior authorization platform for Optum, streamlining the review process for providers and reducing turnaround time by 35% while ensuring strict HIPAA compliance.",
     tags: ["Health Tech", "Enterprise Software", "AI/ML", "Workflow Automation", "HIPAA Compliance", "Payer Solutions"],
     coverImage: "/images/case-studies/optum.png",

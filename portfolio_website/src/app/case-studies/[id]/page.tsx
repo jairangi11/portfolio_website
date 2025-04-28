@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { notFound, useParams } from 'next/navigation';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -45,7 +45,10 @@ export default function CaseStudyPage() {
     notFound();
   }
 
-  const otherCaseStudies = caseStudies.filter(study => study.id !== id);
+  // Filter other studies: exclude current one AND those without detailedData
+  const otherCaseStudies = useMemo(() => 
+    caseStudies.filter(study => study.id !== id && study.detailedData)
+  , [id]);
 
   const hasProjectLinks = (currentCaseStudy?.wireframeLink && currentCaseStudy.wireframeLink !== '#') ||
                          (currentCaseStudy?.whimsicalLink && currentCaseStudy.whimsicalLink !== '#') ||
@@ -67,13 +70,13 @@ export default function CaseStudyPage() {
   const renderCaseStudyContent = (study: CaseStudy) => {
     switch (study.id) {
       case 'deel-global-payroll':
-        // Use specific type assertion
+        // Use specific type assertion if detailedData is guaranteed by filtering
         return <DeelCaseStudy study={study as CaseStudy & { detailedData: DeelCaseStudyDetails }} />;
       case 'flipkart-logistics-optimization':
-        // Use specific type assertion
+        // Use specific type assertion if detailedData is guaranteed by filtering
         return <FlipkartCaseStudy study={study as CaseStudy & { detailedData: FlipkartCaseStudyDetails }} />;
       case 'aws-lambda-developer-ux':
-        // Use specific type assertion
+        // Use specific type assertion if detailedData is guaranteed by filtering
         return <AWSLambdaDeveloperUX study={study as CaseStudy & { detailedData: AwsLambdaCaseStudyDetails }} />;
       // Add cases for other specific studies here...
       default:
