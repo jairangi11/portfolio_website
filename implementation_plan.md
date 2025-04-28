@@ -72,7 +72,7 @@ Upon completion of this plan, the following should be generated:
 
 5.  **Primary Research Simulation (Personas & Interviews):** Done (Deel)
     *   **Summary:** Defined 3 personas (Internal Specialist, Startup Admin, Enterprise Finance Dir) and synthesized interview findings focusing on pain points related to manual work, compliance, UI, reporting. Added details to `final_solution.md` and `sheets.md`.
-    *   **Action:** Define 2-3 distinct target user personas relevant to the problem. Use the LLM to simulate user interviews for each persona, focusing on their goals, behaviors, pain points, and needs related to the problem statement.
+    *   **Action:** Define 2-3 distinct target user personas relevant to the problem. Use the LLM to simulate user interviews for each persona, focusing on their goals, behaviors, pain points, and needs related to the problem statement. (Do not mention any human names, instead focus on persona title)
     *   **Example (Fintech Onboarding):** Personas: 'Savvy Investor Sam', 'Budget-Conscious Bella', 'New-to-Finance Finn'.
     *   **LLM Usage (Iterative):**
         *   "Define 3 distinct user personas for a '[Problem Context, e.g., fintech app]' targeting '[User Group, e.g., millennials]'. Include demographics, goals, tech savviness, and potential financial pain points."

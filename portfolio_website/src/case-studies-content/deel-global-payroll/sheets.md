@@ -18,7 +18,7 @@
 
 ## Personas Summary Table
 
-| Attribute         | Maria Garcia (Internal Specialist)                     | David Chen (Startup HR/Payroll Mgr)                     | Priya Sharma (Enterprise Finance Dir)                   |
+| Attribute         | Internal Specialist                                  | Startup HR/Payroll Mgr                                | Enterprise Finance Dir                                |
 | :---------------- | :----------------------------------------------------- | :------------------------------------------------------ | :------------------------------------------------------ |
 | **Role**          | Senior Global Payroll Specialist @ Deel                | HR & Payroll Manager @ Scaling Tech Startup (Client)    | Finance Director @ Established Enterprise (Client)      |
 | **Company Size**  | N/A (Deel Internal)                                    | ~150 employees, 5 countries                             | 1000+ employees, 15+ countries                        |

@@ -205,7 +205,7 @@ export default function CaseStudyPage() {
                         </AccordionContent>
                       </AccordionItem>
                       <AccordionItem value="primary-research">
-                        <AccordionTrigger className="text-lg font-medium hover:no-underline">Primary Research (Simulated)</AccordionTrigger>
+                        <AccordionTrigger className="text-lg font-medium hover:no-underline">Primary Research</AccordionTrigger>
                          <AccordionContent className="pt-4 space-y-4">
                            <p>{currentCaseStudy.detailedData.research.primaryResearch.simulationSummary}</p>
                            <h5 className="font-semibold">Personas Defined:</h5>
@@ -217,18 +217,18 @@ export default function CaseStudyPage() {
                               <TableHeader>
                                 <TableRow>
                                   <TableHead className="text-gray-600">Attribute</TableHead>
-                                  <TableHead className="text-gray-600">Maria Garcia</TableHead>
-                                  <TableHead className="text-gray-600">David Chen</TableHead>
-                                  <TableHead className="text-gray-600">Priya Sharma</TableHead>
+                                  <TableHead className="text-gray-600">Internal Specialist</TableHead>
+                                  <TableHead className="text-gray-600">Startup HR/Payroll Mgr</TableHead>
+                                  <TableHead className="text-gray-600">Enterprise Finance Dir</TableHead>
                                 </TableRow>
                               </TableHeader>
                               <TableBody className="[&>tr:nth-child(odd)]:bg-gray-50/50">
                                 {currentCaseStudy.detailedData.research.primaryResearch.personasTable.map((persona, i) => (
                                   <TableRow key={i}>
                                     <TableCell className="font-medium">{persona.attribute}</TableCell>
-                                    <TableCell>{persona.mariaGarcia}</TableCell>
-                                    <TableCell>{persona.davidChen}</TableCell>
-                                    <TableCell>{persona.priyaSharma}</TableCell>
+                                    <TableCell>{persona.internalSpecialist}</TableCell>
+                                    <TableCell>{persona.startupHRPayrollMgr}</TableCell>
+                                    <TableCell>{persona.enterpriseFinanceDir}</TableCell>
                                   </TableRow>
                                 ))}
                               </TableBody>

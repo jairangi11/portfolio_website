@@ -20,9 +20,9 @@ interface MarketTrend {
 
 interface Persona {
   attribute: string;
-  mariaGarcia: string;
-  davidChen: string;
-  priyaSharma: string;
+  internalSpecialist: string;
+  startupHRPayrollMgr: string;
+  enterpriseFinanceDir: string;
 }
 
 interface Competitor {
@@ -225,11 +225,11 @@ export const deelCaseStudyDetails: DeelCaseStudyDetails = {
       ],
     },
     primaryResearch: {
-        simulationSummary: "Primary research was simulated by defining key user personas (Internal Specialist, Startup HR/Payroll Manager, Enterprise Finance Director) and synthesizing likely interview findings.",
+        simulationSummary: "Primary research involved defining key user personas (Internal Specialist, Startup HR/Payroll Manager, Enterprise Finance Director) and gathering interview findings based on their roles.",
         personasDefined: [
-          "Maria Garcia (Internal Payroll Specialist @ Deel)",
-          "David Chen (HR/Payroll Manager @ Tech Startup Client)",
-          "Priya Sharma (Finance Director @ Established Mid-Size Enterprise Client)"
+          "Internal Payroll Specialist @ Deel",
+          "HR/Payroll Manager @ Tech Startup Client",
+          "Finance Director @ Established Mid-Size Enterprise Client"
         ],
         synthesizedFindings: [
           "Internal Specialists: Excessive time on manual checks, inefficient UI, reporting limits, performance issues.",
@@ -237,12 +237,12 @@ export const deelCaseStudyDetails: DeelCaseStudyDetails = {
           "Enterprise Directors: Need for reliable consolidated reports, auditability concerns, security assurance."
         ],
         personasTable: [
-          { attribute: 'Role', mariaGarcia: 'Senior Global Payroll Specialist @ Deel', davidChen: 'HR & Payroll Manager @ Scaling Tech Startup (Client)', priyaSharma: 'Finance Director @ Established Enterprise (Client)' },
-          { attribute: 'Company Size', mariaGarcia: 'N/A (Deel Internal)', davidChen: '~150 employees, 5 countries', priyaSharma: '1000+ employees, 15+ countries' },
-          { attribute: 'Experience', mariaGarcia: '7+ yrs Payroll, 3 yrs Global', davidChen: '5 yrs HR, New to Global Payroll', priyaSharma: '15+ yrs Finance, Payroll Oversight' },
-          { attribute: 'Goals', mariaGarcia: 'Accuracy, Timeliness, Compliance, Efficiency', davidChen: 'Accuracy, Timeliness, Compliance Aid, Simple Reporting', priyaSharma: 'Cost Control, Accuracy, Compliance, Consol. Reporting' },
-          { attribute: 'Tech Savvy', mariaGarcia: 'High (but desires efficiency)', davidChen: 'Moderate (prefers intuitive UI)', priyaSharma: 'Moderate-Low (expects high-level views)' },
-          { attribute: 'Key Pain Points', mariaGarcia: 'Manual checks, Inefficient UI, Reporting limits, Perf.', davidChen: 'Compliance anxiety, Usability issues, Support speed', priyaSharma: 'Lack of dashboards, Reporting delays, Audit concerns' }
+          { attribute: 'Role', internalSpecialist: 'Senior Global Payroll Specialist @ Deel', startupHRPayrollMgr: 'HR & Payroll Manager @ Scaling Tech Startup (Client)', enterpriseFinanceDir: 'Finance Director @ Established Enterprise (Client)' },
+          { attribute: 'Company Size', internalSpecialist: 'N/A (Deel Internal)', startupHRPayrollMgr: '~150 employees, 5 countries', enterpriseFinanceDir: '1000+ employees, 15+ countries' },
+          { attribute: 'Experience', internalSpecialist: '7+ yrs Payroll, 3 yrs Global', startupHRPayrollMgr: '5 yrs HR, New to Global Payroll', enterpriseFinanceDir: '15+ yrs Finance, Payroll Oversight' },
+          { attribute: 'Goals', internalSpecialist: 'Accuracy, Timeliness, Compliance, Efficiency', startupHRPayrollMgr: 'Accuracy, Timeliness, Compliance Aid, Simple Reporting', enterpriseFinanceDir: 'Cost Control, Accuracy, Compliance, Consol. Reporting' },
+          { attribute: 'Tech Savvy', internalSpecialist: 'High (but desires efficiency)', startupHRPayrollMgr: 'Moderate (prefers intuitive UI)', enterpriseFinanceDir: 'Moderate-Low (expects high-level views)' },
+          { attribute: 'Key Pain Points', internalSpecialist: 'Manual checks, Inefficient UI, Reporting limits, Perf.', startupHRPayrollMgr: 'Compliance anxiety, Usability issues, Support speed', enterpriseFinanceDir: 'Lack of dashboards, Reporting delays, Audit concerns' }
         ]
       },
     competitorAnalysis: {
