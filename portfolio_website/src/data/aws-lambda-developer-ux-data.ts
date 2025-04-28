@@ -1,5 +1,3 @@
-import { CaseStudy } from './caseStudiesData'; // Assuming CaseStudy might be used or extended
-
 // Interface Definitions based on final_solution.md structure
 
 interface Introduction {
