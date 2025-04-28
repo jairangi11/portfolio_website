@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { notFound, useParams } from 'next/navigation';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiTag, FiExternalLink, FiList, FiLink, FiX, FiLayout, FiCheckCircle, FiBriefcase, FiUsers, FiBarChart2, FiSettings, FiAlertTriangle, FiShield, FiTrendingUp, FiZap } from 'react-icons/fi';
+import { FiTag, FiExternalLink, FiList, FiLink, FiX, FiLayout, FiBriefcase } from 'react-icons/fi';
 import { SiGooglesheets } from 'react-icons/si';
 import { RiMindMap } from "react-icons/ri";
 import Link from 'next/link';

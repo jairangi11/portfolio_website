@@ -1,4 +1,4 @@
-import { CaseStudy } from './caseStudiesData'; // Import base interface if needed for shared props
+// import { CaseStudy } from './caseStudiesData'; // Import base interface if needed for shared props
 
 // Interface Definitions based on final_solution.md and sheets.md structure
 
