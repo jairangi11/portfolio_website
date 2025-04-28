@@ -9,12 +9,8 @@ import { SiGooglesheets } from 'react-icons/si';
 import { RiMindMap } from "react-icons/ri";
 import Link from 'next/link';
 import { caseStudies, CaseStudy } from '@/data/caseStudiesData';
-import { DeelCaseStudyDetails } from '@/data/deel-global-payroll-data';
-import { FlipkartCaseStudyDetails } from '@/data/flipkart-logistics-optimization-data';
 import Layout from '@/components/layout/Layout';
 import { cn } from '@/lib/utils';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 
 // Import the new specific components
