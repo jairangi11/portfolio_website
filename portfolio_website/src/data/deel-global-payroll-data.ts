@@ -71,25 +71,27 @@ interface SolutionFraming {
   highLevelFeatures: HighLevelFeature[];
 }
 
-// Simplified Functional Requirements - could be more detailed
-interface FunctionalRequirement {
+// Simplified Functional Requirements - Export Needed
+export interface FunctionalRequirement {
   area: string; // e.g., 'Optimized Core Processing Engine'
   requirements: string[];
 }
 
-// Simplified NFRs
-interface NonFunctionalRequirement {
+// Simplified NFRs - Export Needed
+export interface NonFunctionalRequirement {
   category: string; // e.g., 'Performance & Scalability'
   requirements: string[];
 }
 
-interface InformationArchitectureItem {
+// Export Needed
+export interface InformationArchitectureItem {
   area: string; // e.g., 'Dashboard'
   description: string;
   subItems?: InformationArchitectureItem[]; // For nested structure like Payroll
 }
 
-interface UserFlow {
+// Export Needed
+export interface UserFlow {
   id: string; // e.g., 'runStandardPayroll'
   name: string;
   actor: string;
@@ -127,7 +129,8 @@ interface Measurement {
   };
 }
 
-interface RolloutPhase {
+// Export Needed
+export interface RolloutPhase {
   phase: string;
   description: string;
   duration: string;
@@ -145,7 +148,8 @@ interface GoToMarket {
   rolloutPlan: RolloutPhase[];
 }
 
-interface BusinessImpact {
+// Export Needed
+export interface BusinessImpact {
   area: string; // e.g., 'Enhanced Operational Efficiency'
   points: string[];
 }
@@ -153,10 +157,11 @@ interface BusinessImpact {
 interface BusinessAspects {
   monetizationPricing: string;
   businessImpactAnalysis: BusinessImpact[];
-  overallSummary: string; // Optional summary
+  overallSummary?: string; // Made optional based on usage in DeelCaseStudy.tsx
 }
 
-interface Risk {
+// Export Needed
+export interface Risk {
   id: string;
   category: string;
   description: string;

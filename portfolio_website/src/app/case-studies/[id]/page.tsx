@@ -10,25 +10,30 @@ import { RiMindMap } from "react-icons/ri";
 import Link from 'next/link';
 import { caseStudies, CaseStudy } from '@/data/caseStudiesData';
 import { DeelCaseStudyDetails } from '@/data/deel-global-payroll-data';
+import { FlipkartCaseStudyDetails } from '@/data/flipkart-logistics-optimization-data';
 import Layout from '@/components/layout/Layout';
 import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
-const renderBulletList = (items: string[]) => (
-  <ul className="list-disc list-inside space-y-1 text-gray-700">
+// Import the new specific components
+import DeelCaseStudy from '@/components/case-studies/DeelCaseStudy';
+import FlipkartCaseStudy from '@/components/case-studies/FlipkartCaseStudy';
+import GenericCaseStudy from '@/components/case-studies/GenericCaseStudy';
+
+const renderBulletList = (items: string[], className?: string) => (
+  <ul className={cn("list-disc list-inside space-y-1 text-gray-700", className)}>
     {items.map((item, index) => <li key={index}>{item}</li>)}
   </ul>
 );
 
 const renderDetailedSection = (title: string, content: React.ReactNode, icon?: React.ReactNode) => (
   <motion.div variants={sectionVariants} className="mb-8">
-    <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300 rounded-lg">
-      <CardHeader className="border-b border-gray-100 px-6 py-4">
+    <Card className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300 rounded-lg overflow-hidden">
+      <CardHeader className="border-b border-gray-100 px-6 py-4 bg-gray-50/50">
         <CardTitle className="text-xl font-semibold text-gray-800 flex items-center">
-          {icon && <span className="mr-2 text-gray-500">{icon}</span>}
+          {icon && <span className="mr-3 text-gray-500">{icon}</span>}
           {title}
         </CardTitle>
       </CardHeader>
@@ -47,6 +52,14 @@ const sectionVariants = {
 type CaseStudyPageParams = {
   id: string;
 };
+
+function hasDeelDetailedData(study: CaseStudy): study is CaseStudy & { detailedData: DeelCaseStudyDetails } {
+  return study.id === 'deel-global-payroll' && study.detailedData !== undefined;
+}
+
+function hasFlipkartDetailedData(study: CaseStudy): study is CaseStudy & { detailedData: FlipkartCaseStudyDetails } {
+  return study.id === 'flipkart-logistics-optimization' && study.detailedData !== undefined;
+}
 
 export default function CaseStudyPage() {
   const params = useParams<CaseStudyPageParams>();
@@ -78,8 +91,164 @@ export default function CaseStudyPage() {
     exit: { opacity: 0 }
   };
 
-  const hasDetailedData = (study: CaseStudy): study is CaseStudy & { detailedData: DeelCaseStudyDetails } => {
-    return study.id === 'deel-global-payroll' && study.detailedData !== undefined;
+  const renderMarketTrendsTable = (trends: FlipkartCaseStudyDetails['research']['marketTrends']['trendsTable']) => (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="text-gray-600">Area</TableHead>
+          <TableHead className="text-gray-600">Key Trend/Observation</TableHead>
+          <TableHead className="text-gray-600">Relevance</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody className="[&>tr:nth-child(odd)]:bg-gray-50/50">
+        {trends.map((trend, i) => (
+          <TableRow key={i}>
+            <TableCell className="font-medium">{trend.area}</TableCell>
+            <TableCell>{trend.trend}</TableCell>
+            <TableCell>{trend.relevance}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+
+  const renderFlipkartPersonasTable = (personas: FlipkartCaseStudyDetails['research']['primaryResearch']['personasTable']) => (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="text-gray-600">Attribute</TableHead>
+          <TableHead className="text-gray-600">Anxious Anaya</TableHead>
+          <TableHead className="text-gray-600">Operations Om</TableHead>
+          <TableHead className="text-gray-600">Support Samira</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody className="[&>tr:nth-child(odd)]:bg-gray-50/50">
+        {personas.map((persona, i) => (
+          <TableRow key={i}>
+            <TableCell className="font-medium">{persona.attribute}</TableCell>
+            <TableCell>{persona.anxiousAnaya}</TableCell>
+            <TableCell>{persona.operationsOm}</TableCell>
+            <TableCell>{persona.supportSamira}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+
+  const renderFlipkartCompetitorsTable = (competitors: FlipkartCaseStudyDetails['research']['competitorAnalysis']['competitorsTable']) => (
+     <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="text-gray-600">Competitor</TableHead>
+          <TableHead className="text-gray-600">Strengths</TableHead>
+          <TableHead className="text-gray-600">Weaknesses</TableHead>
+          <TableHead className="text-gray-600">Relevance</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody className="[&>tr:nth-child(odd)]:bg-gray-50/50">
+        {competitors.map((comp, i) => (
+          <TableRow key={i}>
+            <TableCell className="font-medium">{comp.competitor}</TableCell>
+            <TableCell>{comp.strengths}</TableCell>
+            <TableCell>{comp.weaknesses}</TableCell>
+            <TableCell>{comp.relevance}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+
+  const renderMetricsTable = (kpis: FlipkartCaseStudyDetails['metricsMeasurement']['kpisByCategory']) => (
+     <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="text-gray-600">Category</TableHead>
+          <TableHead className="text-gray-600">KPI</TableHead>
+          <TableHead className="text-gray-600">Target</TableHead>
+          <TableHead className="text-gray-600">Measurement</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody className="[&>tr:nth-child(odd)]:bg-gray-50/50">
+        {kpis.map((kpi, i) => (
+          <TableRow key={i}>
+            <TableCell className="font-medium">{kpi.category}</TableCell>
+            <TableCell>{kpi.kpi}</TableCell>
+            <TableCell>{kpi.target}</TableCell>
+            <TableCell>{kpi.measurementMethod}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+
+  const renderRolloutTable = (rollout: FlipkartCaseStudyDetails['goToMarket']['rolloutPlan']) => (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="text-gray-600">Phase</TableHead>
+          <TableHead className="text-gray-600">Activities</TableHead>
+          <TableHead className="text-gray-600">Focus</TableHead>
+          <TableHead className="text-gray-600">Duration</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody className="[&>tr:nth-child(odd)]:bg-gray-50/50">
+        {rollout.map((phase, i) => (
+          <TableRow key={i}>
+            <TableCell className="font-medium">{phase.phase}</TableCell>
+            <TableCell>{phase.activities}</TableCell>
+            <TableCell>{phase.focus}</TableCell>
+            <TableCell>{phase.duration}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+
+  const renderRisksTable = (risks: FlipkartCaseStudyDetails['risksMitigation']['riskAnalysis']['risks']) => (
+     <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="text-gray-600">Category</TableHead>
+          <TableHead className="text-gray-600">Description</TableHead>
+          <TableHead className="text-gray-600">Likelihood</TableHead>
+          <TableHead className="text-gray-600">Impact</TableHead>
+          <TableHead className="text-gray-600">Mitigation</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody className="[&>tr:nth-child(odd)]:bg-gray-50/50">
+        {risks.map((risk, i) => (
+          <TableRow key={i}>
+            <TableCell className="font-medium">{risk.category}</TableCell>
+            <TableCell>{risk.description}</TableCell>
+            <TableCell>{risk.likelihood}</TableCell>
+            <TableCell>{risk.impact}</TableCell>
+            <TableCell>{risk.mitigation}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+
+  // Function to render the appropriate detailed content component
+  const renderCaseStudyContent = (study: CaseStudy) => {
+    switch (study.id) {
+      case 'deel-global-payroll':
+        // Type assertion is safe here because we load specific data in caseStudiesData.ts
+        return <DeelCaseStudy study={study as CaseStudy & { detailedData: import('@/data/deel-global-payroll-data').DeelCaseStudyDetails }} />;
+      case 'flipkart-logistics-optimization':
+        // Type assertion is safe here
+        return <FlipkartCaseStudy study={study as CaseStudy & { detailedData: import('@/data/flipkart-logistics-optimization-data').FlipkartCaseStudyDetails }} />;
+      // Add cases for other specific studies here...
+      default:
+        // Check if detailedData exists conceptually, even if not rendered specifically
+        if (study.detailedData) {
+            // Potentially render a generic detailed view or the specific one if needed
+            console.warn(`Rendering GenericCaseStudy for ${study.id} which has detailedData. Consider creating a specific component.`);
+            return <GenericCaseStudy />;
+        } else {
+            return <GenericCaseStudy />;
+        }
+    }
   };
 
   return (
@@ -152,314 +321,8 @@ export default function CaseStudyPage() {
                 />
               </motion.div>
 
-              {hasDetailedData(currentCaseStudy) ? (
-                <>
-                  {renderDetailedSection("Introduction", 
-                    <div className="space-y-4">
-                      <div>
-                        <h4 className="font-semibold text-gray-800 mb-1">Problem Statement</h4>
-                        <p>{currentCaseStudy.detailedData.introduction.problemStatement}</p>
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-gray-800 mb-1">Context</h4>
-                        <p>{currentCaseStudy.detailedData.introduction.context}</p>
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-gray-800 mb-1">Scope</h4>
-                        <p><strong className='text-green-600'>In Scope:</strong> {currentCaseStudy.detailedData.introduction.scope.inScope}</p>
-                        <p><strong className='text-red-600'>Out of Scope:</strong> {currentCaseStudy.detailedData.introduction.scope.outOfScope}</p>
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-gray-800 mb-1">Objectives</h4>
-                        {renderBulletList(currentCaseStudy.detailedData.introduction.objectives)}
-                      </div>
-                       <div>
-                        <h4 className="font-semibold text-gray-800 mb-1">Assumptions</h4>
-                        {renderBulletList(currentCaseStudy.detailedData.introduction.assumptions)}
-                      </div>
-                    </div>
-                  )}
-
-                  {renderDetailedSection("Research", 
-                    <Accordion type="single" collapsible className="w-full">
-                      <AccordionItem value="market-trends">
-                        <AccordionTrigger className="text-lg font-medium hover:no-underline">Market & Trends</AccordionTrigger>
-                        <AccordionContent className="pt-4 space-y-4">
-                          <p>{currentCaseStudy.detailedData.research.marketTrends.summary}</p>
-                          <Table>
-                            <TableHeader>
-                              <TableRow>
-                                <TableHead className="text-gray-600">Area</TableHead>
-                                <TableHead className="text-gray-600">Key Trend/Observation</TableHead>
-                              </TableRow>
-                            </TableHeader>
-                            <TableBody className="[&>tr:nth-child(odd)]:bg-gray-50/50">
-                              {currentCaseStudy.detailedData.research.marketTrends.trendsTable.map((trend, i) => (
-                                <TableRow key={i}>
-                                  <TableCell className="font-medium">{trend.area}</TableCell>
-                                  <TableCell>{trend.trend}</TableCell>
-                                </TableRow>
-                              ))}
-                            </TableBody>
-                          </Table>
-                        </AccordionContent>
-                      </AccordionItem>
-                      <AccordionItem value="primary-research">
-                        <AccordionTrigger className="text-lg font-medium hover:no-underline">Primary Research</AccordionTrigger>
-                         <AccordionContent className="pt-4 space-y-4">
-                           <p>{currentCaseStudy.detailedData.research.primaryResearch.simulationSummary}</p>
-                           <h5 className="font-semibold">Personas Defined:</h5>
-                           {renderBulletList(currentCaseStudy.detailedData.research.primaryResearch.personasDefined)}
-                           <h5 className="font-semibold">Synthesized Findings:</h5>
-                           {renderBulletList(currentCaseStudy.detailedData.research.primaryResearch.synthesizedFindings)}
-                           <h5 className="font-semibold">Personas Summary:</h5>
-                           <Table>
-                              <TableHeader>
-                                <TableRow>
-                                  <TableHead className="text-gray-600">Attribute</TableHead>
-                                  <TableHead className="text-gray-600">Internal Specialist</TableHead>
-                                  <TableHead className="text-gray-600">Startup HR/Payroll Mgr</TableHead>
-                                  <TableHead className="text-gray-600">Enterprise Finance Dir</TableHead>
-                                </TableRow>
-                              </TableHeader>
-                              <TableBody className="[&>tr:nth-child(odd)]:bg-gray-50/50">
-                                {currentCaseStudy.detailedData.research.primaryResearch.personasTable.map((persona, i) => (
-                                  <TableRow key={i}>
-                                    <TableCell className="font-medium">{persona.attribute}</TableCell>
-                                    <TableCell>{persona.internalSpecialist}</TableCell>
-                                    <TableCell>{persona.startupHRPayrollMgr}</TableCell>
-                                    <TableCell>{persona.enterpriseFinanceDir}</TableCell>
-                                  </TableRow>
-                                ))}
-                              </TableBody>
-                            </Table>
-                        </AccordionContent>
-                      </AccordionItem>
-                       <AccordionItem value="competitor-analysis">
-                        <AccordionTrigger className="text-lg font-medium hover:no-underline">Competitor Analysis</AccordionTrigger>
-                        <AccordionContent className="pt-4 space-y-4">
-                           <p>{currentCaseStudy.detailedData.research.competitorAnalysis.summary}</p>
-                           <Table>
-                              <TableHeader>
-                                <TableRow>
-                                  <TableHead className="text-gray-600">Competitor</TableHead>
-                                  <TableHead className="text-gray-600">Positioning</TableHead>
-                                  <TableHead className="text-gray-600">Strengths</TableHead>
-                                  <TableHead className="text-gray-600">Weaknesses</TableHead>
-                                </TableRow>
-                              </TableHeader>
-                              <TableBody className="[&>tr:nth-child(odd)]:bg-gray-50/50">
-                                {currentCaseStudy.detailedData.research.competitorAnalysis.competitorsTable.map((comp, i) => (
-                                  <TableRow key={i}>
-                                    <TableCell className="font-medium">{comp.competitor}</TableCell>
-                                    <TableCell>{comp.positioning}</TableCell>
-                                    <TableCell>{comp.strengths}</TableCell>
-                                    <TableCell>{comp.weaknesses}</TableCell>
-                                  </TableRow>
-                                ))}
-                              </TableBody>
-                            </Table>
-                        </AccordionContent>
-                      </AccordionItem>
-                      <AccordionItem value="pain-points">
-                        <AccordionTrigger className="text-lg font-medium hover:no-underline">Prioritized Pain Points</AccordionTrigger>
-                         <AccordionContent className="pt-4 space-y-4">
-                           <h5 className="font-semibold text-red-600">High Priority:</h5>
-                           {renderBulletList(currentCaseStudy.detailedData.research.painPoints.highPriority)}
-                            <h5 className="font-semibold text-yellow-600">Medium Priority:</h5>
-                           {renderBulletList(currentCaseStudy.detailedData.research.painPoints.mediumPriority)}
-                           <h5 className="font-semibold text-gray-500">Low Priority:</h5>
-                           {renderBulletList(currentCaseStudy.detailedData.research.painPoints.lowPriority)}
-                           <p><strong className="font-semibold">Rationale:</strong> {currentCaseStudy.detailedData.research.painPoints.rationale}</p>
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
-                  )}
-                  
-                   {renderDetailedSection("Solution Framing", 
-                     <div className="space-y-4">
-                       <div>
-                         <h4 className="font-semibold text-gray-800 mb-1">Solution Hypothesis</h4>
-                         <p>{currentCaseStudy.detailedData.solutionFraming.solutionHypothesis}</p>
-                       </div>
-                       <div>
-                         <h4 className="font-semibold text-gray-800 mb-1">Value Proposition</h4>
-                         <p><strong className='text-blue-600'>For Clients:</strong> {currentCaseStudy.detailedData.solutionFraming.valueProposition.forClients}</p>
-                         <p><strong className='text-purple-600'>For Internal:</strong> {currentCaseStudy.detailedData.solutionFraming.valueProposition.forInternal}</p>
-                       </div>
-                       <div>
-                         <h4 className="font-semibold text-gray-800 mb-1">High-Level Features</h4>
-                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                           {currentCaseStudy.detailedData.solutionFraming.highLevelFeatures.map(feature => (
-                            <div key={feature.id} className="border border-gray-200 p-3 rounded-md bg-gray-50">
-                              <h5 className="font-medium text-gray-700">{feature.name}</h5>
-                              <p className="text-sm text-gray-600">{feature.description}</p>
-                            </div>
-                           ))}
-                         </div>
-                       </div>
-                     </div>
-                   )}
-                   
-                  {renderDetailedSection("Artifacts", 
-                    <div className="space-y-10">
-                       {currentCaseStudy.whimsicalLink && currentCaseStudy.whimsicalLink !== '#' && (
-                         <div>
-                           <a 
-                            href={currentCaseStudy.whimsicalLink} 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
-                            className="group inline-flex items-center text-gray-800 hover:text-blue-600 transition-colors duration-200 mb-3"
-                           >
-                             <h4 className="font-semibold flex items-center">
-                               <RiMindMap className="mr-2 text-blue-500 flex-shrink-0"/> Whimsical Board
-                             </h4>
-                             <FiExternalLink className="ml-1.5 text-blue-500" size={14}/>
-                           </a>
-                           <iframe 
-                             style={{border: '1px solid #e2e8f0', borderRadius: '8px'}} 
-                             width="100%" 
-                             height="450" 
-                             src="https://whimsical.com/embed/SWF4dwiPDQzafhAw97XLgD@VsSo8s35VJ818wfvk9KJST"
-                             title="Whimsical Board Embed"
-                             loading="lazy"
-                           ></iframe>
-                         </div>
-                       )}
-                       {currentCaseStudy.wireframeLink && currentCaseStudy.wireframeLink !== '#' && (
-                         <div>
-                           <a 
-                             href={currentCaseStudy.wireframeLink} 
-                             target="_blank" 
-                             rel="noopener noreferrer" 
-                             className="group inline-flex items-center text-gray-800 hover:text-purple-600 transition-colors duration-200 mb-3"
-                           >
-                             <h4 className="font-semibold flex items-center">
-                               <FiLayout className="mr-2 text-purple-500 flex-shrink-0"/> Wireframe Dashboard
-                             </h4>
-                             <FiExternalLink className="ml-1.5 text-purple-500" size={14}/>
-                           </a>
-                           <iframe 
-                             style={{border: '1px solid #e2e8f0', borderRadius: '8px'}} 
-                             width="100%" 
-                             height="450" 
-                             src="https://jairangi11.github.io/portfolio_website/case-studies-content/deel-global-payroll/wireframes/admin_dashboard.html" 
-                             title="Wireframe Embed"
-                             loading="lazy"
-                           ></iframe>
-                         </div>
-                       )}
-                       {currentCaseStudy.sheetsLink && currentCaseStudy.sheetsLink !== '#' && (
-                         <div>
-                           <a 
-                             href={currentCaseStudy.sheetsLink} 
-                             target="_blank" 
-                             rel="noopener noreferrer" 
-                             className="group inline-flex items-center text-gray-800 hover:text-green-600 transition-colors duration-200 mb-3"
-                           >
-                             <h4 className="font-semibold flex items-center">
-                               <SiGooglesheets className="mr-2 text-green-500 flex-shrink-0"/> Supporting Data Sheets
-                             </h4>
-                             <FiExternalLink className="ml-1.5 text-green-500" size={14}/>
-                           </a>
-                           <iframe 
-                             style={{border: '1px solid #e2e8f0', borderRadius: '8px'}} 
-                             width="100%" 
-                             height="450" 
-                             src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSja6R_oBjjIh5N3yvxfKs154AMAztYeKrwhtvEL2k5VHYFbrgAq7M7BRRJpGzcDkcnEL5y0JBWZOZ8/pubhtml?widget=true&amp;headers=false"
-                             title="Google Sheets Embed"
-                             loading="lazy"
-                             >
-                           </iframe>
-                         </div>
-                       )}
-                     </div>
-                  )}
-
-                   {renderDetailedSection("Metrics & Measurement", 
-                      <Accordion type="single" collapsible className="w-full">
-                        <AccordionItem value="north-star">
-                          <AccordionTrigger className="text-lg font-medium hover:no-underline">North Star Metric</AccordionTrigger>
-                          <AccordionContent className="pt-4 space-y-1">
-                            <p><strong>Metric:</strong> {currentCaseStudy.detailedData.metricsMeasurement.northStarMetric.metric}</p>
-                            <p><strong>Target:</strong> {currentCaseStudy.detailedData.metricsMeasurement.northStarMetric.target}</p>
-                          </AccordionContent>
-                        </AccordionItem>
-                        <AccordionItem value="kpis">
-                          <AccordionTrigger className="text-lg font-medium hover:no-underline">Key Performance Indicators (KPIs)</AccordionTrigger>
-                          <AccordionContent className="pt-4">
-                             <Table>
-                              <TableHeader>
-                                <TableRow>
-                                  <TableHead className="text-gray-600">Category</TableHead>
-                                  <TableHead className="text-gray-600">Metric</TableHead>
-                                  <TableHead className="text-gray-600">Target</TableHead>
-                                </TableRow>
-                              </TableHeader>
-                              <TableBody className="[&>tr:nth-child(odd)]:bg-gray-50/50">
-                                {currentCaseStudy.detailedData.metricsMeasurement.kpisByCategory.map((kpi, i) => (
-                                  <TableRow key={i}>
-                                    <TableCell className="font-medium">{kpi.category}</TableCell>
-                                    <TableCell>{kpi.metric}</TableCell>
-                                    <TableCell>{kpi.target}</TableCell>
-                                  </TableRow>
-                                ))}
-                              </TableBody>
-                            </Table>
-                          </AccordionContent>
-                        </AccordionItem>
-                         <AccordionItem value="tracking-plan">
-                          <AccordionTrigger className="text-lg font-medium hover:no-underline">Tracking & Reporting Plan</AccordionTrigger>
-                          <AccordionContent className="pt-4 space-y-3">
-                            <p><strong>Data Collection:</strong> {currentCaseStudy.detailedData.metricsMeasurement.trackingPlan.dataCollection}</p>
-                            <p><strong>Baseline:</strong> {currentCaseStudy.detailedData.metricsMeasurement.trackingPlan.baseline}</p>
-                            <p><strong>Reporting:</strong> {currentCaseStudy.detailedData.metricsMeasurement.trackingPlan.reporting}</p>
-                            <p><strong>Monitoring:</strong> {currentCaseStudy.detailedData.metricsMeasurement.trackingPlan.monitoring}</p>
-                          </AccordionContent>
-                        </AccordionItem>
-                      </Accordion>
-                   )}
-
-                   {renderDetailedSection("Conclusion", 
-                    <div className="space-y-4">
-                      <div>
-                        <h4 className="font-semibold text-gray-800 mb-1">Summary</h4>
-                        <p>{currentCaseStudy.detailedData.conclusion.summary}</p>
-                      </div>
-                       <div>
-                        <h4 className="font-semibold text-gray-800 mb-1">Future Considerations</h4>
-                        {renderBulletList(currentCaseStudy.detailedData.conclusion.futureConsiderations)}
-                      </div>
-                    </div>
-                  )}
-                  
-                </>
-              ) : (
-                <>
-                  {/* Removed the mapping logic as challenge, solution etc. no longer exist 
-                  {[
-                    { title: 'The Challenge', content: currentCaseStudy.challenge },
-                    { title: 'The Solution', content: currentCaseStudy.solution },
-                    { title: 'Approach', content: currentCaseStudy.approach },
-                    { title: 'Results', content: currentCaseStudy.results },
-                    { title: 'Key Learnings', content: currentCaseStudy.learnings },
-                  ].map((section, index) => (
-                    section.content && (
-                      <motion.section 
-                        key={index} 
-                        variants={sectionVariants} 
-                        className="mb-12 prose prose-gray max-w-none prose-headings:font-semibold prose-headings:text-gray-800 prose-a:text-indigo-600 hover:prose-a:text-indigo-800"
-                      >
-                        <h2 className="text-2xl font-bold mb-4 border-b border-gray-200 pb-2">{section.title}</h2>
-                        <div className="text-gray-700 leading-relaxed">
-                          <p>{section.content}</p> 
-                        </div>
-                      </motion.section>
-                    )
-                  ))}
-                  */}
-                </>
-              )}
+              {/* Detailed Content Section (Conditional Rendering) */}
+              {renderCaseStudyContent(currentCaseStudy)}
 
             </motion.div>
           </main>
