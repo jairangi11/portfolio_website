@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deel Compliance Center - Wireframe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Mimic shadcn/ui styles (Same as other pages) */
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .card { background-color: white; border-radius: 0.5rem; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1); transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; }
+        .card:hover { transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1); }
+        .nav-item { display: flex; align-items: center; padding: 0.75rem 1rem; border-radius: 0.375rem; color: #475569; transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out; font-weight: 500; cursor: pointer; text-decoration: none; }
+        .nav-item:hover { background-color: #f1f5f9; color: #0f172a; }
+        .nav-item.active { background-color: #e2e8f0; color: #0f172a; font-weight: 600; }
+        .nav-icon { margin-right: 0.75rem; width: 1.25rem; height: 1.25rem; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.5rem 1rem; border-radius: 0.375rem; font-weight: 600; font-size: 0.875rem; transition: background-color 0.2s ease-in-out, opacity 0.2s ease-in-out; cursor: pointer; }
+        .btn-primary { background-color: #2563eb; color: white; }
+        .btn-primary:hover { background-color: #1d4ed8; }
+        .btn-secondary { background-color: #e2e8f0; color: #0f172a; border: 1px solid #cbd5e1; }
+        .btn-secondary:hover { background-color: #cbd5e1; }
+        .badge { display: inline-block; padding: 0.125rem 0.5rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; line-height: 1.2; }
+        .badge-red { background-color: #fee2e2; color: #b91c1c; border: 1px solid #f87171; }
+        .badge-yellow { background-color: #fef9c3; color: #ca8a04; border: 1px solid #fde047; }
+        .badge-blue { background-color: #dbeafe; color: #1d4ed8; border: 1px solid #60a5fa; }
+        /* Fade in for cards */
+        @keyframes cardFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animated-card { animation: cardFadeIn 0.4s ease-out forwards; opacity: 0; }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="text-slate-800">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+         <aside class="w-64 bg-white border-r border-slate-200 flex flex-col p-4 flex-shrink-0">
+            <div class="text-2xl font-bold text-slate-900 mb-8">deel.</div>
+            <nav class="flex-grow space-y-1">
+                <a href="./admin_dashboard.html" class="nav-item">
+                    <i class="fas fa-home nav-icon"></i> Home
+                </a>
+                <a href="./payroll_run_list.html" class="nav-item">
+                   <i class="fas fa-file-contract nav-icon"></i> Payroll Runs
+                </a>
+                 <a href="./people_list.html" class="nav-item">
+                   <i class="fas fa-users nav-icon"></i> People
+                </a>
+                <a href="./compliance_center.html" class="nav-item active"> <!-- Active state -->
+                    <i class="fas fa-shield-alt nav-icon"></i> Compliance Center
+                </a>
+                 <a href="./reporting_dashboard.html" class="nav-item">
+                    <i class="fas fa-chart-bar nav-icon"></i> Reporting
+                </a>
+                <a href="./settings_page.html" class="nav-item">
+                    <i class="fas fa-cog nav-icon"></i> Settings
+                </a>
+            </nav>
+            <div class="mt-auto border-t border-slate-200 pt-4">
+                 <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-semibold mr-3">JD</div>
+                    <div>
+                        <div class="text-sm font-semibold text-slate-800">John Doe</div>
+                        <div class="text-xs text-slate-500">Payroll Specialist</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto p-8">
+            <header class="flex justify-between items-center mb-6">
+                <h1 class="text-3xl font-bold text-slate-900">Compliance Center</h1>
+                <!-- Optional: Button for generating compliance reports -->
+                 <button class="btn btn-secondary">
+                    <i class="fas fa-file-download mr-2"></i> Generate Report
+                </button>
+            </header>
+
+            <!-- Quick Stats/Overview Cards -->
+             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="card p-4 animated-card" style="animation-delay: 0.1s;">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-semibold text-slate-700">Critical Alerts</h3>
+                        <span class="text-2xl font-bold text-red-600">3</span>
+                    </div>
+                    <p class="text-sm text-slate-500">Immediate action required.</p>
+                </div>
+                 <div class="card p-4 animated-card" style="animation-delay: 0.15s;">
+                     <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-semibold text-slate-700">Pending Documents</h3>
+                        <span class="text-2xl font-bold text-yellow-600">8</span>
+                    </div>
+                    <p class="text-sm text-slate-500">Awaiting submission or verification.</p>
+                </div>
+                <div class="card p-4 animated-card" style="animation-delay: 0.2s;">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-lg font-semibold text-slate-700">Compliance Tasks</h3>
+                         <span class="text-2xl font-bold text-blue-600">12</span>
+                    </div>
+                    <p class="text-sm text-slate-500">Upcoming or overdue tasks.</p>
+                </div>
+            </div>
+
+            <!-- Alert/Task List -->
+            <h2 class="text-xl font-semibold text-slate-800 mb-4">Action Required</h2>
+            <div class="space-y-4">
+                 <!-- Example Alert Card 1: Critical -->
+                 <div class="card p-4 flex items-center justify-between animated-card" style="animation-delay: 0.3s;">
+                     <div class="flex items-center">
+                         <i class="fas fa-exclamation-triangle text-red-500 text-xl mr-4"></i>
+                         <div>
+                            <p class="font-semibold text-slate-800">Missing Tax ID - Globex Inc UK</p>
+                            <p class="text-sm text-slate-500">Employee John Smith (EMP-00124) is missing required tax information.</p>
+                         </div>
+                     </div>
+                     <div class="flex items-center space-x-2">
+                         <span class="badge badge-red">Critical</span>
+                         <button class="btn btn-secondary btn-sm text-xs">Resolve</button>
+                     </div>
+                 </div>
+
+                <!-- Example Alert Card 2: Document Pending -->
+                <div class="card p-4 flex items-center justify-between animated-card" style="animation-delay: 0.35s;">
+                    <div class="flex items-center">
+                        <i class="fas fa-file-alt text-yellow-500 text-xl mr-4"></i>
+                        <div>
+                            <p class="font-semibold text-slate-800">Work Permit Expiring - Initech Canada</p>
+                            <p class="text-sm text-slate-500">Employee Priya Sharma (EMP-00126) work permit expires in 15 days.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="badge badge-yellow">Urgent</span>
+                        <button class="btn btn-secondary btn-sm text-xs">Request Update</button>
+                    </div>
+                </div>
+
+                <!-- Example Alert Card 3: Task Due -->
+                <div class="card p-4 flex items-center justify-between animated-card" style="animation-delay: 0.4s;">
+                    <div class="flex items-center">
+                        <i class="fas fa-tasks text-blue-500 text-xl mr-4"></i>
+                        <div>
+                           <p class="font-semibold text-slate-800">Submit Quarterly Tax Filing - Acme USA</p>
+                            <p class="text-sm text-slate-500">Q3 filing due by October 15th.</p>
+                        </div>
+                    </div>
+                     <div class="flex items-center space-x-2">
+                        <span class="badge badge-blue">Task</span>
+                        <button class="btn btn-secondary btn-sm text-xs">View Details</button>
+                    </div>
+                </div>
+                <!-- Add more alert/task cards -->
+            </div>
+        </main>
+    </div>
+</body>
+</html> 

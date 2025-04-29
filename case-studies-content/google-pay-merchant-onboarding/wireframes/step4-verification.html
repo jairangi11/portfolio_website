@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step 4: Verification & Documents - Google Pay Onboarding</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        h1, h2, h3, h4, h5, h6, button, select, input, .font-google-sans {
+            font-family: 'Google Sans', sans-serif;
+        }
+        .transition-all { transition: all 0.2s ease-in-out; }
+        .step-active { border-color: #4285F4; color: #4285F4; font-weight: 500; }
+        .step-active .step-circle { background-color: #4285F4; color: white; }
+        .step-completed { border-color: #34A853; color: #34A853; font-weight: 500; }
+        .step-completed .step-circle { background-color: #34A853; color: white; }
+        .step-pending { border-color: #E0E0E0; color: #757575; }
+        .step-pending .step-circle { background-color: #E0E0E0; color: #757575; }
+        .step-circle { width: 1.75rem; height: 1.75rem; line-height: 1.75rem; font-size: 0.875rem; }
+        .btn-primary { @apply bg-blue-600 text-white font-medium py-3 px-6 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all shadow-sm hover:shadow-md text-base; }
+        .btn-secondary { @apply text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 py-2 px-4 rounded-md transition-all; }
+        .file-upload-area {
+            @apply flex justify-center items-center w-full px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md cursor-pointer hover:border-blue-400 transition-colors;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm py-3 px-6 sticky top-0 z-10">
+         <div class="flex items-center">
+            <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#4285F4"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/><path d="M12.83 6.46H11.17c-.4 0-.75.28-.86.66l-2.9 9.72h1.99l.58-1.94h3.05l.3 1.94h1.97l-2.5-9.72c-.11-.38-.46-.66-.87-.66zm-.66 5.93h-1.34l.67-2.24.67 2.24zM17.5 12.19c0-.8-.45-1.46-1.11-1.76v-.03c.5-.27.86-.8.86-1.43 0-.98-.79-1.78-1.78-1.78h-2.15v6.72h2.19c1.07 0 1.99-.82 1.99-1.9zm-1.99-2.61h.31c.38 0 .69.31.69.69s-.31.69-.69.69h-.31v-1.38zm0 2.75h.38c.44 0 .8.36.8.8s-.36.8-.8.8h-.38v-1.6z" fill="#34A853"/><path d="M12.83 6.46H11.17c-.4 0-.75.28-.86.66l-2.9 9.72h1.99l.58-1.94h3.05l.3 1.94h1.97l-2.5-9.72c-.11-.38-.46-.66-.87-.66zm-.66 5.93h-1.34l.67-2.24.67 2.24z" fill="#FBBC05"/><path d="M17.5 12.19c0-.8-.45-1.46-1.11-1.76v-.03c.5-.27.86-.8.86-1.43 0-.98-.79-1.78-1.78-1.78h-2.15v6.72h2.19c1.07 0 1.99-.82 1.99-1.9zm-1.99-2.61h.31c.38 0 .69.31.69.69s-.31.69-.69.69h-.31v-1.38zm0 2.75h.38c.44 0 .8.36.8.8s-.36.8-.8.8h-.38v-1.6z" fill="#EA4335"/></svg>
+            <span class="ml-2 text-xl font-medium text-gray-700 font-google-sans">Merchant Setup</span>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-8 max-w-5xl">
+
+        <!-- Progress Stepper -->
+        <div class="mb-12 flex justify-between items-start text-sm font-medium">
+            <div class="step-completed text-center border-t-2 pt-3 w-1/5"><div class="step-circle rounded-full mx-auto mb-1 text-center"><i class="fas fa-check"></i></div>Business Info</div>
+            <div class="step-completed text-center border-t-2 pt-3 w-1/5"><div class="step-circle rounded-full mx-auto mb-1 text-center"><i class="fas fa-check"></i></div>Owner Details</div>
+            <div class="step-completed text-center border-t-2 pt-3 w-1/5"><div class="step-circle rounded-full mx-auto mb-1 text-center"><i class="fas fa-check"></i></div>Bank Account</div> <!-- Assuming previous step succeeded -->
+            <div class="step-active text-center border-t-2 pt-3 w-1/5"><div class="step-circle rounded-full mx-auto mb-1 text-center">4</div>Verification</div>
+            <div class="step-pending text-center border-t-2 pt-3 w-1/5"><div class="step-circle rounded-full mx-auto mb-1 text-center">5</div>Review</div>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Main Content: Verification Summary & Document Upload -->
+            <div class="bg-white p-8 rounded-lg shadow-md w-full lg:w-2/3">
+                <h2 class="text-2xl font-medium text-gray-800 mb-3 font-google-sans">Verification & Documents</h2>
+                <p class="text-sm text-gray-600 mb-8">We've verified some of your details automatically. Please upload any additional documents requested below to complete the verification process.</p>
+
+                 <!-- Verification Summary -->
+                 <div class="mb-8 space-y-3">
+                     <div class="flex items-center p-3 bg-green-50 border border-green-200 rounded-md">
+                         <i class="fas fa-check-circle text-green-600 text-lg mr-3"></i>
+                         <span class="text-sm font-medium text-green-800">Business Information: Verified</span>
+                     </div>
+                     <div class="flex items-center p-3 bg-green-50 border border-green-200 rounded-md">
+                         <i class="fas fa-check-circle text-green-600 text-lg mr-3"></i>
+                         <span class="text-sm font-medium text-green-800">Owner Details (PAN): Verified</span>
+                     </div>
+                     <!-- Example: If manual bank verification is pending -->
+                     <!-- <div class="flex items-center p-3 bg-yellow-50 border border-yellow-200 rounded-md">
+                          <i class="fas fa-hourglass-half text-yellow-600 text-lg mr-3"></i>
+                          <span class="text-sm font-medium text-yellow-800">Bank Account: Pending Micro-deposit Verification</span>
+                          <a href="step3-bank-verify.html" class="ml-auto text-xs text-blue-600 hover:underline">Verify Deposits</a>
+                     </div> -->
+                     <!-- Example: If bank linked automatically -->
+                     <div class="flex items-center p-3 bg-green-50 border border-green-200 rounded-md">
+                         <i class="fas fa-check-circle text-green-600 text-lg mr-3"></i>
+                         <span class="text-sm font-medium text-green-800">Bank Account: Linked & Verified</span>
+                     </div>
+                      <!-- Example: If PAN verification failed -->
+                     <!-- <div class="flex items-center p-3 bg-orange-50 border border-orange-200 rounded-md">
+                          <i class="fas fa-exclamation-triangle text-orange-600 text-lg mr-3"></i>
+                          <span class="text-sm font-medium text-orange-800">Owner PAN Verification: Failed</span>
+                          <span class="ml-auto text-xs text-gray-600">Requires manual upload</span>
+                      </div> -->
+                 </div>
+
+                <!-- Document Upload Section (Conditional) -->
+                <div class="border-t border-gray-200 pt-6">
+                    <h3 class="text-lg font-medium text-gray-700 mb-4 font-google-sans">Upload Required Documents (if any)</h3>
+
+                    <!-- Example: Request for PAN Card if auto-verification failed -->
+                    <!-- <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Owner's PAN Card <span class="text-red-600">*Required</span></label>
+                        <div class="file-upload-area">
+                            <div class="text-center">
+                                <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-2"></i>
+                                <p class="text-sm text-gray-600"><span class="font-semibold text-blue-600">Click to upload</span> or drag and drop</p>
+                                <p class="text-xs text-gray-500">PNG, JPG, PDF (Max 5MB)</p>
+                            </div>
+                            <input type="file" class="opacity-0 absolute inset-0 w-full h-full cursor-pointer"/>
+                        </div>
+                         <p class="text-xs text-red-600 mt-1">We couldn't verify your PAN automatically. Please upload a clear image.</p>
+                    </div> -->
+
+                     <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Proof of Business Registration <span class="text-gray-500">(Optional, may be requested later)</span></label>
+                        <div class="file-upload-area">
+                             <div class="text-center">
+                                <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-2"></i>
+                                <p class="text-sm text-gray-600"><span class="font-semibold text-blue-600">Click to upload</span> or drag and drop</p>
+                                <p class="text-xs text-gray-500">GST Certificate, Incorporation Certificate, etc. (Max 5MB)</p>
+                            </div>
+                            <!-- <input type="file" class="opacity-0 absolute inset-0 w-full h-full cursor-pointer"/> -->
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Proof of Address <span class="text-gray-500">(Optional, if business address differs)</span></label>
+                         <div class="file-upload-area">
+                            <div class="text-center">
+                                <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-2"></i>
+                                <p class="text-sm text-gray-600"><span class="font-semibold text-blue-600">Click to upload</span> or drag and drop</p>
+                                <p class="text-xs text-gray-500">Utility Bill, Lease Agreement, etc. (Max 5MB)</p>
+                            </div>
+                            <!-- <input type="file" class="opacity-0 absolute inset-0 w-full h-full cursor-pointer"/> -->
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Cancelled Cheque <span class="text-gray-500">(Required if using manual bank verification)</span></label>
+                        <div class="file-upload-area">
+                             <div class="text-center">
+                                <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-2"></i>
+                                <p class="text-sm text-gray-600"><span class="font-semibold text-blue-600">Click to upload</span> or drag and drop</p>
+                                <p class="text-xs text-gray-500">Clear image showing Account Name, Number, IFSC (Max 2MB)</p>
+                            </div>
+                            <!-- <input type="file" class="opacity-0 absolute inset-0 w-full h-full cursor-pointer"/> -->
+                        </div>
+                        <!-- Show only if manual bank was selected -->
+                        <!-- <p class="text-xs text-yellow-700 mt-1">Needed to confirm manual bank details.</p> -->
+                    </div>
+
+                    <p class="text-xs text-gray-500">You can skip optional uploads for now and provide them later if needed. Required documents must be uploaded to proceed.</p>
+                </div>
+
+                <div class="mt-10 flex justify-between items-center">
+                    <a href="step3-bank-plaid.html" class="btn-secondary"> <!-- Back to Bank Choice -->
+                        <i class="fas fa-arrow-left mr-1"></i> Back
+                    </a>
+                    <a href="step5-review.html" class="btn-primary">
+                        Continue to Review <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Status Widget & Help -->
+            <aside class="w-full lg:w-1/3">
+                <div class="bg-white p-6 rounded-lg shadow-md sticky top-[88px]">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4 font-google-sans">Verification Status</h3>
+                    <ul class="space-y-3.5 text-sm">
+                        <li class="flex items-center text-green-600 font-medium">
+                            <i class="fas fa-check-circle w-5 h-5 mr-3"></i>
+                            <span>Business Information</span> <span class="ml-auto">Verified</span>
+                        </li>
+                        <li class="flex items-center text-green-600 font-medium">
+                            <i class="fas fa-check-circle w-5 h-5 mr-3"></i>
+                            <span>Owner Details</span> <span class="ml-auto">Verified</span>
+                         </li>
+                        <li class="flex items-center text-green-600 font-medium">
+                            <i class="fas fa-check-circle w-5 h-5 mr-3"></i>
+                            <span>Bank Account</span> <span class="ml-auto">Verified</span>
+                        </li>
+                         <li class="flex items-center text-blue-600 font-medium"> <!-- Current step -->
+                           <i class="fas fa-spinner fa-spin w-5 h-5 mr-3"></i>
+                            <span>Document Review</span>
+                         </li>
+                         <li class="flex items-center text-gray-400">
+                           <i class="far fa-circle w-5 h-5 mr-3"></i>
+                            <span>Final Review</span>
+                         </li>
+                    </ul>
+                     <p class="text-xs text-gray-500 mt-5">Upload any required documents. Optional docs can be added later.</p>
+                </div>
+                 <!-- Contextual Help -->
+                 <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg shadow-sm mt-6 text-sm text-blue-800">
+                     <h4 class="font-medium mb-2 font-google-sans"><i class="fas fa-info-circle mr-1"></i> Document Review Process</h4>
+                     <p class="mb-2">Uploaded documents are typically reviewed within 1-2 business days. We'll notify you once the review is complete or if further information is needed.</p>
+                     <a href="#" class="underline hover:text-blue-600">Document Requirements & Guidelines</a>
+                 </div>
+            </aside>
+        </div>
+    </div>
+
+</body>
+</html> 
