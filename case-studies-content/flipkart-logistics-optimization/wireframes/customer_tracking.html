@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Order - Flipkart Logistics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Using a subtle background gradient */
+        body { background: linear-gradient(120deg, #f8fafc 0%, #eef2ff 100%); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulseDot {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7); }
+          50% { box-shadow: 0 0 0 6px rgba(37, 99, 235, 0); }
+        }
+        .fade-in { animation: fadeIn 0.6s ease-out forwards; opacity: 0; }
+        .animate-delay-100 { animation-delay: 0.1s; }
+        .animate-delay-200 { animation-delay: 0.2s; }
+        .animate-delay-300 { animation-delay: 0.3s; }
+        .animate-delay-400 { animation-delay: 0.4s; }
+        .animate-delay-500 { animation-delay: 0.5s; }
+        .animate-delay-600 { animation-delay: 0.6s; }
+
+        /* Enhanced Progress Bar */
+        .progress-bar { display: flex; align-items: flex-start; margin-top: 1rem; margin-bottom: 2rem; padding: 0 1rem; }
+        .progress-step { flex: 1; text-align: center; position: relative; }
+        .progress-dot-container { position: relative; margin-bottom: 0.5rem; }
+        .progress-dot { width: 1rem; height: 1rem; border-radius: 50%; background-color: #d1d5db; margin: 0 auto; position: relative; z-index: 1; border: 2px solid #d1d5db; transition: background-color 0.4s ease, border-color 0.4s ease; display: flex; align-items: center; justify-content: center; }
+        .progress-label { font-size: 0.75rem; color: #6b7280; margin-top: 0.25rem; transition: color 0.4s ease; font-weight: 500; }
+        .progress-line { position: absolute; top: 0.5rem; left: 50%; right: -50%; height: 3px; background-color: #e5e7eb; transform: translateY(-50%); z-index: 0; transition: background-color 0.4s ease; }
+        .progress-step:first-child .progress-line { left: 50%; border-top-left-radius: 3px; border-bottom-left-radius: 3px; }
+        .progress-step:last-child .progress-line { right: 50%; border-top-right-radius: 3px; border-bottom-right-radius: 3px; }
+        .progress-step.active .progress-dot { background-color: #ffffff; border-color: #2563eb; animation: pulseDot 1.5s infinite ease-out; }
+        .progress-step.active .progress-label { color: #1e3a8a; font-weight: 600; }
+        .progress-step.completed .progress-dot { background-color: #2563eb; border-color: #2563eb; color: white; }
+        .progress-step.completed .progress-dot svg { display: block; }
+        .progress-step .progress-dot svg { display: none; width: 0.6rem; height: 0.6rem; }
+        .progress-step.completed .progress-label { color: #1e3a8a; }
+        /* Connect completed steps with active line color */
+        .progress-step.completed + .progress-step .progress-line { background-color: #2563eb; }
+        .progress-step.active .progress-line { background: linear-gradient(to right, #2563eb, #e5e7eb); } /* Gradient for active transition */
+
+        /* Enhanced Tracking History */
+        .tracking-item { display: flex; align-items: flex-start; position: relative; padding-bottom: 2rem; }
+        .tracking-item:last-child { padding-bottom: 0; }
+        .tracking-icon-container { position: relative; flex-shrink: 0; margin-right: 1.25rem; }
+        .tracking-icon { width: 2.25rem; height: 2.25rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 1; transition: all 0.4s ease; color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .tracking-icon svg { width: 1.1rem; height: 1.1rem; }
+        .tracking-item.completed .tracking-icon { background-color: #1e40af; border: 2px solid #1e40af; }
+        .tracking-item.active .tracking-icon { background-color: #2563eb; border: 3px solid #93c5fd; transform: scale(1.05); box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3); }
+        .tracking-item:not(.active):not(.completed) .tracking-icon { background-color: #d1d5db; border: 2px solid #d1d5db; color: #6b7280; }
+        .tracking-connector { position: absolute; left: 1.125rem; top: 2.25rem; bottom: -0.5rem; width: 3px; background-color: #e5e7eb; transform: translateX(-50%); transition: background-color 0.4s ease; }
+        .tracking-item:last-child .tracking-connector { display: none; }
+        .tracking-item.completed + .tracking-item .tracking-connector { background-color: #1e40af; }
+        .tracking-item.active + .tracking-item .tracking-connector { background: linear-gradient(to bottom, #1e40af, #e5e7eb); }
+        .tracking-content { flex: 1; padding-top: 0.25rem; }
+        .tracking-content .status { font-weight: 600; color: #1f2937; margin-bottom: 0.1rem; }
+        .tracking-content .location { font-size: 0.8rem; color: #4b5563; }
+        .tracking-content .details { font-size: 0.75rem; color: #6b7280; margin-top: 0.25rem; }
+        .tracking-timestamp { font-size: 0.75rem; color: #6b7280; white-space: nowrap; padding-top: 0.35rem; text-align: right; }
+
+    </style>
+</head>
+<body class="bg-gray-50 font-sans antialiased">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-4 shadow-lg sticky top-0 z-20">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center">
+                
+                <h1 class="text-2xl font-bold tracking-tight">Flipkart Logistics</h1>
+            </div>
+            <nav>
+                <a href="ops_dashboard_main.html" class="text-sm font-medium hover:bg-blue-800 px-3 py-1 rounded-md transition-colors duration-200 mr-3">Ops Dashboard</a>
+                <a href="support_agent_view.html" class="text-sm font-medium hover:bg-blue-800 px-3 py-1 rounded-md transition-colors duration-200">Agent View</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-4 md:p-8 lg:p-12">
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <div class="p-6 md:p-8 lg:p-10">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6 fade-in">Order Tracking</h2>
+
+                <!-- Order Summary -->
+                <div class="mb-8 border-b border-gray-200 pb-8 fade-in animate-delay-100">
+                    <h3 class="text-lg font-medium text-gray-500 mb-4">Order <span class="text-blue-700 font-semibold bg-blue-50 px-2 py-0.5 rounded">OD1234567890</span></h3>
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+                        <div class="flex-shrink-0 w-28 h-28 bg-white rounded-lg border border-gray-200 p-2 flex items-center justify-center shadow-sm">
+                             <img src="https://rukminim2.flixcart.com/image/416/416/xif0q/headphone/g/h/z/-original-imagqj77h4fchzzh.jpeg?q=70&crop=false" alt="SONY WH-1000XM5 Headphones" class="max-w-full max-h-full object-contain">
+                        </div>
+                        <div class="flex-grow">
+                            <p class="font-semibold text-gray-900 text-xl leading-tight">SONY WH-1000XM5 Wireless Noise Cancelling Headphones</p>
+                            <p class="text-sm text-gray-500 mt-1">Sold by: <span class="text-gray-700">Appario Retail Private Ltd</span></p>
+                            <p class="text-2xl font-bold text-blue-800 mt-2">₹24,990</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Estimated Delivery Time -->
+                <div class="mb-10 text-center bg-gradient-to-br from-indigo-50 via-white to-blue-50 p-6 rounded-xl border border-indigo-100 shadow-md fade-in animate-delay-200">
+                     <p class="text-lg font-semibold text-green-700 mb-1">Estimated Arrival</p>
+                    <p class="text-4xl font-extrabold text-indigo-800">Today, 3:00 PM - 5:00 PM</p>
+                    <p class="text-sm text-gray-500 mt-2">Prediction Confidence:
+                        <span class="inline-flex items-center font-medium text-green-600 bg-green-100 px-2 py-0.5 rounded-full text-xs ml-1">
+                             <svg class="-ml-0.5 mr-0.5 h-2 w-2 text-green-500" fill="currentColor" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3" /></svg>
+                            High
+                        </span>
+                    </p>
+                </div>
+
+                <!-- Progress Bar -->
+                 <div class="mb-12 fade-in animate-delay-300">
+                     <div class="progress-bar">
+                        <div class="progress-step completed">
+                            <div class="progress-dot-container">
+                                <div class="progress-dot">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                                </div>
+                                <div class="progress-line"></div>
+                            </div>
+                            <div class="progress-label">Ordered</div>
+                        </div>
+                        <div class="progress-step completed">
+                            <div class="progress-dot-container">
+                                <div class="progress-dot">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                                </div>
+                                <div class="progress-line"></div>
+                            </div>
+                            <div class="progress-label">Shipped</div>
+                        </div>
+                        <div class="progress-step active">
+                             <div class="progress-dot-container">
+                                <div class="progress-dot"></div>
+                                <div class="progress-line"></div>
+                             </div>
+                            <div class="progress-label">Out for Delivery</div>
+                        </div>
+                        <div class="progress-step">
+                            <div class="progress-dot-container">
+                                <div class="progress-dot"></div>
+                            </div>
+                            <div class="progress-label">Delivered</div>
+                        </div>
+                    </div>
+                 </div>
+
+                <!-- Tracking History -->
+                <div class="mb-10 fade-in animate-delay-400">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-6">Tracking Details</h3>
+                    <div class="pl-4">
+                        <!-- Active Item -->
+                        <div class="tracking-item active">
+                            <div class="tracking-icon-container">
+                                <div class="tracking-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.125-.504 1.125-1.125V14.25m-17.25 4.5v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5c0-.621.504-1.125 1.125-1.125H6.75m10.5 6.75v-1.875a3.375 3.375 0 0 1 3.375-3.375h1.5c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125h-1.5a3.375 3.375 0 0 1-3.375 3.375Z" /></svg>
+                                </div>
+                                <div class="tracking-connector"></div>
+                            </div>
+                            <div class="tracking-content">
+                                <p class="status">Out for Delivery</p>
+                                <p class="location">Bengaluru South Hub (BLR_S01)</p>
+                                <p class="details">Your package is scheduled for delivery today.</p>
+                            </div>
+                            <p class="tracking-timestamp">July 26, 9:15 AM</p>
+                        </div>
+                         <!-- Previous Items -->
+                         <div class="tracking-item completed">
+                             <div class="tracking-icon-container">
+                                <div class="tracking-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" /></svg>
+                                </div>
+                                <div class="tracking-connector"></div>
+                             </div>
+                            <div class="tracking-content">
+                                <p class="status">Arrived at Delivery Hub</p>
+                                <p class="location">Bengaluru South Hub (BLR_S01)</p>
+                                <p class="details">Package processed at the final delivery station.</p>
+                            </div>
+                             <p class="tracking-timestamp">July 26, 7:30 AM</p>
+                        </div>
+                        <div class="tracking-item completed">
+                             <div class="tracking-icon-container">
+                                <div class="tracking-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h7.5v7.5h-7.5z" /> <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9 9 0 1 1 0-18 9 9 0 0 1 0 18z" /> <path stroke-linecap="round" stroke-linejoin="round" d="M12 12h.01" /></svg>
+                                </div>
+                                <div class="tracking-connector"></div>
+                             </div>
+                            <div class="tracking-content">
+                                <p class="status">In Transit - Departed Hub</p>
+                                <p class="location">Chennai Sorting Facility (MAA_SORT)</p>
+                                <p class="details">Package moving towards destination city.</p>
+                            </div>
+                             <p class="tracking-timestamp">July 25, 11:05 PM</p>
+                        </div>
+                         <div class="tracking-item completed">
+                             <div class="tracking-icon-container">
+                                <div class="tracking-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" /></svg>
+                                </div>
+                                <div class="tracking-connector"></div>
+                             </div>
+                            <div class="tracking-content">
+                                <p class="status">Package Shipped</p>
+                                <p class="location">Origin Facility, Chennai</p>
+                                <p class="details">Package picked up by Ekart Logistics.</p>
+                            </div>
+                             <p class="tracking-timestamp">July 25, 2:30 PM</p>
+                        </div>
+                        <div class="tracking-item completed">
+                            <div class="tracking-icon-container">
+                                <div class="tracking-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007Z" /></svg>
+                                </div>
+                                <!-- No connector for the last item -->
+                            </div>
+                            <div class="tracking-content">
+                                <p class="status">Order Placed & Confirmed</p>
+                                <p class="details">We've received your order and payment.</p>
+                            </div>
+                            <p class="tracking-timestamp">July 25, 10:00 AM</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Map View -->
+                <div class="mb-6 fade-in animate-delay-500">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-4">Live Location</h3>
+                    <div class="bg-gray-100 rounded-xl overflow-hidden h-72 md:h-96 border border-gray-200 shadow-inner relative">
+                        <!-- Realistic Static Map Image -->
+                        <img src="https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/pin-s+0079ff(-77.0369,38.8977)/-77.0369,38.8977,13,0/800x400?access_token=pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2p0MG01MXRqMW45cjQzb2R6b2ptc3J4MSJ9.zA2W0IkOfKTSXcF9RU9BYQ"
+                             alt="Static Map View showing approximate package location"
+                             class="w-full h-full object-cover"
+                             title="Static map placeholder - Represents live tracking view">
+                         <div class="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none"></div>
+                    </div>
+                     <p class="text-xs text-center text-gray-500 mt-3">Live map view updates when package is out for delivery. Showing last known area.</p>
+                </div>
+
+                 <!-- Support Link -->
+                 <div class="text-center mt-12 border-t pt-8 fade-in animate-delay-600">
+                     <a href="#" class="inline-flex items-center text-blue-600 hover:text-blue-800 hover:underline text-base font-medium group transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 group-hover:text-blue-700 transition-colors">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
+                          </svg>
+                        Need help with your order? Contact Support
+                    </a>
+                 </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-400 text-center p-6 mt-12">
+        <p class="text-sm">&copy; 2024 Flipkart. All rights reserved.</p>
+        <p class="text-xs mt-1">This is a conceptual representation for a case study.</p>
+    </footer>
+</body>
+</html> 
