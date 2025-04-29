@@ -1,5 +1,3 @@
-import { DeelCaseStudyDetails } from "./deel-global-payroll-data"; // Re-use types where applicable
-
 // Interface Definitions based on final_solution.md and sheets.md structure
 
 export interface Introduction {

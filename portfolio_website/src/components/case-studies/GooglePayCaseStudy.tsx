@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import {
   FiInfo, FiTrendingUp, FiCheckSquare, FiLink, FiTarget, FiThumbsUp,
-  FiExternalLink, FiLayout, FiActivity, FiBarChart2, FiAlertTriangle, FiUsers
+  FiExternalLink, FiLayout, FiActivity, FiBarChart2, FiAlertTriangle
 } from 'react-icons/fi';
 import { SiGooglesheets } from 'react-icons/si';
 import { RiMindMap } from "react-icons/ri";
