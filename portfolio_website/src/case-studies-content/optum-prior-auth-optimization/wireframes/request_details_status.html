@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optum PA Request Details - Mockup</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f7f8fa; color: #374151; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        .card { background-color: white; border: 1px solid #e5e7eb; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.04); margin-bottom: 1.5rem; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.625rem 1.25rem; border-radius: 0.5rem; font-weight: 500; font-size: 0.875rem; cursor: pointer; transition: all 0.2s ease-in-out; border: 1px solid transparent; }
+        .btn-primary { background-color: #2563eb; color: white; border-color: #2563eb; }
+        .btn-primary:hover { background-color: #1d4ed8; border-color: #1d4ed8; transform: translateY(-1px); box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2); }
+        .btn-secondary { background-color: white; color: #4b5563; border: 1px solid #d1d5db; }
+        .btn-secondary:hover { background-color: #f9fafb; border-color: #9ca3af; transform: translateY(-1px); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); }
+        .btn-danger { background-color: #fee2e2; color: #dc2626; border-color: #fee2e2; }
+        .btn-danger:hover { background-color: #fecaca; border-color: #fecaca; color: #b91c1c; transform: translateY(-1px); box-shadow: 0 2px 4px rgba(220, 38, 38, 0.1); }
+        .label { display: block; font-weight: 500; font-size: 0.75rem; color: #6b7280; margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.025em; }
+        .value { font-size: 0.9rem; color: #1f2937; margin-bottom: 1rem; line-height: 1.4; }
+        .status-history li { border-left: 2px solid #e5e7eb; padding-left: 1.25rem; position: relative; padding-bottom: 1.5rem; }
+        .status-history li::before { content: ''; width: 12px; height: 12px; background-color: #d1d5db; border-radius: 50%; position: absolute; left: -7px; top: 5px; border: 2px solid #f7f8fa; transition: background-color 0.2s; }
+        .status-history li.current::before { background-color: #fbbf24; box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.3); }
+        .status-history li.past-review::before { background-color: #60a5fa; }
+        .status-history li.past-received::before { background-color: #9ca3af; }
+        .status-history li:last-child { border-left-color: transparent; padding-bottom: 0; }
+        .status-history .time { font-size: 0.75rem; color: #9ca3af; }
+        .badge { display: inline-flex; align-items: center; padding: 0.25rem 0.625rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; line-height: 1; }
+        .badge-green { background-color: #dcfce7; color: #16a34a; }
+        .badge-yellow { background-color: #fef9c3; color: #ca8a04; border: 1px solid #fde68a; }
+        .badge-blue { background-color: #e0f2fe; color: #0ea5e9; }
+        .badge-red { background-color: #fee2e2; color: #dc2626; }
+        .badge-gray { background-color: #f3f4f6; color: #6b7280; }
+        .textarea { padding: 0.625rem 0.875rem; border-color: #d1d5db; border-radius: 0.5rem; font-size: 0.875rem; background-color: white; width: 100%; line-height: 1.5; transition: border-color 0.2s, box-shadow 0.2s; }
+        .textarea:focus { border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2); outline: none; }
+        .file-input-wrapper { position: relative; display: inline-block; width: 100%; }
+        .file-input-button { display: inline-flex; align-items: center; padding: 0.5rem 1rem; border: 1px solid #d1d5db; border-radius: 0.5rem; background-color: white; color: #4b5563; font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+        .file-input-button:hover { background-color: #f9fafb; border-color: #9ca3af; }
+        .file-input { position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+        .icon-sm { font-size: 0.8em; margin-right: 0.35rem; }
+        .document-link { color: #2563eb; font-weight: 500; text-decoration: none; transition: color 0.2s; }
+        .document-link:hover { color: #1d4ed8; text-decoration: underline; }
+        .document-icon { margin-right: 0.5rem; color: #9ca3af; font-size: 1.1em; }
+        .section-title { font-size: 1.125rem; font-weight: 600; color: #1f2937; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid #e5e7eb; }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="container mx-auto p-6 lg:p-8 max-w-6xl">
+        <header class="mb-8 pb-5 border-b border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div>
+                <h1 class="text-2xl lg:text-3xl font-bold text-gray-800 tracking-tight">Authorization Details</h1>
+                <p class="text-sm text-gray-500 mt-1 font-mono">Tracking ID: <span class="font-semibold text-gray-700">OPTUMPA-12345</span></p>
+            </div>
+            <a href="provider_dashboard.html" class="btn btn-secondary btn-sm shadow-sm whitespace-nowrap">
+                <i class="fas fa-arrow-left icon-sm"></i> Back to Dashboard
+            </a>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+            <!-- Main Details Section -->
+            <div class="lg:col-span-2 space-y-6">
+                <div class="card">
+                    <h2 class="section-title">Request Information</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6">
+                        <div><span class="label">Patient Name</span><span class="value">Smith, John A.</span></div>
+                        <div><span class="label">Member ID</span><span class="value">M123456789</span></div>
+                        <div><span class="label">Service Requested</span><span class="value">MRI Lumbar Spine w/o contrast (CPT 72148)</span></div>
+                        <div><span class="label">Primary Diagnosis</span><span class="value">Low back pain (M54.5)</span></div>
+                        <div><span class="label">Requesting Provider</span><span class="value">Dr. Evelyn Reed (NPI: 1234567890)</span></div>
+                        <div><span class="label">Servicing Provider/Facility</span><span class="value">Advanced Radiology Center (NPI: 0987654321)</span></div>
+                        <div><span class="label">Submission Date & Time</span><span class="value">2024-07-14 02:10 PM EST</span></div>
+                        <div><span class="label">Anticipated Service Date</span><span class="value">2024-07-20</span></div>
+                    </div>
+                </div>
+
+                 <!-- Action Required Section -->
+                <div class="card border-l-4 border-yellow-400 bg-yellow-50 shadow-md">
+                    <h2 class="text-lg font-semibold text-yellow-800 mb-3 flex items-center">
+                        <i class="fas fa-exclamation-triangle mr-2 text-yellow-600"></i> Action Required: Provide Additional Information
+                    </h2>
+                    <p class="text-sm text-yellow-900 mb-3">The reviewer requires the following clarification(s) to proceed:</p>
+                    <ul class="list-disc list-inside text-sm text-yellow-900 mb-5 space-y-1 pl-2">
+                        <li>Duration and specifics of conservative treatment attempted (e.g., dates and type of physical therapy).</li>
+                        <li>Copy of the official report from the previous lumbar spine X-ray performed on 2024-05-10.</li>
+                    </ul>
+                     <div class="space-y-4">
+                        <div>
+                            <label for="providerResponse" class="label text-gray-700 font-medium">Your Response / Clarification</label>
+                            <textarea id="providerResponse" name="providerResponse" rows="4" class="textarea mt-1" placeholder="Provide detailed answers to the requests above..."></textarea>
+                        </div>
+                        <div>
+                            <label class="label text-gray-700 font-medium mb-1">Upload Supporting Documents</label>
+                            <div class="file-input-wrapper">
+                                <span class="file-input-button">
+                                    <i class="fas fa-upload icon-sm"></i> Choose Files...
+                                </span>
+                                <input type="file" multiple class="file-input" aria-label="Upload supporting documents">
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">Attach PT notes, X-ray report, etc. (PDF, DOCX, JPG, PNG accepted)</p>
+                        </div>
+                        <div class="pt-2">
+                            <button type="button" class="btn btn-primary shadow-sm">
+                                <i class="fas fa-paper-plane icon-sm"></i> Submit Information
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submitted Documents Section -->
+                <div class="card">
+                    <h2 class="section-title">Submitted Documents</h2>
+                    <ul class="space-y-3">
+                        <li class="flex items-center justify-between text-sm border-b border-gray-100 pb-2">
+                            <a href="#" target="_blank" class="flex items-center document-link">
+                                <i class="fas fa-file-pdf document-icon text-red-500"></i> Clinical_Notes_Smith_J_July14.pdf
+                            </a>
+                            <span class="text-xs text-gray-500">Uploaded: 2024-07-14 02:10 PM</span>
+                        </li>
+                         <li class="flex items-center justify-between text-sm border-b border-gray-100 pb-2">
+                            <a href="#" target="_blank" class="flex items-center document-link">
+                                <i class="fas fa-file-alt document-icon text-blue-500"></i> Initial_Consult_Summary.docx
+                            </a>
+                             <span class="text-xs text-gray-500">Uploaded: 2024-07-14 02:10 PM</span>
+                        </li>
+                         <!-- Add placeholder for documents to be uploaded -->
+                         <li class="flex items-center justify-between text-sm text-gray-400 italic pb-2">
+                             <span class="flex items-center">
+                                 <i class="fas fa-file-upload document-icon"></i> PT_Notes_ConservativeTx.pdf (Pending Upload)
+                            </span>
+                         </li>
+                         <li class="flex items-center justify-between text-sm text-gray-400 italic pb-2">
+                             <span class="flex items-center">
+                                 <i class="fas fa-file-upload document-icon"></i> Lumbar_Xray_Report_May10.pdf (Pending Upload)
+                            </span>
+                         </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- Status & History Sidebar -->
+            <div class="lg:col-span-1">
+                <div class="card sticky top-6">
+                    <h2 class="section-title">Status & History</h2>
+                    <div class="mb-5">
+                        <span class="label">Current Status</span>
+                        <span class="badge badge-yellow text-sm px-3 py-1.5 shadow-sm">
+                             <i class="fas fa-exclamation-circle icon-sm"></i> Action Needed
+                        </span>
+                    </div>
+                    <ol class="status-history">
+                        <li class="current">
+                            <h3 class="font-semibold text-sm text-gray-800">Additional Information Requested</h3>
+                            <time class="block time">July 15, 2024 - 11:30 AM EST</time>
+                            <p class="mt-1 text-gray-600 text-xs leading-relaxed">Reviewer requires clarification on conservative therapy duration and prior imaging results. See 'Action Required' section.</p>
+                        </li>
+                         <li class="past-review">
+                            <h3 class="font-medium text-sm text-gray-700">Under Review</h3>
+                            <time class="block time">July 14, 2024 - 04:15 PM EST</time>
+                        </li>
+                         <li class="past-received">
+                            <h3 class="font-medium text-sm text-gray-700">Request Received</h3>
+                            <time class="block time">July 14, 2024 - 02:10 PM EST</time>
+                        </li>
+                    </ol>
+                     <div class="mt-8 border-t border-gray-200 pt-5">
+                         <p class="text-xs text-gray-500 mb-2">Need to withdraw this request?</p>
+                        <button class="btn btn-danger w-full btn-sm">
+                             <i class="fas fa-ban icon-sm"></i> Cancel Request
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

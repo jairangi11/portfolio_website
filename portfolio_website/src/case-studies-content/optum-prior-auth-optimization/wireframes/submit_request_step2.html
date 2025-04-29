@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optum PA Submit Request (Step 2) - Mockup</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+     <style>
+        /* Reusing refined styles */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f7f8fa; color: #374151; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        .card { background-color: white; border: 1px solid #e5e7eb; border-radius: 0.75rem; padding: 2rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.04); margin-bottom: 1.5rem; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.625rem 1.25rem; border-radius: 0.5rem; font-weight: 500; font-size: 0.875rem; cursor: pointer; transition: all 0.2s ease-in-out; border: 1px solid transparent; }
+        .btn-primary { background-color: #2563eb; color: white; border-color: #2563eb; }
+        .btn-primary:hover { background-color: #1d4ed8; border-color: #1d4ed8; transform: translateY(-1px); box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2); }
+        .btn-secondary { background-color: white; color: #4b5563; border: 1px solid #d1d5db; }
+        .btn-secondary:hover { background-color: #f9fafb; border-color: #9ca3af; transform: translateY(-1px); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); }
+        .section-title { font-size: 1.25rem; font-weight: 600; color: #1f2937; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid #e5e7eb; }
+        .file-upload-area { border: 2px dashed #d1d5db; border-radius: 0.75rem; padding: 2.5rem; text-align: center; background-color: #f9fafb; cursor: pointer; transition: all 0.2s ease-in-out; position: relative; }
+        .file-upload-area:hover { background-color: #eff6ff; border-color: #93c5fd; }
+        .file-upload-area.drag-over { background-color: #dbeafe; border-color: #60a5fa; border-style: solid; }
+        .file-upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+        .req-doc-item { border: 1px solid #e5e7eb; padding: 1rem; border-radius: 0.5rem; margin-bottom: 0.75rem; display: flex; align-items: center; transition: all 0.2s ease; }
+        .req-doc-item.met { border-left: 4px solid #22c55e; background-color: #f0fdf4; }
+        .req-doc-item.pending { border-left: 4px solid #f59e0b; background-color: #fffbeb; }
+        .req-doc-icon { width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; margin-right: 0.75rem; }
+        .req-doc-icon.met { background-color: #dcfce7; color: #16a34a; }
+        .req-doc-icon.pending { background-color: #fef3c7; color: #d97706; }
+        .uploaded-file-item { display: flex; justify-content: space-between; align-items: center; background-color: #f9fafb; padding: 0.75rem 1rem; border-radius: 0.5rem; border: 1px solid #e5e7eb; transition: background-color 0.2s; }
+        .uploaded-file-item:hover { background-color: #f3f4f6; }
+        .file-icon { color: #6b7280; margin-right: 0.75rem; font-size: 1.1rem; }
+        .delete-btn { color: #ef4444; background: none; border: none; cursor: pointer; padding: 0.25rem; line-height: 1; opacity: 0.7; transition: opacity 0.2s; }
+        .delete-btn:hover { opacity: 1; color: #b91c1c; }
+        .icon-sm { font-size: 0.8em; margin-right: 0.35rem; }
+        .icon-md { font-size: 1em; margin-right: 0.5rem; }
+        /* Progress Steps (Copied from Step 1 for consistency) */
+        .progress-steps { display: flex; justify-content: center; margin-bottom: 2rem; }
+        .step { display: flex; flex-direction: column; align-items: center; position: relative; flex-grow: 1; }
+        .step:not(:last-child)::after { content: ''; position: absolute; top: 16px; left: 50%; width: 100%; height: 2px; background-color: #d1d5db; transform: translateX(50%); z-index: 0; }
+        .step-icon { width: 32px; height: 32px; border-radius: 50%; background-color: #d1d5db; color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; z-index: 1; transition: all 0.3s ease; border: 2px solid white; }
+        .step-label { margin-top: 0.5rem; font-size: 0.875rem; font-weight: 500; color: #6b7280; text-align: center; transition: color 0.3s ease; }
+        .step.active .step-icon { background-color: #2563eb; border-color: #bfdbfe; }
+        .step.active .step-label { color: #1f2937; }
+        .step.active:not(:last-child)::after { background-color: #2563eb; }
+        .step.completed .step-icon { background-color: #16a34a; border-color: #bbf7d0; }
+        .step.completed .step-label { color: #4b5563; }
+        .step.completed:not(:last-child)::after { background-color: #16a34a; }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="container mx-auto p-6 lg:p-8 max-w-6xl"> <!-- Adjusted max-width -->
+        <header class="mb-8 pb-5 border-b border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <div>
+                <h1 class="text-2xl lg:text-3xl font-bold text-gray-800 tracking-tight">Submit New Authorization</h1>
+                 <p class="text-sm text-gray-500 mt-1">Complete the following steps to submit your request.</p>
+            </div>
+             <a href="provider_dashboard.html" class="btn btn-secondary btn-sm shadow-sm whitespace-nowrap">
+                 <i class="fas fa-times icon-sm"></i> Cancel Submission
+             </a>
+        </header>
+
+        <!-- Progress Steps -->
+        <div class="progress-steps mb-10">
+            <div class="step completed">
+                <div class="step-icon"><i class="fas fa-check text-xs"></i></div>
+                <div class="step-label">Request Details</div>
+            </div>
+            <div class="step active">
+                <div class="step-icon">2</div>
+                <div class="step-label">Upload Documents</div>
+            </div>
+             <div class="step">
+                <div class="step-icon">3</div>
+                <div class="step-label">Review & Submit</div>
+            </div>
+        </div>
+
+         <!-- Display submitted info summary -->
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8 shadow-sm">
+             <h3 class="text-base font-semibold text-blue-800 mb-1">Request Summary</h3>
+             <p class="text-sm text-blue-700">Patient: <span class="font-medium">Smith, John A.</span> | Service: <span class="font-medium">MRI Lumbar Spine (72148)</span> | Diagnosis: <span class="font-medium">Low back pain (M54.5)</span></p>
+             <p class="text-xs text-blue-600 mt-1">Requesting: Dr. Evelyn Reed | Servicing: Advanced Radiology Center</p>
+        </div>
+
+        <form action="submit_request_step3.html" method="GET"> <!-- Changed action to step 3 -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+                <!-- Required Documents Checklist -->
+                <div class="card order-last lg:order-first">
+                    <h2 class="section-title flex justify-between items-center">
+                        <span>Guidance: Required Documentation</span>
+                         <span class="text-xs font-normal text-gray-500">(Based on CPT 72148 & Plan Rules)</span>
+                    </h2>
+                    <div class="space-y-3">
+                         <div class="req-doc-item met">
+                            <span class="req-doc-icon met"><i class="fas fa-check"></i></span>
+                            <div>
+                                <p class="text-sm font-medium text-gray-800">Recent Clinical/Chart Notes (within 6 mo.)</p>
+                                <p class="text-xs text-green-700">Attached: Clinical_Notes_Smith_J_July14.pdf</p>
+                            </div>
+                        </div>
+                        <div class="req-doc-item pending">
+                            <span class="req-doc-icon pending"><i class="fas fa-exclamation"></i></span>
+                             <div>
+                                <p class="text-sm font-medium text-gray-800">Documentation of Conservative Therapy (> 6 wks)</p>
+                                <p class="text-xs text-amber-700">Required: Please attach relevant notes (e.g., PT summary, medication trials).</p>
+                            </div>
+                        </div>
+                         <div class="req-doc-item pending">
+                            <span class="req-doc-icon pending"><i class="fas fa-exclamation"></i></span>
+                             <div>
+                                <p class="text-sm font-medium text-gray-800">Relevant Prior Imaging Reports (if performed)</p>
+                                <p class="text-xs text-amber-700">Required: Attach report if prior related imaging exists (e.g., X-ray).</p>
+                            </div>
+                        </div>
+                        <!-- Example: Optional Document -->
+                         <div class="req-doc-item border-gray-200 bg-gray-50 border-l-4 border-gray-300">
+                            <span class="req-doc-icon bg-gray-200 text-gray-500"><i class="fas fa-info"></i></span>
+                             <div>
+                                <p class="text-sm font-medium text-gray-700">Specialist Consult Report (Optional)</p>
+                                <p class="text-xs text-gray-500">Recommended if available (e.g., neurology, orthopedics).</p>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 pt-3 italic">Note: This guidance is based on common requirements. Ensure all documentation supporting medical necessity is attached.</p>
+                    </div>
+                </div>
+
+                <!-- File Upload Area -->
+                 <div class="card">
+                    <h2 class="section-title">Upload Supporting Documents</h2>
+                     <div id="dropzone" class="file-upload-area mb-6">
+                        <input type="file" multiple aria-label="Upload supporting documents">
+                        <div class="flex flex-col items-center justify-center text-center pointer-events-none">
+                            <i class="fas fa-cloud-upload-alt text-4xl text-blue-500 mb-3"></i>
+                            <p class="text-sm font-semibold text-gray-700">Drag & drop files here</p>
+                            <p class="text-xs text-gray-500">or</p>
+                            <button type="button" class="text-sm font-medium text-blue-600 hover:text-blue-800 mt-1">Click to browse</button>
+                            <p class="text-xs text-gray-400 mt-3">PDF, DOCX, JPG, PNG, TIFF accepted (Max 10MB/file)</p>
+                        </div>
+                    </div>
+
+                     <!-- Uploaded Files List -->
+                    <h3 class="text-base font-semibold text-gray-700 mb-3">Attached Files:</h3>
+                    <ul id="file-list" class="space-y-3 text-sm">
+                        <!-- Example Attached Files -->
+                        <li class="uploaded-file-item">
+                            <span class="flex items-center overflow-hidden whitespace-nowrap overflow-ellipsis pr-2">
+                                <i class="fas fa-file-pdf file-icon text-red-500"></i>
+                                <span class="text-gray-800 font-medium" title="Clinical_Notes_Smith_J_July14.pdf">Clinical_Notes_Smith_J_July14.pdf</span>
+                            </span>
+                            <span class="text-xs text-gray-500 whitespace-nowrap pl-2">
+                                1.2 MB
+                                <button type="button" class="delete-btn ml-2" aria-label="Remove file">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </span>
+                        </li>
+                         <li class="uploaded-file-item">
+                            <span class="flex items-center overflow-hidden whitespace-nowrap overflow-ellipsis pr-2">
+                                <i class="fas fa-file-word file-icon text-blue-500"></i>
+                                <span class="text-gray-800 font-medium" title="Initial_Consult_Summary.docx">Initial_Consult_Summary.docx</span>
+                             </span>
+                             <span class="text-xs text-gray-500 whitespace-nowrap pl-2">
+                                 85 KB
+                                 <button type="button" class="delete-btn ml-2" aria-label="Remove file">
+                                     <i class="fas fa-trash-alt"></i>
+                                 </button>
+                             </span>
+                        </li>
+                         <!-- Add more uploaded files dynamically via JS -->
+                         <li class="uploaded-file-item opacity-50"> <!-- Example: Uploading state -->
+                            <span class="flex items-center overflow-hidden whitespace-nowrap overflow-ellipsis pr-2">
+                                <i class="fas fa-spinner fa-spin file-icon"></i>
+                                <span class="text-gray-600 font-medium" title="PT_Referral_Notes.pdf">PT_Referral_Notes.pdf</span>
+                             </span>
+                             <span class="text-xs text-gray-500 whitespace-nowrap pl-2">Uploading...</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row justify-between items-center mt-8 gap-4">
+                 <a href="submit_request_step1.html" class="btn btn-secondary shadow-sm w-full sm:w-auto">
+                     <i class="fas fa-arrow-left icon-sm"></i> Back to Request Details
+                 </a>
+                 <div class="flex gap-3 w-full sm:w-auto">
+                    <button type="button" class="btn btn-secondary shadow-sm flex-grow sm:flex-grow-0">
+                        <i class="fas fa-save icon-sm"></i> Save Draft
+                    </button>
+                    <button type="submit" class="btn btn-primary shadow-sm flex-grow sm:flex-grow-0">
+                         Next: Review & Submit <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                    </button>
+                 </div>
+            </div>
+        </form>
+
+        <script>
+            // Basic drag-and-drop visual feedback (no actual upload logic)
+            const dropzone = document.getElementById('dropzone');
+            if (dropzone) {
+                dropzone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    dropzone.classList.add('drag-over');
+                });
+                dropzone.addEventListener('dragleave', () => {
+                    dropzone.classList.remove('drag-over');
+                });
+                dropzone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    dropzone.classList.remove('drag-over');
+                    // Add visual feedback for dropped files (mock)
+                    console.log('Files dropped (mock)');
+                });
+            }
+        </script>
+
+    </div>
+</body>
+</html> 

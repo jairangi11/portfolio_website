@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optum PA Submission Confirmation - Mockup</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+     <style>
+        /* Reusing refined styles */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f7f8fa; color: #374151; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; }
+        .card { background-color: white; border: 1px solid #e5e7eb; border-radius: 0.75rem; padding: 2.5rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.05); text-align: center; max-width: 500px; width: 100%; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.625rem 1.25rem; border-radius: 0.5rem; font-weight: 500; font-size: 0.875rem; cursor: pointer; transition: all 0.2s ease-in-out; border: 1px solid transparent; }
+        .btn-primary { background-color: #2563eb; color: white; border-color: #2563eb; }
+        .btn-primary:hover { background-color: #1d4ed8; border-color: #1d4ed8; transform: translateY(-1px); box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2); }
+        .btn-secondary { background-color: white; color: #4b5563; border: 1px solid #d1d5db; }
+        .btn-secondary:hover { background-color: #f9fafb; border-color: #9ca3af; transform: translateY(-1px); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); }
+        .success-icon { font-size: 3rem; color: #16a34a; margin-bottom: 1rem; width: 60px; height: 60px; background-color: #dcfce7; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 0 0 8px rgba(22, 163, 74, 0.1); }
+        .tracking-id { font-family: monospace; background-color: #f3f4f6; color: #1f2937; padding: 0.5rem 1rem; border-radius: 0.375rem; display: inline-block; font-size: 1rem; font-weight: 600; border: 1px solid #e5e7eb; margin-top: 0.5rem; margin-bottom: 1.5rem; letter-spacing: 1px; }
+        .icon-sm { font-size: 0.8em; margin-right: 0.35rem; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="success-icon">
+            <i class="fas fa-check"></i>
+        </div>
+        <h1 class="text-2xl font-bold text-gray-800 mb-2">Request Submitted Successfully!</h1>
+        <p class="text-gray-600 mb-4 text-sm">Your prior authorization request for John A. Smith has been received.</p>
+
+        <p class="text-sm text-gray-700 mb-1">Your Tracking ID is:</p>
+        <div class="tracking-id">OPTUMPA-12346</div>
+
+        <p class="text-xs text-gray-500 mb-6">You will be notified via email and within the dashboard when the status updates. Standard review time is typically 3-5 business days.</p>
+
+        <div class="flex flex-col sm:flex-row justify-center gap-3">
+            <a href="provider_dashboard.html" class="btn btn-primary shadow-sm w-full sm:w-auto">
+                 <i class="fas fa-tachometer-alt icon-sm"></i> Return to Dashboard
+            </a>
+             <a href="submit_request_step1.html" class="btn btn-secondary shadow-sm w-full sm:w-auto">
+                 <i class="fas fa-plus icon-sm"></i> Submit Another Request
+            </a>
+        </div>
+    </div>
+</body>
+</html> 
