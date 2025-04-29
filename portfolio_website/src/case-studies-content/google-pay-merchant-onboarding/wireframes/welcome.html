@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - Google Pay Merchant Onboarding</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        h1, h2, h3, h4, h5, h6, button, .font-google-sans {
+            font-family: 'Google Sans', sans-serif;
+        }
+        .transition-all {
+            transition: all 0.2s ease-in-out;
+        }
+        .btn-primary {
+             @apply inline-block w-full bg-blue-600 text-white font-medium py-3 px-6 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all shadow-sm hover:shadow-md;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white p-8 rounded-xl shadow-lg max-w-lg w-full text-center transform transition-all hover:scale-[1.01]">
+        <!-- Google Pay Logo -->
+        <div class="flex justify-center items-center mb-6 space-x-2">
+             <svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#4285F4"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/><path d="M12.83 6.46H11.17c-.4 0-.75.28-.86.66l-2.9 9.72h1.99l.58-1.94h3.05l.3 1.94h1.97l-2.5-9.72c-.11-.38-.46-.66-.87-.66zm-.66 5.93h-1.34l.67-2.24.67 2.24zM17.5 12.19c0-.8-.45-1.46-1.11-1.76v-.03c.5-.27.86-.8.86-1.43 0-.98-.79-1.78-1.78-1.78h-2.15v6.72h2.19c1.07 0 1.99-.82 1.99-1.9zm-1.99-2.61h.31c.38 0 .69.31.69.69s-.31.69-.69.69h-.31v-1.38zm0 2.75h.38c.44 0 .8.36.8.8s-.36.8-.8.8h-.38v-1.6z" fill="#34A853"/><path d="M12.83 6.46H11.17c-.4 0-.75.28-.86.66l-2.9 9.72h1.99l.58-1.94h3.05l.3 1.94h1.97l-2.5-9.72c-.11-.38-.46-.66-.87-.66zm-.66 5.93h-1.34l.67-2.24.67 2.24z" fill="#FBBC05"/><path d="M17.5 12.19c0-.8-.45-1.46-1.11-1.76v-.03c.5-.27.86-.8.86-1.43 0-.98-.79-1.78-1.78-1.78h-2.15v6.72h2.19c1.07 0 1.99-.82 1.99-1.9zm-1.99-2.61h.31c.38 0 .69.31.69.69s-.31.69-.69.69h-.31v-1.38zm0 2.75h.38c.44 0 .8.36.8.8s-.36.8-.8.8h-.38v-1.6z" fill="#EA4335"/></svg>
+             <span class="text-3xl font-medium text-gray-700 font-google-sans">Google Pay</span>
+        </div>
+
+        <h1 class="text-2xl font-medium text-gray-900 mb-3 font-google-sans">Start accepting payments with Google Pay</h1>
+        <p class="text-gray-600 mb-8 text-base">Get your business ready in minutes with our simple, guided setup.</p>
+
+        <a href="step1-business-info.html"
+           class="btn-primary">
+            Get Started
+        </a>
+    </div>
+</body>
+</html> 
