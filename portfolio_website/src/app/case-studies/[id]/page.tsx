@@ -19,12 +19,14 @@ import FlipkartCaseStudy from '@/components/case-studies/FlipkartCaseStudy';
 import GenericCaseStudy from '@/components/case-studies/GenericCaseStudy';
 import AWSLambdaDeveloperUX from '@/components/case-studies/AWSLambdaDeveloperUX';
 import GooglePayCaseStudy from '@/components/case-studies/GooglePayCaseStudy';
+import MagicBricksCaseStudy from '@/components/case-studies/MagicBricksCaseStudy';
 
 // Import specific detail types
 import { DeelCaseStudyDetails } from '@/data/deel-global-payroll-data';
 import { AwsLambdaCaseStudyDetails } from '@/data/aws-lambda-developer-ux-data';
 import { FlipkartCaseStudyDetails } from '@/data/flipkart-logistics-optimization-data';
 import { GooglePayCaseStudyDetails } from '@/data/google-pay-merchant-onboarding-data';
+import { MagicBricksCaseStudyDetails } from '@/data/magicbricks-property-recommendation-data';
 
 const sectionVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -82,6 +84,8 @@ export default function CaseStudyPage() {
         return <AWSLambdaDeveloperUX study={study as CaseStudy & { detailedData: AwsLambdaCaseStudyDetails }} />;
       case 'google-pay-merchant-onboarding':
         return <GooglePayCaseStudy study={study as CaseStudy & { detailedData: GooglePayCaseStudyDetails }} />;
+      case 'magicbricks-property-recommendation':
+        return <MagicBricksCaseStudy study={study as CaseStudy & { detailedData: MagicBricksCaseStudyDetails }} />;
       // Add cases for other specific studies here...
       default:
         // Check if detailedData exists conceptually, even if not rendered specifically

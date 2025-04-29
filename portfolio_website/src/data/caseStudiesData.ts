@@ -2,6 +2,7 @@ import { DeelCaseStudyDetails } from "./deel-global-payroll-data";
 import { FlipkartCaseStudyDetails } from './flipkart-logistics-optimization-data';
 import { AwsLambdaCaseStudyDetails, awsLambdaCaseStudyDetails } from './aws-lambda-developer-ux-data';
 import { GooglePayCaseStudyDetails, googlePayCaseStudyDetails } from './google-pay-merchant-onboarding-data';
+import { MagicBricksCaseStudyDetails } from './magicbricks-property-recommendation-data';
 
 export interface CaseStudy {
   id: string;
@@ -16,13 +17,14 @@ export interface CaseStudy {
   whimsicalLink?: string;
   sheetsLink?: string;
 
-  // Field for detailed content, add Google Pay type to union
-  detailedData?: DeelCaseStudyDetails | FlipkartCaseStudyDetails | AwsLambdaCaseStudyDetails | GooglePayCaseStudyDetails;
+  // Field for detailed content, add Google Pay & MagicBricks types to union
+  detailedData?: DeelCaseStudyDetails | FlipkartCaseStudyDetails | AwsLambdaCaseStudyDetails | GooglePayCaseStudyDetails | MagicBricksCaseStudyDetails;
 }
 
 // Import the detailed data
 import { deelCaseStudyDetails } from './deel-global-payroll-data';
 import { flipkartCaseStudyDetails } from './flipkart-logistics-optimization-data';
+import { magicBricksCaseStudyDetails } from './magicbricks-property-recommendation-data';
 
 export const caseStudies: CaseStudy[] = [
   {
@@ -36,7 +38,7 @@ export const caseStudies: CaseStudy[] = [
     wireframeLink: "https://jairangi11.github.io/portfolio_website/case-studies-content/deel-global-payroll/wireframes/admin_dashboard.html",
     whimsicalLink: "https://whimsical.com/portfolio-case-study-SWF4dwiPDQzafhAw97XLgD",
     sheetsLink: "https://docs.google.com/spreadsheets/d/1WwY5lK0BaQEwVbHv1odjje0XRviAKpJrSjKrxPARh_U/edit?usp=sharing",
-    detailedData: deelCaseStudyDetails // Assign the detailed data object
+    detailedData: deelCaseStudyDetails
   },
   {
     id: "flipkart-logistics-optimization",
@@ -49,7 +51,7 @@ export const caseStudies: CaseStudy[] = [
     wireframeLink: "https://jairangi11.github.io/portfolio_website/case-studies-content/flipkart-logistics-optimization/wireframes/ops_dashboard_main.html",
     whimsicalLink: "https://whimsical.com/portfolio-case-study-SWF4dwiPDQzafhAw97XLgD",
     sheetsLink: "https://docs.google.com/spreadsheets/d/1pli44sSrRLfDCu_2Sks2tl1pgQ0yUk9TMGRU3N6WwMU/edit?usp=sharing",
-    detailedData: flipkartCaseStudyDetails // Assign the detailed Flipkart data object
+    detailedData: flipkartCaseStudyDetails
   },
   {
     id: "google-pay-merchant-onboarding",
@@ -72,9 +74,10 @@ export const caseStudies: CaseStudy[] = [
     tags: ["Real Estate Tech", "AI/ML", "Recommendation Systems", "Data Science"],
     coverImage: "/images/case-studies/magicbricks.png",
     thumbnailImage: "/images/case-studies/magicbricks.png",
-    wireframeLink: "https://www.google.com",
-    whimsicalLink: "https://www.google.com",
-    sheetsLink: "https://www.google.com"
+    wireframeLink: "https://jairangi11.github.io/portfolio_website/case-studies-content/magicbricks-property-recommendation/wireframes/homepage_with_recommendations.html",
+    whimsicalLink: "https://whimsical.com/portfolio-case-study-SWF4dwiPDQzafhAw97XLgD",
+    sheetsLink: "https://docs.google.com/spreadsheets/d/1Zx1d_zcvj9eKoXzQN16TVBQEyNJvr_6NtQ2n7d5MmXU/edit?usp=sharing",
+    detailedData: magicBricksCaseStudyDetails
   },
   {
     id: "aws-lambda-developer-ux",
@@ -87,7 +90,7 @@ export const caseStudies: CaseStudy[] = [
     wireframeLink: "https://jairangi11.github.io/portfolio_website/case-studies-content/aws-lambda-developer-ux/wireframes/1_observability_default.html",
     whimsicalLink: "https://whimsical.com/portfolio-case-study-SWF4dwiPDQzafhAw97XLgD@8ADn3nfZACayAssTti3ccZQkS6vN1iYZsH7h",
     sheetsLink: "https://docs.google.com/spreadsheets/d/1dvkhd_cTUowoIkTEK_Y-sWOoyN6zIDNAmgq2wTSjC-Y/edit?usp=sharing",
-    detailedData: awsLambdaCaseStudyDetails // Assign the AWS detailed data
+    detailedData: awsLambdaCaseStudyDetails
   },
   {
     id: "spotify-podcast-discovery",
