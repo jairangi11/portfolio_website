@@ -1,6 +1,7 @@
 import { DeelCaseStudyDetails } from "./deel-global-payroll-data";
 import { FlipkartCaseStudyDetails } from './flipkart-logistics-optimization-data';
 import { AwsLambdaCaseStudyDetails, awsLambdaCaseStudyDetails } from './aws-lambda-developer-ux-data';
+import { GooglePayCaseStudyDetails, googlePayCaseStudyDetails } from './google-pay-merchant-onboarding-data';
 
 export interface CaseStudy {
   id: string;
@@ -15,8 +16,8 @@ export interface CaseStudy {
   whimsicalLink?: string;
   sheetsLink?: string;
 
-  // Field for detailed content, specific to Deel for now
-  detailedData?: DeelCaseStudyDetails | FlipkartCaseStudyDetails | AwsLambdaCaseStudyDetails;
+  // Field for detailed content, add Google Pay type to union
+  detailedData?: DeelCaseStudyDetails | FlipkartCaseStudyDetails | AwsLambdaCaseStudyDetails | GooglePayCaseStudyDetails;
 }
 
 // Import the detailed data
@@ -58,9 +59,10 @@ export const caseStudies: CaseStudy[] = [
     tags: ["Fintech", "Payments", "UX Design", "Mobile App"],
     coverImage: "/images/case-studies/google_pay.png",
     thumbnailImage: "/images/case-studies/google_pay.png",
-    wireframeLink: "https://www.google.com",
-    whimsicalLink: "https://www.google.com",
-    sheetsLink: "https://www.google.com"
+    wireframeLink: "https://jairangi11.github.io/portfolio_website/case-studies-content/google-pay-merchant-onboarding/wireframes/welcome.html",
+    whimsicalLink: "https://whimsical.com/portfolio-case-study-SWF4dwiPDQzafhAw97XLgD@8ADn3nfZADnAnXsKYVDk5R3FUEMPtxCCNXyu",
+    sheetsLink: "https://docs.google.com/spreadsheets/d/1R98Ja63Xf1KNMGexGby94sz_dYe8_K9xlzgbDKacl3A/edit?usp=sharing",
+    detailedData: googlePayCaseStudyDetails
   },
   {
     id: "magicbricks-property-recommendation",
