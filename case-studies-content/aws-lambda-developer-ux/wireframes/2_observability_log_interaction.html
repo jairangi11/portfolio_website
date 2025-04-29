@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High Fidelity - Lambda Observability (Log Interaction)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f8fc;
+            color: #1a202c;
+        }
+        .modern-header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            color: #2d3748;
+        }
+        .modern-sidebar {
+            background-color: #ffffff;
+            border-right: 1px solid #e2e8f0;
+            width: 64px;
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+        }
+        .sidebar-icon {
+            color: #718096;
+            transition: all 0.2s ease-in-out;
+        }
+        .sidebar-icon:hover {
+            color: #2c5282;
+            transform: scale(1.1);
+        }
+         .modern-tab {
+            padding: 0.75rem 1.25rem;
+            margin-bottom: -1px;
+            border-bottom: 2px solid transparent;
+            color: #718096;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .modern-tab:hover {
+             color: #2d3748;
+             border-bottom-color: #cbd5e0;
+        }
+        .modern-tab.active {
+            color: #2c5282;
+            border-bottom-color: #2c5282;
+            font-weight: 600;
+        }
+        .modern-card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+             transition: box-shadow 0.3s ease;
+        }
+         .modern-card:hover {
+             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+        }
+        .chart-container {
+            position: relative;
+            height: 180px;
+            width: 100%;
+        }
+        .modern-button {
+             display: inline-flex;
+             align-items: center;
+             justify-content: center;
+             border-radius: 6px;
+             font-size: 0.875rem;
+             font-weight: 500;
+             padding: 0.5rem 1rem;
+             border: 1px solid transparent;
+             cursor: pointer;
+             transition: all 0.2s ease;
+             background-color: #ffffff;
+             color: #2d3748;
+             border-color: #cbd5e0;
+             box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .modern-button:hover {
+             background-color: #f7fafc;
+             border-color: #a0aec0;
+        }
+        /* Filter Chip / Pill Style */
+         .modern-filter-chip {
+             display: inline-flex;
+             align-items: center;
+             border-radius: 9999px; /* Pill shape */
+             font-size: 0.8rem;
+             font-weight: 500;
+             padding: 0.25rem 0.75rem;
+             cursor: pointer;
+             transition: all 0.2s ease;
+             background-color: #e2e8f0; /* Light gray */
+             color: #4a5568; /* Darker gray text */
+             border: 1px solid #cbd5e0;
+         }
+         .modern-filter-chip:hover {
+              background-color: #cbd5e0; /* Darker gray on hover */
+              border-color: #a0aec0;
+         }
+         .modern-filter-chip .remove-icon {
+              margin-left: 0.5rem;
+              font-size: 0.7rem;
+              color: #718096;
+              transition: color 0.2s ease;
+         }
+         .modern-filter-chip:hover .remove-icon {
+              color: #2d3748;
+         }
+
+        .modern-input {
+             display: flex;
+             height: 40px;
+             width: 100%;
+             border-radius: 6px;
+             border: 1px solid #cbd5e0;
+             background-color: #ffffff;
+             padding: 0.5rem 0.75rem;
+             font-size: 0.875rem;
+             transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .modern-input:focus {
+            outline: none;
+            border-color: #2c5282;
+            box-shadow: 0 0 0 2px rgba(44, 82, 130, 0.2);
+        }
+         .modern-input::placeholder {
+            color: #a0aec0;
+        }
+        .modern-select-wrapper {
+             position: relative;
+             display: inline-block;
+        }
+        .modern-select {
+             display: inline-flex;
+             align-items: center;
+             justify-content: space-between;
+             border-radius: 6px;
+             border: 1px solid #cbd5e0;
+             background-color: #ffffff;
+             padding: 0.5rem 1rem;
+             padding-right: 2.5rem;
+             font-size: 0.875rem;
+             min-width: 150px;
+             height: 40px;
+             cursor: pointer;
+             appearance: none;
+             box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+             transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .modern-select:focus {
+             outline: none;
+             border-color: #2c5282;
+             box-shadow: 0 0 0 2px rgba(44, 82, 130, 0.2);
+        }
+        .modern-select-wrapper::after { /* Custom arrow */
+            content: '\f078'; /* Font Awesome chevron-down */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #718096;
+            pointer-events: none;
+        }
+
+        /* Log Viewer Styles */
+         .log-viewer {
+             background-color: #1a202c;
+             color: #e2e8f0;
+             border: 1px solid #2d3748;
+             border-radius: 6px;
+             padding: 1rem;
+             height: 350px; /* Slightly taller */
+             overflow-y: auto;
+             font-family: 'Menlo', 'Monaco', 'Consolas', monospace;
+             font-size: 0.85em;
+             line-height: 1.6;
+        }
+        .log-line {
+            white-space: pre-wrap;
+            word-break: break-all;
+            padding: 2px 5px;
+            border-radius: 3px;
+            transition: background-color 0.15s ease;
+            display: flex; /* Align timestamp and content */
+        }
+        .log-line:hover {
+             background-color: #2d3748;
+        }
+        .log-line.highlight {
+            background-color: rgba(246, 224, 94, 0.15); /* Softer yellow highlight bg */
+            border-left: 3px solid #f6e05e; /* Yellow highlight border */
+            padding-left: 8px; /* Indent slightly */
+        }
+        .log-timestamp {
+            color: #718096;
+            margin-right: 1em;
+            min-width: 110px; /* Ensure consistent alignment */
+            flex-shrink: 0;
+        }
+         .log-level-info { color: #63b3ed; font-weight: 500; min-width: 60px; display: inline-block; text-align: center; margin-right: 0.5em; }
+         .log-level-warn { color: #f6e05e; font-weight: 500; min-width: 60px; display: inline-block; text-align: center; margin-right: 0.5em;} 
+         .log-level-error { color: #fc8181; font-weight: 600; min-width: 60px; display: inline-block; text-align: center; margin-right: 0.5em;} 
+         .log-content {
+             flex-grow: 1;
+         }
+          .trace-summary {
+             font-family: 'Inter', sans-serif;
+             color: #4a5568;
+             padding: 1.5rem;
+             text-align: center;
+             border: 1px dashed #cbd5e0;
+             border-radius: 6px;
+             background-color: #f7fafc;
+        }
+         .trace-link {
+             color: #2c5282;
+             font-weight: 500;
+             text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body class="text-sm">
+
+    <!-- Modern Header -->
+    <header class="modern-header p-3 flex justify-between items-center shadow-sm">
+        <div class="flex items-center space-x-4">
+             <i class="fas fa-cloud text-xl text-blue-600"></i>
+            <span class="font-semibold text-lg">Function Monitor</span>
+        </div>
+        <div class="flex items-center space-x-3">
+            <i class="fas fa-bell text-gray-500 cursor-pointer hover:text-gray-800"></i>
+            <span class="text-xs font-medium text-gray-600">user@example.com</span>
+            <i class="fas fa-chevron-down text-xs text-gray-500 cursor-pointer"></i>
+        </div>
+    </header>
+
+    <div class="flex h-[calc(100vh-61px)]">
+        <!-- Modern Sidebar -->
+         <aside class="modern-sidebar flex flex-col items-center space-y-6">
+            <i class="fas fa-tachometer-alt fa-lg sidebar-icon cursor-pointer" title="Dashboard"></i>
+            <i class="fas fa-bolt fa-lg sidebar-icon cursor-pointer text-blue-600" title="Functions"></i>
+            <i class="fas fa-layer-group fa-lg sidebar-icon cursor-pointer" title="Layers"></i>
+            <i class="fas fa-cogs fa-lg sidebar-icon cursor-pointer" title="Settings"></i>
+            <div class="flex-grow"></div>
+            <i class="fas fa-question-circle fa-lg sidebar-icon cursor-pointer" title="Help"></i>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 p-6 lg:p-8 overflow-auto">
+            <!-- Breadcrumbs / Function Title -->
+             <div class="mb-3 text-xs text-gray-500">
+                <a href="#" class="hover:underline hover:text-blue-600">Functions</a> &gt; <span class="font-medium text-gray-700">my-example-function</span>
+            </div>
+            <h1 class="text-3xl font-semibold mb-6 text-gray-800">my-example-function</h1>
+
+            <!-- Function Tabs -->
+            <div class="flex border-b border-gray-300 mb-8">
+                <a href="#" class="modern-tab">Code</a>
+                <a href="1_observability_default.html" class="modern-tab active">Observability</a>
+                <a href="5_test_tab_enhanced.html" class="modern-tab">Test</a>
+                <a href="3_config_add_trigger.html" class="modern-tab">Configuration</a>
+                <a href="#" class="modern-tab">Aliases</a>
+                <a href="#" class="modern-tab">Versions</a>
+            </div>
+
+            <!-- Observability Tab Content -->
+            <div class="space-y-8">
+
+                <!-- Filters/Time Range Selector -->
+                <div class="modern-card flex flex-wrap justify-between items-center p-4 gap-4">
+                    <div class="flex space-x-3 items-center flex-wrap gap-y-2">
+                         <!-- Show active filters as chips -->
+                         <span class="modern-filter-chip">ID: abc-123 <i class="fas fa-times remove-icon"></i></span>
+                         <button class="modern-button"><i class="fas fa-plus mr-2 opacity-70"></i>Add Filter</button>
+                        <input type="text" placeholder="Search Logs..." value="ERROR" class="modern-input w-64">
+                    </div>
+                     <div class="flex items-center space-x-3 flex-wrap gap-y-2">
+                        <span class="text-gray-600 font-medium text-sm">Time Range:</span>
+                        <div class="modern-select-wrapper">
+                            <select class="modern-select">
+                                <option>Last 15 minutes</option>
+                                <option selected>Last 1 hour</option>
+                                <option>Last 3 hours</option>
+                                <option>Custom</option>
+                            </select>
+                        </div>
+                        <button class="modern-button"><i class="fas fa-sync-alt mr-2 opacity-70"></i>Refresh</button>
+                        <button class="modern-button"><i class="fas fa-pause mr-2 opacity-70"></i>Pause</button>
+                    </div>
+                </div>
+
+                <!-- Metrics Section -->
+                 <div class="modern-card">
+                    <h2 class="font-semibold text-xl mb-5 text-gray-700">Key Metrics</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                         <div>
+                            <h3 class="text-center font-medium text-gray-600 text-sm mb-3">Invocations</h3>
+                            <div class="chart-container"><canvas id="invocationsChart"></canvas></div>
+                        </div>
+                        <div>
+                            <h3 class="text-center font-medium text-gray-600 text-sm mb-3">Errors</h3>
+                            <div class="chart-container"><canvas id="errorsChart"></canvas></div>
+                        </div>
+                        <div>
+                             <h3 class="text-center font-medium text-gray-600 text-sm mb-3">Duration (Avg ms)</h3>
+                            <div class="chart-container"><canvas id="durationChart"></canvas></div>
+                        </div>
+                        <div>
+                             <h3 class="text-center font-medium text-gray-600 text-sm mb-3">Throttles</h3>
+                            <div class="chart-container"><canvas id="throttlesChart"></canvas></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Logs Section - Filtered/Highlighted -->
+                <div class="modern-card">
+                    <h2 class="font-semibold text-xl mb-4 text-gray-700">Logs <span class="text-base font-normal text-gray-500">(Filtered: ID: abc-123, Search: "ERROR")</span></h2>
+                    <div class="log-viewer">
+                        <div class="log-line"><span class="log-timestamp">10:35:01.123Z</span><span class="log-level-info">[INFO]</span> <span class="log-content">START RequestId: abc-123 Version: $LATEST</span></div>
+                        <div class="log-line"><span class="log-timestamp">10:35:01.456Z</span><span class="log-level-info">[INFO]</span> <span class="log-content">Processing event...</span></div>
+                        <div class="log-line highlight"><span class="log-timestamp">10:35:01.789Z</span><span class="log-level-error">[ERROR]</span><span class="log-content"> NullPointerException at line 42 in com.example.MyHandler</span></div>
+                        <div class="log-line highlight"><span class="log-timestamp">10:35:01.790Z</span><span class="">       </span><span class="log-content">  at com.example.MyHandler.handleRequest(MyHandler.java:42)</span></div>
+                        <div class="log-line highlight"><span class="log-timestamp">10:35:01.790Z</span><span class="">       </span><span class="log-content">  ... 5 more</span></div>
+                        <div class="log-line"><span class="log-timestamp">10:35:01.900Z</span><span class="log-level-info">[INFO]</span> <span class="log-content">END RequestId: abc-123</span></div>
+                        <div class="log-line"><span class="log-timestamp">10:35:01.901Z</span><span class="">REPORT </span><span class="log-content">RequestId: abc-123 Duration: 778.12 ms Billed Duration: 779 ms Memory Size: 128 MB Max Memory Used: 55 MB Init Duration: 123.45 ms</span></div>
+                        <!-- More sample log lines -->
+                        <div class="log-line"><span class="log-timestamp">10:38:22.500Z</span><span class="log-level-info">[INFO]</span> <span class="log-content">START RequestId: abc-123 Version: $LATEST</span></div>
+                        <div class="log-line highlight"><span class="log-timestamp">10:38:22.950Z</span><span class="log-level-error">[ERROR]</span><span class="log-content"> Configuration value missing: S3_BUCKET_NAME</span></div>
+                        <div class="log-line highlight"><span class="log-timestamp">10:38:22.951Z</span><span class="">       </span><span class="log-content">  at com.example.ConfigLoader.getRequired(ConfigLoader.java:25)</span></div>
+                         <div class="log-line"><span class="log-timestamp">10:38:23.100Z</span><span class="log-level-info">[INFO]</span> <span class="log-content">END RequestId: abc-123</span></div>
+                        <div class="log-line"><span class="log-timestamp">10:38:23.101Z</span><span class="">REPORT </span><span class="log-content">RequestId: abc-123 Duration: 600.80 ms Billed Duration: 601 ms Memory Size: 128 MB Max Memory Used: 49 MB</span></div>
+                    </div>
+                </div>
+
+                <!-- Traces Section -->
+                 <div class="modern-card">
+                    <h2 class="font-semibold text-xl mb-4 text-gray-700">Traces (X-Ray Enabled)</h2>
+                     <div class="trace-summary">
+                        <i class="fas fa-binoculars text-3xl text-gray-400 mb-3"></i>
+                        <p>Trace data is available for this time range.</p>
+                        <p class="mt-1">Explore request paths, service calls, and performance bottlenecks.</p>
+                        <p class="mt-3"><a href="#" class="trace-link">View Traces in X-Ray &rarr;</a></p>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+<script>
+    // Sample Data (Same as default view for chart consistency)
+    const labels = ['-1h', '-50m', '-40m', '-30m', '-20m', '-10m', 'Now'];
+    const randomData = (max = 100) => labels.map(() => Math.floor(Math.random() * max));
+    const randomDurationData = () => labels.map(() => Math.floor(Math.random() * 500) + 50);
+
+    // Chart Configuration Defaults - Modernized Look
+    const chartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                 backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                 titleFont: { weight: 'bold' },
+                 bodyFont: { size: 12 },
+                 padding: 10,
+                 cornerRadius: 4,
+                 displayColors: false,
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: { font: { size: 11, family: 'Inter' }, color: '#718096' },
+                grid: { color: '#e2e8f0', drawBorder: false }
+            },
+            x: {
+                ticks: { font: { size: 11, family: 'Inter' }, color: '#718096' },
+                grid: { display: false },
+                border: { display: false }
+            }
+        },
+        elements: {
+            line: {
+                tension: 0.4,
+                borderWidth: 2,
+            },
+            point: {
+                radius: 0,
+                hoverRadius: 5,
+                hitRadius: 10,
+                backgroundColor: '#ffffff',
+                hoverBorderWidth: 2,
+            }
+        },
+        interaction: {
+            mode: 'index',
+            intersect: false,
+        },
+    };
+
+    // Chart Colors & Gradients (same as default view)
+    const blueColor = '#3b82f6';
+    const redColor = '#ef4444';
+    const greenColor = '#22c55e';
+    const orangeColor = '#f97316';
+
+    const createGradient = (ctx, colorRgb) => {
+        const gradient = ctx.chart.ctx.createLinearGradient(0, 0, 0, ctx.chart.height);
+        gradient.addColorStop(0, `rgba(${colorRgb}, 0.3)`);
+        gradient.addColorStop(1, `rgba(${colorRgb}, 0.05)`);
+        return gradient;
+    }
+    const blueGradient = (ctx) => createGradient(ctx, '59, 130, 246');
+    const redGradient = (ctx) => createGradient(ctx, '239, 68, 68');
+    const greenGradient = (ctx) => createGradient(ctx, '34, 197, 94');
+    const orangeGradient = (ctx) => createGradient(ctx, '249, 115, 22');
+
+    // Init Charts
+    new Chart(document.getElementById('invocationsChart').getContext('2d'), {
+        type: 'line',
+        data: { labels: labels, datasets: [{ label: 'Invocations', data: randomData(150), borderColor: blueColor, backgroundColor: blueGradient, fill: true, pointBorderColor: blueColor, pointHoverBorderColor: blueColor }] },
+        options: chartOptions
+    });
+    new Chart(document.getElementById('errorsChart').getContext('2d'), {
+        type: 'line',
+        data: { labels: labels, datasets: [{ label: 'Errors', data: randomData(15), borderColor: redColor, backgroundColor: redGradient, fill: true, pointBorderColor: redColor, pointHoverBorderColor: redColor }] },
+        options: chartOptions
+    });
+     new Chart(document.getElementById('durationChart').getContext('2d'), {
+        type: 'line',
+        data: { labels: labels, datasets: [{ label: 'Duration (ms)', data: randomDurationData(), borderColor: greenColor, backgroundColor: greenGradient, fill: true, pointBorderColor: greenColor, pointHoverBorderColor: greenColor }] },
+        options: chartOptions
+    });
+    new Chart(document.getElementById('throttlesChart').getContext('2d'), {
+        type: 'line',
+        data: { labels: labels, datasets: [{ label: 'Throttles', data: randomData(5), borderColor: orangeColor, backgroundColor: orangeGradient, fill: true, pointBorderColor: orangeColor, pointHoverBorderColor: orangeColor }] },
+        options: chartOptions
+    });
+</script>
+</body>
+</html> 
