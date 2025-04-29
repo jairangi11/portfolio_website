@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import {
   FiInfo, FiTrendingUp, FiCheckSquare, FiLink, FiTarget, FiThumbsUp,
   FiExternalLink, FiLayout, FiActivity, FiBarChart2, FiAlertTriangle,
-  FiUsers, FiSearch, FiFilter, FiDatabase, FiList, FiSettings, FiGrid
+  FiFilter, FiDatabase, FiList, FiSettings, FiGrid
 } from 'react-icons/fi';
 import { SiGooglesheets } from 'react-icons/si';
 import { RiMindMap } from "react-icons/ri";
@@ -26,7 +26,6 @@ import {
   InformationArchitectureItem,
   UserFlow,
   RolloutPhase,
-  BusinessImpact,
   Risk,
 } from '@/data/deel-global-payroll-data';
 import {

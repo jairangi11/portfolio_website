@@ -4,7 +4,6 @@ import {
   InformationArchitectureItem,
   UserFlow,
   RolloutPhase,
-  BusinessImpact,
   Risk,
 } from './deel-global-payroll-data'; // Re-use common types if defined appropriately
 
@@ -112,7 +111,7 @@ interface GoToMarket {
   rolloutPlan: RolloutPhase[];
 }
 
-// Reuse BusinessImpact from Deel (or redefine if structure differs)
+// Reuse Risk from Deel (or redefine if structure differs)
 
 interface BusinessAspects {
   monetizationPricing: string[];
