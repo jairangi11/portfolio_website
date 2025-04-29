@@ -3,201 +3,336 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wireframe - Lambda Observability (Default)</title>
+    <title>High Fidelity - Lambda Observability</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Add Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Add Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        /* Mimic AWS Console Font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
         body {
-            font-family: 'Amazon Ember', 'Helvetica Neue', sans-serif;
-            background-color: #f8f9fa; /* Light gray background */
-            color: #16191f; /* Slightly darker default text */
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f8fc; /* Lighter, cooler background */
+            color: #1a202c; /* Darker text */
         }
-        .aws-header {
-            background-color: #232f3e; /* AWS dark blue */
-            color: white;
+        /* Use Tailwind utilities where possible, keep specific overrides minimal */
+        .modern-header {
+            background-color: #ffffff; /* White header */
+            border-bottom: 1px solid #e2e8f0; /* Subtle border */
+            color: #2d3748; /* Dark gray text */
         }
-        .aws-sidebar {
-            background-color: #eaeded; /* AWS light gray */
-            border-right: 1px solid #dee2e6;
+        .modern-sidebar {
+            background-color: #ffffff;
+            border-right: 1px solid #e2e8f0;
+            width: 64px; /* Standard icon sidebar width */
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
         }
-        .aws-content-area {
-            background-color: #ffffff; /* White content area */
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-        .aws-tab {
-            border-bottom: 3px solid transparent; /* Slightly thicker border */
-            padding: 10px 15px;
-            cursor: pointer;
-            color: #5f6b7a; /* AWS muted text */
+        .sidebar-icon {
+            color: #718096; /* Gray icon color */
             transition: all 0.2s ease-in-out;
-            text-decoration: none; /* Remove underline from links */
-            display: inline-block; /* Needed for links */
         }
-        .aws-tab:hover {
-             background-color: #f1f3f3; /* Subtle hover */
-             color: #16191f;
+        .sidebar-icon:hover {
+            color: #2c5282; /* Blue hover */
+            transform: scale(1.1);
         }
-        .aws-tab.active {
-            border-bottom-color: #ec7211; /* AWS orange */
-            color: #0d1a26; /* AWS dark text */
-            font-weight: 600; /* Semibold */
-            background-color: transparent; /* Ensure active tab isn't highlighted on hover */
+         .modern-tab {
+            padding: 0.75rem 1.25rem;
+            margin-bottom: -1px; /* Overlap border */
+            border-bottom: 2px solid transparent;
+            color: #718096; /* Muted gray */
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            text-decoration: none;
+            display: inline-block;
         }
-        .aws-card {
-            border: 1px solid #e7e9ec; /* Lighter border */
-            border-radius: 4px;
-            background-color: #ffffff; /* White card background */
-            padding: 1rem 1.5rem; /* Slightly more padding */
-            margin-bottom: 1.5rem; /* Increased spacing */
-            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        .modern-tab:hover {
+             color: #2d3748; /* Darker gray on hover */
+             border-bottom-color: #cbd5e0; /* Light border hint */
         }
-        .aws-placeholder { /* Keeping for sidebar, removing from charts */
-            background-color: #e9ecef;
-            border: 1px dashed #ced4da;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #6c757d;
-            min-height: 100px;
+        .modern-tab.active {
+            color: #2c5282; /* Primary blue */
+            border-bottom-color: #2c5282;
+            font-weight: 600;
         }
-        /* Chart container */
+        .modern-card {
+            background-color: #ffffff;
+            border-radius: 8px; /* Slightly more rounded */
+            border: 1px solid #e2e8f0;
+            padding: 1.5rem; /* Consistent padding */
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); /* Soft shadow */
+            transition: box-shadow 0.3s ease;
+        }
+        .modern-card:hover {
+             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.04); /* Lift effect */
+        }
         .chart-container {
             position: relative;
-            height: 150px; /* Adjust height as needed */
+            height: 180px; /* Increased height */
             width: 100%;
         }
-        .aws-button { /* Base button style */
-             padding: 6px 12px;
-             border-radius: 3px;
-             font-size: 0.9em;
-             border: 1px solid #adb5bd;
-             cursor: pointer;
-             transition: background-color 0.2s ease;
-             background-color: #ffffff;
-             color: #16191f;
-        }
-        .aws-button:hover {
-             background-color: #f8f9fa;
-        }
-        .aws-input {
-             border: 1px solid #adb5bd;
-             border-radius: 3px;
-             padding: 6px 10px;
-             font-size: 0.9em;
-        }
-        .log-placeholder { /* Specific placeholder for logs/traces */
-             background-color: #f8f9fa;
-             border: 1px dashed #dee2e6;
-             color: #6c757d;
-             padding: 2rem;
-             text-align: center;
-             border-radius: 3px;
-             min-height: 150px;
-             display: flex;
+        /* Mimic shadcn button */
+        .modern-button {
+             display: inline-flex;
              align-items: center;
              justify-content: center;
+             border-radius: 6px;
+             font-size: 0.875rem;
+             font-weight: 500;
+             padding: 0.5rem 1rem;
+             border: 1px solid transparent;
+             cursor: pointer;
+             transition: all 0.2s ease;
+             background-color: #ffffff;
+             color: #2d3748;
+             border-color: #cbd5e0; /* Default border */
+             box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .modern-button:hover {
+             background-color: #f7fafc; /* Very light gray */
+             border-color: #a0aec0;
+        }
+        .modern-button-primary {
+            background-color: #2c5282; /* Primary Blue */
+            color: white;
+            border-color: #2c5282;
+        }
+        .modern-button-primary:hover {
+             background-color: #2a4365; /* Darker Blue */
+             border-color: #2a4365;
+        }
+        /* Mimic shadcn input */
+        .modern-input {
+             display: flex;
+             height: 40px;
+             width: 100%;
+             border-radius: 6px;
+             border: 1px solid #cbd5e0;
+             background-color: #ffffff;
+             padding: 0.5rem 0.75rem;
+             font-size: 0.875rem;
+             transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .modern-input:focus {
+            outline: none;
+            border-color: #2c5282;
+            box-shadow: 0 0 0 2px rgba(44, 82, 130, 0.2); /* Focus ring */
+        }
+        .modern-input::placeholder {
+            color: #a0aec0;
+        }
+        /* Mimic shadcn select */
+        .modern-select-wrapper {
+             position: relative;
+             display: inline-block;
+        }
+        .modern-select {
+             display: inline-flex;
+             align-items: center;
+             justify-content: space-between;
+             border-radius: 6px;
+             border: 1px solid #cbd5e0;
+             background-color: #ffffff;
+             padding: 0.5rem 1rem;
+             padding-right: 2.5rem; /* Space for icon */
+             font-size: 0.875rem;
+             min-width: 150px;
+             height: 40px;
+             cursor: pointer;
+             appearance: none; /* Remove default arrow */
+             box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+             transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .modern-select:focus {
+             outline: none;
+             border-color: #2c5282;
+             box-shadow: 0 0 0 2px rgba(44, 82, 130, 0.2);
+        }
+        .modern-select-wrapper::after { /* Custom arrow */
+            content: '\f078'; /* Font Awesome chevron-down */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #718096;
+            pointer-events: none;
+        }
+
+        /* Log/Trace Viewer Styles */
+         .log-viewer {
+             background-color: #1a202c; /* Dark background */
+             color: #e2e8f0; /* Light text */
+             border: 1px solid #2d3748;
+             border-radius: 6px;
+             padding: 1rem;
+             height: 300px; /* Fixed height */
+             overflow-y: auto;
+             font-family: 'Menlo', 'Monaco', 'Consolas', monospace;
+             font-size: 0.85em;
+             line-height: 1.6;
+        }
+        .log-line {
+            white-space: pre-wrap; /* Allow wrapping */
+            word-break: break-all; /* Break long strings */
+            padding: 2px 5px;
+            border-radius: 3px;
+            transition: background-color 0.15s ease;
+        }
+        .log-line:hover {
+             background-color: #2d3748; /* Subtle hover */
+        }
+        .log-timestamp {
+            color: #718096; /* Gray timestamp */
+            margin-right: 1em;
+            display: inline-block; /* Keep inline but allow margin */
+        }
+        .log-level-info { color: #63b3ed; } /* Blue */
+        .log-level-warn { color: #f6e05e; } /* Yellow */
+        .log-level-error { color: #fc8181; font-weight: 600;} /* Red */
+        .trace-summary {
+             font-family: 'Inter', sans-serif;
+             color: #4a5568;
+             padding: 1.5rem;
+             text-align: center;
+             border: 1px dashed #cbd5e0;
+             border-radius: 6px;
+             background-color: #f7fafc;
+        }
+        .trace-link {
+             color: #2c5282;
+             font-weight: 500;
+             text-decoration: underline;
         }
 
     </style>
 </head>
 <body class="text-sm">
 
-    <!-- Simplified AWS Header Placeholder -->
-    <header class="aws-header p-2 flex justify-between items-center shadow-md">
-        <span class="font-semibold text-base">AWS Lambda</span>
-        <span class="text-xs">user@example.com | N. Virginia ▼</span>
+    <!-- Modern Header -->
+    <header class="modern-header p-3 flex justify-between items-center shadow-sm">
+        <div class="flex items-center space-x-4">
+             <i class="fas fa-cloud text-xl text-blue-600"></i> <!-- Example Logo/Icon -->
+            <span class="font-semibold text-lg">Function Monitor</span>
+        </div>
+        <div class="flex items-center space-x-3">
+            <i class="fas fa-bell text-gray-500 cursor-pointer hover:text-gray-800"></i>
+            <span class="text-xs font-medium text-gray-600">user@example.com</span>
+            <i class="fas fa-chevron-down text-xs text-gray-500 cursor-pointer"></i>
+        </div>
     </header>
 
-    <div class="flex h-[calc(100vh-48px)]"> <!-- Adjusted height for header -->
-        <!-- Simplified AWS Sidebar Placeholder -->
-        <aside class="aws-sidebar w-16 p-2 pt-4 space-y-4">
-            <!-- Icons would go here -->
-            <div class="aws-placeholder h-8 w-8 mx-auto rounded"></div>
-            <div class="aws-placeholder h-8 w-8 mx-auto rounded"></div>
-            <div class="aws-placeholder h-8 w-8 mx-auto rounded"></div>
+    <div class="flex h-[calc(100vh-61px)]"> <!-- Adjusted height for header -->
+        <!-- Modern Sidebar -->
+        <aside class="modern-sidebar flex flex-col items-center space-y-6">
+            <i class="fas fa-tachometer-alt fa-lg sidebar-icon cursor-pointer" title="Dashboard"></i>
+            <i class="fas fa-bolt fa-lg sidebar-icon cursor-pointer text-blue-600" title="Functions"></i> <!-- Active example -->
+            <i class="fas fa-layer-group fa-lg sidebar-icon cursor-pointer" title="Layers"></i>
+            <i class="fas fa-cogs fa-lg sidebar-icon cursor-pointer" title="Settings"></i>
+            <div class="flex-grow"></div> <!-- Pushes items down -->
+            <i class="fas fa-question-circle fa-lg sidebar-icon cursor-pointer" title="Help"></i>
         </aside>
 
         <!-- Main Content Area -->
-        <main class="flex-1 p-6 overflow-auto"> <!-- Increased padding -->
+        <main class="flex-1 p-6 lg:p-8 overflow-auto">
             <!-- Breadcrumbs / Function Title -->
-            <div class="mb-2 text-xs text-gray-600">
-                <a href="#" class="hover:underline">Lambda</a> > <a href="#" class="hover:underline">Functions</a> > my-example-function
+            <div class="mb-3 text-xs text-gray-500">
+                <a href="#" class="hover:underline hover:text-blue-600">Functions</a> &gt; <span class="font-medium text-gray-700">my-example-function</span>
             </div>
-            <h1 class="text-2xl font-semibold mb-5">my-example-function</h1>
+            <h1 class="text-3xl font-semibold mb-6 text-gray-800">my-example-function</h1>
 
             <!-- Function Tabs -->
-            <div class="flex border-b border-gray-300 mb-6">
-                <a href="#" class="aws-tab">Code</a> <!-- Link placeholder -->
-                <a href="1_observability_default.html" class="aws-tab active">Observability</a>
-                <a href="5_test_tab_enhanced.html" class="aws-tab">Test</a>
-                <a href="3_config_add_trigger.html" class="aws-tab">Configuration</a> <!-- Link to first config example -->
-                <a href="#" class="aws-tab">Aliases</a> <!-- Link placeholder -->
-                <a href="#" class="aws-tab">Versions</a> <!-- Link placeholder -->
+            <div class="flex border-b border-gray-300 mb-8">
+                <a href="#" class="modern-tab">Code</a>
+                <a href="1_observability_default.html" class="modern-tab active">Observability</a>
+                <a href="5_test_tab_enhanced.html" class="modern-tab">Test</a>
+                <a href="3_config_add_trigger.html" class="modern-tab">Configuration</a>
+                <a href="#" class="modern-tab">Aliases</a>
+                <a href="#" class="modern-tab">Versions</a>
             </div>
 
             <!-- Observability Tab Content -->
-            <div class="space-y-6">
+            <div class="space-y-8">
 
                 <!-- Filters/Time Range Selector -->
-                <div class="aws-card flex justify-between items-center p-3">
-                    <div class="flex space-x-3 items-center">
-                        <button class="aws-button">Filter Logs</button>
-                        <input type="text" placeholder="Search Logs..." class="aws-input">
+                <div class="modern-card flex flex-wrap justify-between items-center p-4 gap-4">
+                    <div class="flex space-x-3 items-center flex-wrap gap-y-2">
+                        <button class="modern-button">
+                            <i class="fas fa-filter mr-2 opacity-70"></i>Filter Logs
+                        </button>
+                        <input type="text" placeholder="Search Logs (e.g., ERROR, RequestId)" class="modern-input w-64">
                     </div>
-                    <div class="flex items-center space-x-3">
-                        <span class="text-gray-700">Time Range:</span>
-                        <select class="aws-input">
-                            <option>Last 15 minutes</option>
-                            <option>Last 1 hour</option>
-                            <option>Last 3 hours</option>
-                            <option>Custom</option>
-                        </select>
-                        <button class="aws-button">Refresh</button>
-                        <button class="aws-button">Pause</button>
+                    <div class="flex items-center space-x-3 flex-wrap gap-y-2">
+                        <span class="text-gray-600 font-medium text-sm">Time Range:</span>
+                        <div class="modern-select-wrapper">
+                            <select class="modern-select">
+                                <option>Last 15 minutes</option>
+                                <option selected>Last 1 hour</option>
+                                <option>Last 3 hours</option>
+                                <option>Custom</option>
+                            </select>
+                        </div>
+                        <button class="modern-button"><i class="fas fa-sync-alt mr-2 opacity-70"></i>Refresh</button>
+                        <button class="modern-button"><i class="fas fa-pause mr-2 opacity-70"></i>Pause</button>
                     </div>
                 </div>
 
                 <!-- Metrics Section -->
-                <div class="aws-card">
-                    <h2 class="font-semibold text-lg mb-4">Key Metrics</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="modern-card">
+                    <h2 class="font-semibold text-xl mb-5 text-gray-700">Key Metrics</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         <!-- Chart Containers -->
                         <div>
-                            <h3 class="text-center font-medium text-sm mb-2">Invocations</h3>
+                            <h3 class="text-center font-medium text-gray-600 text-sm mb-3">Invocations</h3>
                             <div class="chart-container"><canvas id="invocationsChart"></canvas></div>
                         </div>
                         <div>
-                            <h3 class="text-center font-medium text-sm mb-2">Errors</h3>
+                            <h3 class="text-center font-medium text-gray-600 text-sm mb-3">Errors</h3>
                             <div class="chart-container"><canvas id="errorsChart"></canvas></div>
                         </div>
                         <div>
-                             <h3 class="text-center font-medium text-sm mb-2">Duration (Avg)</h3>
+                             <h3 class="text-center font-medium text-gray-600 text-sm mb-3">Duration (Avg ms)</h3>
                             <div class="chart-container"><canvas id="durationChart"></canvas></div>
                         </div>
                         <div>
-                             <h3 class="text-center font-medium text-sm mb-2">Throttles</h3>
+                             <h3 class="text-center font-medium text-gray-600 text-sm mb-3">Throttles</h3>
                             <div class="chart-container"><canvas id="throttlesChart"></canvas></div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Logs Section -->
-                <div class="aws-card">
-                    <h2 class="font-semibold text-lg mb-3">Logs</h2>
-                    <div class="log-placeholder">
-                        Near real-time log stream...
+                <div class="modern-card">
+                    <h2 class="font-semibold text-xl mb-4 text-gray-700">Live Log Stream</h2>
+                    <div class="log-viewer">
+                        <div class="log-line"><span class="log-timestamp">10:35:01.123Z</span><span class="log-level-info">[INFO]</span> START RequestId: abc-123 Version: $LATEST</div>
+                        <div class="log-line"><span class="log-timestamp">10:35:01.456Z</span><span class="log-level-info">[INFO]</span> Processing event data... Found 1 record.</div>
+                        <div class="log-line"><span class="log-timestamp">10:35:01.500Z</span><span class="log-level-info">[INFO]</span> Message body: {"key": "value"}</div>
+                        <div class="log-line"><span class="log-timestamp">10:35:01.789Z</span><span class="log-level-error">[ERROR]</span> Failed to process record: NullPointerException at com.example.Processor:42</div>
+                        <div class="log-line"><span class="log-timestamp">10:35:01.790Z</span><span class="">	at com.example.MyHandler.handleRequest(MyHandler.java:88)</span></div>
+                        <div class="log-line"><span class="log-timestamp">10:35:01.791Z</span><span class="">	... Caused by: java.lang.NullPointerException</span></div>
+                        <div class="log-line"><span class="log-timestamp">10:35:01.900Z</span><span class="log-level-info">[INFO]</span> END RequestId: abc-123</div>
+                        <div class="log-line"><span class="log-timestamp">10:35:01.901Z</span><span class="">REPORT RequestId: abc-123 Duration: 778.12 ms Billed Duration: 779 ms Memory Size: 128 MB Max Memory Used: 55 MB Init Duration: 123.45 ms</span></div>
+                        <div class="log-line"><span class="log-timestamp">10:36:15.220Z</span><span class="log-level-info">[INFO]</span> START RequestId: def-456 Version: $LATEST</div>
+                        <div class="log-line"><span class="log-timestamp">10:36:15.350Z</span><span class="log-level-warn">[WARN]</span> Input validation failed for field 'optionalField'. Proceeding with default.</div>
+                        <div class="log-line"><span class="log-timestamp">10:36:15.600Z</span><span class="log-level-info">[INFO]</span> Successfully processed request.</div>
+                        <div class="log-line"><span class="log-timestamp">10:36:15.650Z</span><span class="log-level-info">[INFO]</span> END RequestId: def-456</div>
+                        <div class="log-line"><span class="log-timestamp">10:36:15.651Z</span><span class="">REPORT RequestId: def-456 Duration: 430.50 ms Billed Duration: 431 ms Memory Size: 128 MB Max Memory Used: 48 MB</span></div>
                     </div>
                 </div>
 
                 <!-- Traces Section -->
-                <div class="aws-card">
-                    <h2 class="font-semibold text-lg mb-3">Traces (X-Ray Enabled)</h2>
-                    <div class="log-placeholder">
-                         Trace summaries/links...
+                <div class="modern-card">
+                    <h2 class="font-semibold text-xl mb-4 text-gray-700">Traces (X-Ray Enabled)</h2>
+                    <div class="trace-summary">
+                        <i class="fas fa-binoculars text-3xl text-gray-400 mb-3"></i>
+                        <p>Trace data is available.</p>
+                        <p class="mt-1">Explore request paths, service calls, and performance bottlenecks.</p>
+                        <p class="mt-3"><a href="#" class="trace-link">View Traces in X-Ray &rarr;</a></p>
                     </div>
                 </div>
 
@@ -208,41 +343,106 @@
 
 <script>
     // Sample Data (Replace with actual data fetching logic if needed)
-    const labels = ['-1h', '-45m', '-30m', '-15m', 'Now'];
-    const randomData = () => labels.map(() => Math.floor(Math.random() * 100));
+    const labels = ['-1h', '-50m', '-40m', '-30m', '-20m', '-10m', 'Now'];
+    const randomData = (max = 100) => labels.map(() => Math.floor(Math.random() * max));
     const randomDurationData = () => labels.map(() => Math.floor(Math.random() * 500) + 50); // Simulate ms
 
-    // Chart Configuration Defaults
+    // Chart Configuration Defaults - Modernized Look
     const chartOptions = {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-            y: { beginAtZero: true, ticks: { font: { size: 10 } } },
-            x: { ticks: { font: { size: 10 } } }
+        plugins: {
+            legend: { display: false },
+            tooltip: { // Nicer tooltips
+                 backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                 titleFont: { weight: 'bold' },
+                 bodyFont: { size: 12 },
+                 padding: 10,
+                 cornerRadius: 4,
+                 displayColors: false, // Hide color box in tooltip
+            }
         },
-        elements: { line: { tension: 0.3 } } // Smoother lines
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: { font: { size: 11, family: 'Inter' }, color: '#718096' },
+                grid: { color: '#e2e8f0', drawBorder: false } // Lighter grid lines
+            },
+            x: {
+                ticks: { font: { size: 11, family: 'Inter' }, color: '#718096' },
+                grid: { display: false }, // Hide x-axis grid lines
+                border: { display: false }
+            }
+        },
+        elements: {
+            line: {
+                tension: 0.4, // Smoother curves
+                borderWidth: 2, // Slightly thicker line
+            },
+            point: {
+                radius: 0, // Hide points by default
+                hoverRadius: 5, // Show points on hover
+                hitRadius: 10, // Larger hit area
+                backgroundColor: '#ffffff', // White point fill
+                hoverBorderWidth: 2,
+            }
+        },
+        interaction: { // Better hover interactions
+            mode: 'index',
+            intersect: false,
+        },
     };
 
+    // Chart Colors
+    const blueColor = '#3b82f6';
+    const redColor = '#ef4444';
+    const greenColor = '#22c55e';
+    const orangeColor = '#f97316';
+
+    const blueGradient = (ctx) => {
+        const gradient = ctx.chart.ctx.createLinearGradient(0, 0, 0, ctx.chart.height);
+        gradient.addColorStop(0, 'rgba(59, 130, 246, 0.3)'); // More intense near line
+        gradient.addColorStop(1, 'rgba(59, 130, 246, 0.05)'); // Fade out
+        return gradient;
+    }
+     const redGradient = (ctx) => {
+        const gradient = ctx.chart.ctx.createLinearGradient(0, 0, 0, ctx.chart.height);
+        gradient.addColorStop(0, 'rgba(239, 68, 68, 0.3)');
+        gradient.addColorStop(1, 'rgba(239, 68, 68, 0.05)');
+        return gradient;
+    }
+     const greenGradient = (ctx) => {
+        const gradient = ctx.chart.ctx.createLinearGradient(0, 0, 0, ctx.chart.height);
+        gradient.addColorStop(0, 'rgba(34, 197, 94, 0.3)');
+        gradient.addColorStop(1, 'rgba(34, 197, 94, 0.05)');
+        return gradient;
+    }
+     const orangeGradient = (ctx) => {
+        const gradient = ctx.chart.ctx.createLinearGradient(0, 0, 0, ctx.chart.height);
+        gradient.addColorStop(0, 'rgba(249, 115, 22, 0.3)');
+        gradient.addColorStop(1, 'rgba(249, 115, 22, 0.05)');
+        return gradient;
+    }
+
     // Init Charts
-    new Chart(document.getElementById('invocationsChart'), {
+    new Chart(document.getElementById('invocationsChart').getContext('2d'), {
         type: 'line',
-        data: { labels: labels, datasets: [{ label: 'Invocations', data: randomData(), borderColor: '#2e72b8', backgroundColor: 'rgba(46, 114, 184, 0.1)', fill: true }] },
+        data: { labels: labels, datasets: [{ label: 'Invocations', data: randomData(150), borderColor: blueColor, backgroundColor: blueGradient, fill: true, pointBorderColor: blueColor, pointHoverBorderColor: blueColor }] },
         options: chartOptions
     });
-    new Chart(document.getElementById('errorsChart'), {
+    new Chart(document.getElementById('errorsChart').getContext('2d'), {
         type: 'line',
-        data: { labels: labels, datasets: [{ label: 'Errors', data: randomData().map(d => Math.floor(d/10)), borderColor: '#d13212', backgroundColor: 'rgba(209, 50, 18, 0.1)', fill: true }] },
+        data: { labels: labels, datasets: [{ label: 'Errors', data: randomData(15), borderColor: redColor, backgroundColor: redGradient, fill: true, pointBorderColor: redColor, pointHoverBorderColor: redColor }] },
         options: chartOptions
     });
-     new Chart(document.getElementById('durationChart'), {
+     new Chart(document.getElementById('durationChart').getContext('2d'), {
         type: 'line',
-        data: { labels: labels, datasets: [{ label: 'Duration (ms)', data: randomDurationData(), borderColor: '#1d8102', backgroundColor: 'rgba(29, 129, 2, 0.1)', fill: true }] },
+        data: { labels: labels, datasets: [{ label: 'Duration (ms)', data: randomDurationData(), borderColor: greenColor, backgroundColor: greenGradient, fill: true, pointBorderColor: greenColor, pointHoverBorderColor: greenColor }] },
         options: chartOptions
     });
-    new Chart(document.getElementById('throttlesChart'), {
+    new Chart(document.getElementById('throttlesChart').getContext('2d'), {
         type: 'line',
-        data: { labels: labels, datasets: [{ label: 'Throttles', data: randomData().map(d => Math.floor(d/20)), borderColor: '#ff8c00', backgroundColor: 'rgba(255, 140, 0, 0.1)', fill: true }] },
+        data: { labels: labels, datasets: [{ label: 'Throttles', data: randomData(5), borderColor: orangeColor, backgroundColor: orangeGradient, fill: true, pointBorderColor: orangeColor, pointHoverBorderColor: orangeColor }] },
         options: chartOptions
     });
 </script>

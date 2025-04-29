@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MagicBricks PDP Mockup (with Similar Properties)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+         :root {
+            --brand-color: #d7371f; /* MagicBricks Reddish */
+            --brand-color-hover: #c52d18;
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+            --text-light: #6b7280;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --border-color: #e5e7eb;
+            --card-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --card-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            --radius: 0.5rem;
+            --transition-speed: 0.2s;
+        }
+        body {
+             font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            color: var(--text-primary);
+            background-color: var(--bg-secondary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .container {
+            max-width: 1280px; /* Wider container */
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        header {
+            background-color: var(--bg-primary);
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+         .logo { font-weight: 700; font-size: 1.75rem; color: var(--brand-color); text-decoration: none; }
+        nav ul { list-style: none; padding: 0; margin: 0; display: flex; gap: 1.5rem; }
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color var(--transition-speed) ease;
+            padding: 0.5rem 0.25rem;
+            border-bottom: 2px solid transparent;
+         }
+        nav ul li a:hover { color: var(--brand-color); border-bottom-color: var(--border-color); }
+        nav ul li a.active { color: var(--brand-color); font-weight: 600; border-bottom-color: var(--brand-color); }
+
+        h1, h2, h3 { margin-top: 0; font-weight: 600; color: var(--text-primary); }
+        h1 { font-size: 2rem; margin-bottom: 0.6rem; line-height: 1.3;}
+        h2 { font-size: 1.75rem; margin-bottom: 1.75rem; }
+        h3 {
+            font-size: 1.35rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+         }
+
+        .section { padding: 1.5rem 0; }
+
+        .pdp-main {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2.5rem; /* Increased gap */
+            margin-bottom: 2.5rem;
+            background: var(--bg-primary);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--card-shadow);
+        }
+        .pdp-main .images {
+            flex: 1 1 55%; /* Slightly adjusted basis */
+            min-width: 350px;
+            background: #f3f4f6;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 450px;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            /* In a real scenario, this would contain an image gallery component */
+             background-image: url('https://placehold.co/800x500/d7371f/FFFFFF?text=Main+Property+Image');
+             background-size: cover;
+             background-position: center;
+        }
+        .pdp-main .summary {
+             flex: 1 1 40%;
+             min-width: 320px;
+            display: flex;
+            flex-direction: column;
+        }
+        .pdp-main .summary .address { color: var(--text-light); margin-bottom: 1rem; font-size: 1rem; }
+        .pdp-main .summary .price {
+             font-size: 2.25rem; /* Larger price */
+             font-weight: 700;
+             color: var(--brand-color);
+             margin-bottom: 1.25rem;
+        }
+        .pdp-main .summary .meta {
+             font-size: 1rem;
+             color: var(--text-secondary);
+             margin-bottom: 1.75rem;
+             display: flex;
+             gap: 1.25rem;
+             flex-wrap: wrap;
+             border-bottom: 1px dashed var(--border-color);
+             padding-bottom: 1.25rem;
+         }
+          .pdp-main .summary .meta span::after {
+            content: '|';
+            margin-left: 1.25rem;
+            color: var(--border-color);
+         }
+          .pdp-main .summary .meta span:last-child::after { content: ''; }
+
+        .pdp-main .summary .actions button {
+             background-color: var(--brand-color);
+             color: white;
+             border: none;
+             padding: 0.85rem 2rem;
+             border-radius: calc(var(--radius) * 0.75);
+             font-size: 1.1rem;
+             font-weight: 500;
+             cursor: pointer;
+             transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
+             margin-right: 0.85rem;
+             margin-bottom: 0.85rem;
+        }
+        .pdp-main .summary .actions button.secondary {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+         .pdp-main .summary .actions button:hover {
+             background-color: var(--brand-color-hover);
+             transform: scale(1.03);
+        }
+        .pdp-main .summary .actions button.secondary:hover {
+            background-color: #f3f4f6;
+            border-color: #d1d5db;
+            transform: scale(1.03);
+        }
+        .pdp-main .summary .agent-info {
+            margin-top: auto;
+            font-size: 0.95rem;
+            color: var(--text-light);
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.25rem;
+        }
+
+        .details-section {
+            margin-top: 0;
+            background: var(--bg-primary);
+            padding: 2rem; /* More padding */
+            border-radius: var(--radius);
+            box-shadow: var(--card-shadow);
+            margin-bottom: 2.5rem;
+         }
+         .details-section p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem; /* More spacing */
+            line-height: 1.7;
+          }
+        .details-section ul {
+            list-style: none;
+            padding-left: 0;
+            columns: 2;
+            gap: 2rem;
+         }
+        .details-section ul li {
+            margin-bottom: 0.85rem;
+            padding-left: 1.75rem;
+            position: relative;
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+        .details-section ul li::before {
+             content: '\2713';
+             color: var(--brand-color);
+             font-weight: bold;
+             position: absolute;
+             left: 0;
+             top: 2px;
+         }
+
+        .similar-properties { background: transparent; padding: 0; border: none; }
+         .similar-properties h2 {
+            border-bottom: 2px solid var(--brand-color);
+            display: inline-block;
+            padding-bottom: 0.4rem;
+            margin-bottom: 2rem;
+            font-size: 1.75rem;
+         }
+
+        /* Similar Property Card - Reuse homepage style */
+        .property-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 0;
+            margin-bottom: 0;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--card-shadow);
+            transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+            overflow: hidden;
+            position: relative;
+        }
+        .property-card:hover {
+             transform: translateY(-5px);
+             box-shadow: var(--card-shadow-hover);
+        }
+        .property-card .image-container {
+             width: 100%;
+             height: 150px; /* Adjusted height */
+             overflow: hidden;
+        }
+        .property-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background-color: #e0e0e0;
+            transition: transform 0.35s ease;
+         }
+         .property-card:hover img { transform: scale(1.08); }
+        .property-card .card-content {
+             padding: 1rem;
+             flex-grow: 1;
+        }
+        .property-card .title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            color: var(--text-primary);
+            line-height: 1.4;
+             display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-height: 2.8em;
+        }
+        .property-card .price {
+             font-size: 1.1rem;
+             font-weight: 700;
+             color: var(--brand-color);
+             margin-bottom: 0.35rem;
+         }
+        .property-card .meta {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+         }
+        .property-card .overlay-link {
+             position: absolute;
+             top: 0;
+             left: 0;
+             width: 100%;
+             height: 100%;
+             z-index: 1;
+             opacity: 0;
+             background: transparent;
+         }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); /* Adjusted size */
+            gap: 2rem;
+        }
+
+        footer {
+            background-color: var(--text-primary);
+            color: #e5e7eb;
+            padding: 2.5rem 1rem;
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 0.9rem;
+         }
+        footer p { margin: 0; color: #9ca3af; }
+        footer a { color: #e5e7eb; text-decoration: none; margin: 0 0.75rem;} 
+        footer a:hover { text-decoration: underline; }
+        .footer-nav { margin-bottom: 1rem; }
+
+         /* Basic Animation */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        body { animation: fadeIn 0.5s ease-out; }
+
+    </style>
+</head>
+<body>
+    <header>
+         <div class="container">
+            <a href="homepage_with_recommendations.html" class="logo">MagicBricks</a>
+            <nav>
+                <ul>
+                    <li><a href="homepage_with_recommendations.html">Home</a></li>
+                    <li><a href="search_results_with_recommendations.html">Search</a></li>
+                    <li><a href="#" class="active">Buy</a></li>
+                    <li><a href="#">Rent</a></li>
+                    <li><a href="#">Sell</a></li>
+                    <li><a href="#">Home Loans</a></li>
+                    <li><a href="#">Advice</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <section class="pdp-main section">
+            <div class="images">
+                 <!-- Image Gallery Placeholder -->
+            </div>
+            <div class="summary">
+                <div>
+                    <h1>Spacious 3 BHK Apartment with Sea View</h1>
+                    <p class="address">Ocean Heights, Malad West, Mumbai</p>
+                    <div class="price">₹ 2.4 Cr</div>
+                    <div class="meta">
+                        <span>1700 sqft</span> <span>3 Beds</span> <span>3 Baths</span> <span>Ready to Move</span>
+                    </div>
+                    <div class="actions">
+                        <button class="primary">Contact Builder</button>
+                        <button class="secondary">Save Property</button>
+                    </div>
+                </div>
+                <div class="agent-info">
+                    <p>Posted: 3 days ago by Premium Builders Ltd.</p>
+                    <p>RERA Registered: A51800000001</p> <!-- Sample RERA -->
+                </div>
+            </div>
+        </section>
+
+        <section class="details-section section">
+            <h3>Property Description</h3>
+            <p>Indulge in luxurious living with this stunning sea-facing 3 BHK apartment in the prestigious Ocean Heights tower. Offering breathtaking views of the Arabian Sea from wide balconies, this apartment boasts spacious rooms with Italian marble flooring, premium fittings in bathrooms, and abundant natural light throughout the day. The modular kitchen comes equipped with modern appliances. The complex provides world-class amenities including a temperature-controlled swimming pool, state-of-the-art gymnasium, expansive clubhouse, dedicated children's play area, and multi-tier 24/7 security. Located in the prime area of Malad West, enjoy excellent connectivity to schools, hospitals, shopping malls (Inorbit, Infiniti), and entertainment hubs. Perfect for families seeking an upscale lifestyle with comfort and convenience.</p>
+            <h3>Amenities</h3>
+            <ul>
+                <li>Swimming Pool</li><li>Gymnasium</li><li>Reserved Parking</li>
+                <li>Power Backup</li><li>24x7 Security</li><li>Club House</li>
+                <li>Children's Play Area</li><li>Lift Available</li><li>Intercom Facility</li>
+                <li>Piped Gas</li><li>Sea Facing Balcony</li><li>Servant Room</li>
+                <li>Modular Kitchen</li><li>Air Conditioned</li><li>Vaastu Compliant</li>
+             </ul>
+        </section>
+         <section class="details-section section">
+             <h3>Location Details & Neighbourhood</h3>
+            <p>[Map placeholder - Could be an iframe or image] Strategically located on the Malad West link road, offering easy access to SV Road and the Western Express Highway. Close proximity to Inorbit Mall (1km), Infiniti Mall (1.5km), Ryan International School (0.5km), and Lifeline Hospital (2km). Upcoming Metro station within 800m.</p>
+             <!-- Could add simple rating bars or tags for locality score -->
+         </section>
+
+        <!-- SIMILAR PROPERTIES SECTION -->
+        <section class="similar-properties section">
+            <h2>Similar Properties You Might Like</h2>
+            <div class="grid">
+                 <div class="property-card">
+                     <a href="#" class="overlay-link" title="View Details"></a>
+                     <div class="image-container"><img src="https://placehold.co/600x400/4f46e5/FFFFFF?text=Similar+1" alt="3 BHK Apartment in Kandivali West"></div>
+                     <div class="card-content">
+                        <div class="title">Elegant 3 BHK Apartment in Kandivali West</div>
+                        <div class="price">₹ 2.1 Cr</div>
+                        <div class="meta">1650 sqft | 3 Beds</div>
+                    </div>
+                </div>
+                 <div class="property-card">
+                    <a href="#" class="overlay-link" title="View Details"></a>
+                    <div class="image-container"><img src="https://placehold.co/600x400/10b981/FFFFFF?text=Similar+2" alt="2 BHK Sea View Flat in Malad West"></div>
+                    <div class="card-content">
+                        <div class="title">Cozy 2 BHK Sea View Flat in Malad West</div>
+                        <div class="price">₹ 1.75 Cr</div>
+                        <div class="meta">1100 sqft | 2 Beds</div>
+                    </div>
+                </div>
+                <div class="property-card">
+                    <a href="#" class="overlay-link" title="View Details"></a>
+                    <div class="image-container"><img src="https://placehold.co/600x400/f59e0b/FFFFFF?text=Similar+3" alt="Luxury 4 BHK in Goregaon East"></div>
+                    <div class="card-content">
+                        <div class="title">Luxury 4 BHK in Goregaon East</div>
+                        <div class="price">₹ 3.5 Cr</div>
+                        <div class="meta">2200 sqft | 4 Beds</div>
+                    </div>
+                </div>
+                 <div class="property-card">
+                    <a href="#" class="overlay-link" title="View Details"></a>
+                    <div class="image-container"><img src="https://placehold.co/600x400/8b5cf6/FFFFFF?text=Similar+4" alt="Ready Possession 3 BHK in Borivali"></div>
+                    <div class="card-content">
+                        <div class="title">Ready Possession 3 BHK in Borivali</div>
+                        <div class="price">₹ 1.95 Cr</div>
+                        <div class="meta">1500 sqft | 3 Beds</div>
+                    </div>
+                </div>
+                 <div class="property-card">
+                    <a href="#" class="overlay-link" title="View Details"></a>
+                    <div class="image-container"><img src="https://placehold.co/600x400/ec4899/FFFFFF?text=Similar+5" alt="Under Construction 3 BHK, Malad E"></div>
+                    <div class="card-content">
+                        <div class="title">Spacious Under Construction 3 BHK, Malad E</div>
+                        <div class="price">₹ 1.85 Cr</div>
+                        <div class="meta">1600 sqft | 3 Beds</div>
+                    </div>
+                </div>
+                 <div class="property-card">
+                    <a href="#" class="overlay-link" title="View Details"></a>
+                    <div class="image-container"><img src="https://placehold.co/600x400/ef4444/FFFFFF?text=Similar+6" alt="Compact 3 BHK near Station"></div>
+                    <div class="card-content">
+                        <div class="title">Compact 3 BHK near Station, Malad W</div>
+                        <div class="price">₹ 1.7 Cr</div>
+                        <div class="meta">1350 sqft | 3 Beds</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- END SIMILAR PROPERTIES SECTION -->
+
+
+        <section class="details-section section">
+            <h3>Agent Details / Project Details</h3>
+            <p><strong>Agent:</strong> Premium Builders Ltd. | <strong>Contact:</strong> +91 98XXXXXX00 | <strong>RERA No:</strong> A51800000001</p>
+            <p>Download Project Brochure | View Floor Plans | Request Site Visit</p>
+            <p>[Placeholder for builder info, reviews, Q&A etc.]</p> <!-- Kept one placeholder for brevity -->
+        </section>
+
+    </div>
+
+    <footer>
+         <div class="footer-nav">
+            <a href="#">About Us</a>
+            <a href="#">Contact Us</a>
+            <a href="#">Careers</a>
+            <a href="#">Terms & Conditions</a>
+            <a href="#">Privacy Policy</a>
+        </div>
+        <p>&copy; 2024 MagicBricks Mockup. All rights reserved.</p>
+    </footer>
+</body>
+</html> 

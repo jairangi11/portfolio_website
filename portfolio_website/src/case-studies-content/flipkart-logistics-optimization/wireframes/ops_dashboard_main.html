@@ -6,101 +6,138 @@
     <title>Ops Dashboard - Flipkart Logistics</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f7fafc; }
         @keyframes slideInLeft {
-            from { opacity: 0; transform: translateX(-20px); }
+            from { opacity: 0; transform: translateX(-30px); }
             to { opacity: 1; transform: translateX(0); }
         }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
         .slide-in-left { animation: slideInLeft 0.5s ease-out forwards; }
-        .fade-in { animation: fadeIn 0.6s ease-out forwards; opacity: 0; }
+        .fade-in-scale { animation: fadeInScale 0.4s ease-out forwards; opacity: 0; transform-origin: center; }
         .delay-100 { animation-delay: 0.1s; }
         .delay-200 { animation-delay: 0.2s; }
         .delay-300 { animation-delay: 0.3s; }
         .delay-400 { animation-delay: 0.4s; }
-        /* Simple bar chart simulation */
-        .bar-chart-bar { transition: height 0.5s ease-out; }
+        .delay-500 { animation-delay: 0.5s; }
+        .sidebar-icon { width: 1.25rem; height: 1.25rem; margin-right: 0.75rem; color: #9ca3af; transition: color 0.2s ease; }
+        .sidebar-link:hover .sidebar-icon { color: #ffffff; }
+        .sidebar-link.active .sidebar-icon { color: #ffffff; }
+        /* Custom scrollbar for alerts */
+        .alert-scrollbar::-webkit-scrollbar { width: 6px; }
+        .alert-scrollbar::-webkit-scrollbar-track { background: #edf2f7; border-radius: 3px; }
+        .alert-scrollbar::-webkit-scrollbar-thumb { background: #a0aec0; border-radius: 3px; }
+        .alert-scrollbar::-webkit-scrollbar-thumb:hover { background: #718096; }
     </style>
 </head>
-<body class="bg-gray-100 font-sans flex">
+<body class="bg-gray-50 font-sans flex antialiased">
 
     <!-- Sidebar -->
-    <aside class="w-64 bg-gray-800 text-white h-screen p-4 fixed slide-in-left shadow-lg flex flex-col">
-        <div class="text-2xl font-bold mb-8 border-b border-gray-700 pb-4">Flipkart Logistics</div>
-        <nav class="space-y-2 flex-1">
-            <a href="ops_dashboard_main.html" class="flex items-center px-3 py-2 bg-gray-700 rounded font-semibold text-white">
-                <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+    <aside class="w-64 bg-gradient-to-b from-gray-800 to-gray-900 text-white h-screen p-5 fixed slide-in-left shadow-2xl flex flex-col z-30">
+        <div class="text-2xl font-bold mb-10 border-b border-gray-700 pb-5 flex items-center text-blue-300">
+             
+            Logistics Ops
+        </div>
+        <nav class="space-y-3 flex-1">
+            <a href="ops_dashboard_main.html" class="flex items-center px-3 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg font-semibold text-white shadow-md sidebar-link active">
+                <svg class="sidebar-icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
                 Dashboard
             </a>
-            <a href="ops_dashboard_performance.html" class="flex items-center px-3 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded">
-                <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2H5zm9 4a1 1 0 10-2 0v6a1 1 0 102 0V7zm-3 2a1 1 0 10-2 0v4a1 1 0 102 0V9zm-3 3a1 1 0 10-2 0v1a1 1 0 102 0v-1z" clip-rule="evenodd"></path></svg>
-                Prediction Performance
+            <a href="ops_dashboard_performance.html" class="flex items-center px-3 py-2.5 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition-colors duration-200 sidebar-link">
+                <svg class="sidebar-icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2H5zm9 4a1 1 0 10-2 0v6a1 1 0 102 0V7zm-3 2a1 1 0 10-2 0v4a1 1 0 102 0V9zm-3 3a1 1 0 10-2 0v1a1 1 0 102 0v-1z" clip-rule="evenodd"></path></svg>
+                Performance
             </a>
-            <a href="#" class="flex items-center px-3 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded">
-                 <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M17.778 11.344A.999.999 0 0018 11V7a1 1 0 00-1-1h-2a1 1 0 00-1 1v1a1 1 0 01-1 1H9a1 1 0 01-1-1V7a1 1 0 00-1-1H6a1 1 0 00-1 1v4a.999.999 0 00.222.656l4.667 5.333a.999.999 0 001.528-.011l4.361-5.634zM12 10a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4 0a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1z" clip-rule="evenodd"></path><path d="M5 18a1 1 0 01-1-1V9.058c0-.158.028-.313.082-.459l1.34-3.708A1 1 0 016.382 4h7.236a1 1 0 01.958.891l1.34 3.708c.054.146.082.301.082.459V17a1 1 0 01-1 1H5z"></path></svg>
-                Data Source Health
+            <a href="#" class="flex items-center px-3 py-2.5 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition-colors duration-200 sidebar-link">
+                 <svg class="sidebar-icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V8zm0 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2z" /></svg>
+                Data Sources
             </a>
-             <a href="#" class="flex items-center px-3 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded">
-                 <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
-                Order Exceptions
+             <a href="#" class="flex items-center px-3 py-2.5 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition-colors duration-200 sidebar-link">
+                 <svg class="sidebar-icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                Exceptions
             </a>
         </nav>
-         <div class="mt-auto border-t border-gray-700 pt-4">
-            <a href="customer_tracking.html" class="flex items-center px-3 py-2 text-sm text-gray-400 hover:bg-gray-700 hover:text-white rounded">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
-                Customer View (Demo)
+         <div class="mt-auto border-t border-gray-700 pt-5">
+            <a href="customer_tracking.html" class="flex items-center px-3 py-2 text-sm text-gray-400 hover:bg-gray-700 hover:text-white rounded-lg transition-colors duration-200 sidebar-link">
+                <svg xmlns="http://www.w3.org/2000/svg" class="sidebar-icon h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+                Customer View
             </a>
         </div>
     </aside>
 
     <!-- Main Content -->
     <div class="ml-64 flex-1 transition-all duration-300 ease-in-out">
-        <header class="bg-white shadow p-4 sticky top-0 z-10">
+        <header class="bg-white shadow-sm p-4 sticky top-0 z-20 flex justify-between items-center">
             <h2 class="text-xl font-semibold text-gray-800">Operations Dashboard Overview</h2>
+            <div class="flex items-center space-x-4">
+                 <span class="text-sm text-gray-500">Last updated: <span class="font-medium text-gray-700">Just now</span></span>
+                <button class="text-gray-400 hover:text-blue-600">
+                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7" /></svg>
+                </button>
+                 <button class="text-gray-400 hover:text-blue-600 relative">
+                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
+                     <span class="absolute -top-1 -right-1 flex h-3 w-3">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                      </span>
+                 </button>
+                 <img src="https://via.placeholder.com/32" alt="User Avatar" class="rounded-full w-8 h-8 border border-gray-300">
+            </div>
         </header>
 
         <main class="p-6">
             <!-- KPI Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
                 <!-- EDT Accuracy Card -->
-                <div class="bg-white rounded-lg shadow-lg p-5 fade-in delay-100 border-l-4 border-green-500">
-                    <h3 class="text-sm font-medium text-gray-500 mb-1">EDT Accuracy (vs Actual)</h3>
-                    <p class="text-3xl font-bold text-green-600 flex items-baseline">
-                        +42%
-                        <span class="text-xs font-normal text-green-500 ml-2">(↑ from baseline)</span>
-                    </p>
-                    <p class="text-xs text-gray-400">Improvement in MAE (Last 7 Days)</p>
-                    <div class="mt-4 h-20 relative">
+                <div class="bg-white rounded-xl shadow-lg p-6 fade-in-scale delay-100 border-t-4 border-green-500 hover:shadow-xl transition-shadow duration-300">
+                    <h3 class="text-sm font-medium text-gray-500 mb-2">EDT Accuracy Improvement</h3>
+                    <div class="flex justify-between items-baseline mb-3">
+                        <p class="text-4xl font-bold text-green-600">+42%</p>
+                        <span class="text-xs font-semibold text-green-500 bg-green-100 px-2 py-0.5 rounded-full">vs Baseline</span>
+                    </div>
+                    <p class="text-xs text-gray-400 mb-4">Reduction in Mean Absolute Error (Last 7 Days)</p>
+                    <div class="h-24 relative">
                         <canvas id="edtAccuracyChart"></canvas>
                     </div>
                 </div>
 
                  <!-- Data Source Uptime Card -->
-                <div class="bg-white rounded-lg shadow-lg p-5 fade-in delay-200 border-l-4 border-blue-500">
-                    <h3 class="text-sm font-medium text-gray-500 mb-1">Data Source Uptime (Avg)</h3>
-                    <p class="text-3xl font-bold text-blue-600 flex items-baseline">
-                        99.92%
-                         <span class="text-xs font-normal text-green-500 ml-2">Stable</span>
-                    </p>
-                    <p class="text-xs text-gray-400">Across all Internal & 3PL feeds (24h)</p>
-                     <div class="mt-4 h-20 flex items-center justify-center">
-                         <svg class="w-16 h-16 text-blue-500 opacity-75" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.219a.75.75 0 00.028-.006a11.956 11.956 0 00-2.634-.169m-4.118 11.942a.75.75 0 00.028.006a11.956 11.956 0 002.634.17m4.118-11.942c-.997-.068-2.013-.068-3.029 0m-4.118 11.942c.997.068 2.013.068 3.029 0m-1.013-11.942a11.956 11.956 0 00-3.029 0m4.118 11.942a11.956 11.956 0 003.029 0M19.882 6.118a.75.75 0 00.006-.028m-15.758 11.942a.75.75 0 00-.006.028M2.118 17.882a.75.75 0 00.028.006m15.758-11.942a.75.75 0 00-.028-.006M12 21a9 9 0 110-18 9 9 0 010 18z"></path></svg>
+                <div class="bg-white rounded-xl shadow-lg p-6 fade-in-scale delay-200 border-t-4 border-blue-500 hover:shadow-xl transition-shadow duration-300">
+                    <h3 class="text-sm font-medium text-gray-500 mb-2">Data Source Uptime</h3>
+                     <div class="flex justify-between items-baseline mb-3">
+                        <p class="text-4xl font-bold text-blue-600">99.92%</p>
+                         <span class="text-xs font-semibold text-green-500 bg-green-100 px-2 py-0.5 rounded-full">Healthy</span>
+                     </div>
+                    <p class="text-xs text-gray-400 mb-4">Average across all feeds (Last 24h)</p>
+                     <div class="h-24 flex items-center justify-center">
+                        <!-- Animated Check Circle -->
+                        <svg class="w-16 h-16 text-blue-500" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="45" stroke="#bfdbfe" stroke-width="8" fill="none" />
+                            <circle class="progress-ring__circle" cx="50" cy="50" r="45" stroke="#3b82f6" stroke-width="8" fill="none" stroke-linecap="round" transform="rotate(-90 50 50)"
+                                stroke-dasharray="282.7" stroke-dashoffset="1.41" style="transition: stroke-dashoffset 0.5s ease-in-out;" />
+                             <polyline points="30,50 45,65 70,40" stroke="#3b82f6" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
                      </div>
                 </div>
 
                  <!-- Active Exceptions Card -->
-                <div class="bg-white rounded-lg shadow-lg p-5 fade-in delay-300 border-l-4 border-red-500">
-                    <h3 class="text-sm font-medium text-gray-500 mb-1">Active Delivery Exceptions</h3>
-                    <p class="text-3xl font-bold text-red-600 flex items-baseline">
-                        148
-                        <span class="text-xs font-normal text-red-500 ml-2">(↑ 5% vs yesterday)</span>
-                    </p>
-                    <p class="text-xs text-gray-400">Requires Investigation (Nationwide)</p>
-                     <div class="mt-4 h-20 flex items-center justify-center">
-                          <svg class="w-16 h-16 text-red-500 opacity-75" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"></path></svg>
+                 <div class="bg-white rounded-xl shadow-lg p-6 fade-in-scale delay-300 border-t-4 border-red-500 hover:shadow-xl transition-shadow duration-300">
+                    <h3 class="text-sm font-medium text-gray-500 mb-2">Active Delivery Exceptions</h3>
+                     <div class="flex justify-between items-baseline mb-3">
+                        <p class="text-4xl font-bold text-red-600">148</p>
+                        <span class="text-xs font-semibold text-red-500 bg-red-100 px-2 py-0.5 rounded-full flex items-center">
+                             <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                            5% vs yesterday
+                        </span>
+                     </div>
+                    <p class="text-xs text-gray-400 mb-4">Requiring Investigation (Nationwide)</p>
+                     <div class="h-24 flex items-center justify-center">
+                         <svg class="w-16 h-16 text-red-500 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"></path></svg>
                      </div>
                 </div>
             </div>
@@ -108,59 +145,69 @@
             <!-- Map Overview & Alerts -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Map Placeholder -->
-                <div class="lg:col-span-2 bg-white rounded-lg shadow-lg p-5 fade-in delay-400">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-3">Regional Performance Overview</h3>
-                     <div class="bg-gray-200 rounded h-96 flex items-center justify-center text-gray-500 overflow-hidden">
-                         <img src="https://image.maps.ls.hereapi.com/mia/1.6/mapview?apiKey=YOUR_API_KEY&c=22.5726,88.3639&z=5&w=800&h=400&nodot" alt="Static India Map Placeholder" class="w-full h-full object-cover" title="Placeholder - Requires actual map library (Leaflet, Mapbox GL JS) and data integration">
+                <div class="lg:col-span-2 bg-white rounded-xl shadow-lg p-6 fade-in-scale delay-400">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4">Regional Performance Heatmap</h3>
+                     <div class="bg-gray-200 rounded-lg h-96 flex items-center justify-center text-gray-500 overflow-hidden relative border border-gray-300">
+                         <!-- Use a more convincing static map image -->
+                         <img src="https://api.mapbox.com/styles/v1/mapbox/light-v10/static/-77.0369,38.8977,2,0/1000x600?access_token=pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2p0MG01MXRqMW45cjQzb2R6b2ptc3J4MSJ9.zA2W0IkOfKTSXcF9RU9BYQ"
+                             alt="Static US Map Placeholder with sample heatmap overlay indication"
+                             class="w-full h-full object-cover opacity-80"
+                             title="Placeholder - Represents regional performance heatmap">
+                        <div class="absolute inset-0 flex items-center justify-center bg-black/10">
+                            <span class="text-white bg-black/50 px-4 py-2 rounded text-sm">Static Heatmap Placeholder</span>
+                        </div>
                     </div>
                 </div>
 
                 <!-- System Alerts -->
-                <div class="bg-white rounded-lg shadow-lg p-5 fade-in delay-400">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4 flex items-center">
-                        <svg class="w-5 h-5 mr-2 text-yellow-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 102 0V6zM10 14a1 1 0 110-2 1 1 0 010 2z" clip-rule="evenodd"></path></svg>
-                        Recent System Alerts
+                <div class="bg-white rounded-xl shadow-lg p-6 fade-in-scale delay-500">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4 flex items-center justify-between">
+                        <span>
+                            <svg class="w-5 h-5 mr-2 text-yellow-500 inline-block align-text-bottom" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 102 0V6zM10 14a1 1 0 110-2 1 1 0 010 2z" clip-rule="evenodd"></path></svg>
+                            Recent System Alerts
+                        </span>
+                        <span class="text-xs font-medium text-gray-400 hover:text-blue-600 cursor-pointer">View All</span>
                     </h3>
-                    <div class="space-y-3 overflow-y-auto h-96 pr-2">
-                        <div class="border-l-4 border-yellow-400 bg-yellow-50 p-3 rounded-r shadow-sm">
+                    <div class="space-y-3 overflow-y-auto h-96 pr-2 alert-scrollbar">
+                        <div class="border-l-4 border-green-400 bg-green-50 p-3.5 rounded-r-lg shadow-sm hover:shadow-md transition-shadow">
+                            <p class="font-medium text-green-800 text-sm flex items-center">
+                                <svg class="w-4 h-4 mr-1.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                Resolved: Latency Issue
+                            </p>
+                            <p class="text-xs text-green-700 mt-1 pl-5.5">'SpeedyLogistics' API response times normalized.</p>
+                             <p class="text-xs text-gray-400 mt-1 pl-5.5">Just now</p>
+                        </div>
+                        <div class="border-l-4 border-yellow-400 bg-yellow-50 p-3.5 rounded-r-lg shadow-sm hover:shadow-md transition-shadow">
                             <p class="font-medium text-yellow-800 text-sm flex items-center">
-                                <svg class="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 1.007a9 9 0 017.994 13.099l.006-.004-7.94 5.293a1 1 0 01-1.12 0L1 14.1l.006.003A9 9 0 0110 1.007zM11 6a1 1 0 11-2 0 1 1 0 012 0zm-1 3a1 1 0 100 2h.01a1 1 0 100-2H10z"></path></svg>
+                                <svg class="w-4 h-4 mr-1.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M10 1.007a9 9 0 017.994 13.099l.006-.004-7.94 5.293a1 1 0 01-1.12 0L1 14.1l.006.003A9 9 0 0110 1.007zM11 6a1 1 0 11-2 0 1 1 0 012 0zm-1 3a1 1 0 100 2h.01a1 1 0 100-2H10z"></path></svg>
                                 High Latency Detected
                             </p>
-                            <p class="text-xs text-yellow-700 mt-1 pl-5">3PL Partner 'SpeedyLogistics' API response time > 2s average (Last 30 min).</p>
-                            <p class="text-xs text-gray-400 mt-1 pl-5">15 mins ago</p>
+                            <p class="text-xs text-yellow-700 mt-1 pl-5.5">3PL Partner 'SpeedyLogistics' API response > 2s avg.</p>
+                            <p class="text-xs text-gray-400 mt-1 pl-5.5">15 mins ago</p>
                         </div>
-                         <div class="border-l-4 border-red-400 bg-red-50 p-3 rounded-r shadow-sm">
+                         <div class="border-l-4 border-red-400 bg-red-50 p-3.5 rounded-r-lg shadow-sm hover:shadow-md transition-shadow">
                             <p class="font-medium text-red-800 text-sm flex items-center">
-                                <svg class="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099a.75.75 0 01.387.65l.11 1.103A7.004 7.004 0 0110 5c.54 0 1.069.057 1.582.166l.145-.87a.75.75 0 011.43.239l-.214 1.285a7.046 7.046 0 011.99 1.99l1.285-.214a.75.75 0 01.989.989l-.214 1.285c.398.589.712 1.23.933 1.911l1.285-.214a.75.75 0 01.989.989l-.87.145A7.004 7.004 0 0115 10c0 .54-.057 1.069-.166 1.582l.87.145a.75.75 0 01-.239 1.43l-1.285-.214a7.046 7.046 0 01-1.99 1.99l.214 1.285a.75.75 0 01-.989.989l-.214-1.285a6.95 6.95 0 01-1.911.933l.214 1.285a.75.75 0 01-.989.989l-.145-.87A7.004 7.004 0 0110 15c-.54 0-1.069-.057-1.582-.166l-.145.87a.75.75 0 01-1.43-.239l.214-1.285a7.046 7.046 0 01-1.99-1.99l-1.285.214a.75.75 0 01-.989-.989l.214-1.285a6.95 6.95 0 01-.933-1.911l-1.285.214a.75.75 0 01-.989-.989l.87-.145A7.004 7.004 0 015 10c0-.54.057-1.069.166-1.582l-.87-.145a.75.75 0 01.239-1.43l1.285.214a7.046 7.046 0 011.99-1.99L5.569 4.006a.75.75 0 01.989-.989l1.285.214c.589-.398 1.23-.712 1.911-.933L9.538 1.01a.75.75 0 01.989-.989l.145.87A7.004 7.004 0 0110 1c.34 0 .672.018 1 .051l.145-.87a.75.75 0 01.989-.989L12 1.462a6.95 6.95 0 011.911.933l1.285-.214a.75.75 0 01.989.989l-.214 1.285c.17.276.33.558.48.848l-.001-.001zm-1.29.66a5.504 5.504 0 00-8.935 4.242L3.025 12l4.507 4.507a5.504 5.504 0 007.783-3.54l.001-.002a5.504 5.504 0 00-3.54-7.783L7.268 3.762l.002.001z" clip-rule="evenodd"></path></svg>
-                                Prediction Model Warning
+                                <svg class="w-4 h-4 mr-1.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099a.75.75 0 011.486 0l.11 1.103A7.004 7.004 0 0110 5c.54 0 1.069.057 1.582.166l.145-.87a.75.75 0 011.43.239l-.214 1.285a7.046 7.046 0 011.99 1.99l1.285-.214a.75.75 0 01.989.989l-.214 1.285c.398.589.712 1.23.933 1.911l1.285-.214a.75.75 0 01.989.989l-.87.145A7.004 7.004 0 0115 10c0 .54-.057 1.069-.166 1.582l.87.145a.75.75 0 01-.239 1.43l-1.285-.214a7.046 7.046 0 01-1.99 1.99l.214 1.285a.75.75 0 01-.989.989l-.214-1.285a6.95 6.95 0 01-1.911.933l.214 1.285a.75.75 0 01-.989.989l-.145-.87A7.004 7.004 0 0110 15c-.54 0-1.069-.057-1.582-.166l-.145.87a.75.75 0 01-1.43-.239l.214-1.285a7.046 7.046 0 01-1.99-1.99l-1.285.214a.75.75 0 01-.989-.989l.214-1.285a6.95 6.95 0 01-.933-1.911l-1.285.214a.75.75 0 01-.989-.989l.87-.145A7.004 7.004 0 015 10c0-.54.057 1.069.166-1.582l-.87-.145a.75.75 0 01.239-1.43l1.285.214a7.046 7.046 0 011.99-1.99L5.569 4.006a.75.75 0 01.989-.989l1.285.214c.589-.398 1.23-.712 1.911-.933L9.538 1.01a.75.75 0 01.989-.989l.145.87A7.004 7.004 0 0110 1c.34 0 .672.018 1 .051l.145-.87a.75.75 0 01.989-.989L12 1.462a6.95 6.95 0 011.911.933l1.285-.214a.75.75 0 01.989.989l-.214 1.285c.17.276.33.558.48.848l-.001-.001zm-1.29.66a5.504 5.504 0 00-8.935 4.242L3.025 12l4.507 4.507a5.504 5.504 0 007.783-3.54l.001-.002a5.504 5.504 0 00-3.54-7.783L7.268 3.762l.002.001z" clip-rule="evenodd"></path></svg>
+                                Model Degradation
                             </p>
-                            <p class="text-xs text-red-700 mt-1 pl-5">MAE increased by 15% in North Zone (last 24h). Consider retraining.</p>
-                             <p class="text-xs text-gray-400 mt-1 pl-5">1 hour ago</p>
+                            <p class="text-xs text-red-700 mt-1 pl-5.5">MAE ↑ 15% in North Zone (24h). Consider retraining.</p>
+                             <p class="text-xs text-gray-400 mt-1 pl-5.5">1 hour ago</p>
                         </div>
-                        <div class="border-l-4 border-blue-400 bg-blue-50 p-3 rounded-r shadow-sm">
+                        <div class="border-l-4 border-blue-400 bg-blue-50 p-3.5 rounded-r-lg shadow-sm hover:shadow-md transition-shadow">
                             <p class="font-medium text-blue-800 text-sm flex items-center">
-                                <svg class="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                                Successful Deployment
+                                <svg class="w-4 h-4 mr-1.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                Deployment Success
                             </p>
-                            <p class="text-xs text-blue-700 mt-1 pl-5">Aggregation Service v1.2 deployed to production.</p>
-                             <p class="text-xs text-gray-400 mt-1 pl-5">3 hours ago</p>
+                            <p class="text-xs text-blue-700 mt-1 pl-5.5">Aggregation Service v1.2 deployed to prod.</p>
+                             <p class="text-xs text-gray-400 mt-1 pl-5.5">3 hours ago</p>
                         </div>
-                        <div class="border-l-4 border-yellow-400 bg-yellow-50 p-3 rounded-r shadow-sm">
+                        <div class="border-l-4 border-yellow-400 bg-yellow-50 p-3.5 rounded-r-lg shadow-sm hover:shadow-md transition-shadow">
                             <p class="font-medium text-yellow-800 text-sm flex items-center">
-                                <svg class="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 1.007a9 9 0 017.994 13.099l.006-.004-7.94 5.293a1 1 0 01-1.12 0L1 14.1l.006.003A9 9 0 0110 1.007zM11 6a1 1 0 11-2 0 1 1 0 012 0zm-1 3a1 1 0 100 2h.01a1 1 0 100-2H10z"></path></svg>
-                                Data Ingestion Warning
+                                <svg class="w-4 h-4 mr-1.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M10 1.007a9 9 0 017.994 13.099l.006-.004-7.94 5.293a1 1 0 01-1.12 0L1 14.1l.006.003A9 9 0 0110 1.007zM11 6a1 1 0 11-2 0 1 1 0 012 0zm-1 3a1 1 0 100 2h.01a1 1 0 100-2H10z"></path></svg>
+                                Data Ingestion Delay
                             </p>
-                            <p class="text-xs text-yellow-700 mt-1 pl-5">Mumbai Hub scan data feed delayed by > 30 mins.</p>
-                             <p class="text-xs text-gray-400 mt-1 pl-5">4 hours ago</p>
-                        </div>
-                         <div class="border-l-4 border-green-400 bg-green-50 p-3 rounded-r shadow-sm">
-                            <p class="font-medium text-green-800 text-sm flex items-center">
-                                <svg class="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                                Resolved: High Latency
-                            </p>
-                            <p class="text-xs text-green-700 mt-1 pl-5">'SpeedyLogistics' API latency back to normal.</p>
-                             <p class="text-xs text-gray-400 mt-1 pl-5">Just now</p>
+                            <p class="text-xs text-yellow-700 mt-1 pl-5.5">Mumbai Hub scan data feed delayed > 30 mins.</p>
+                             <p class="text-xs text-gray-400 mt-1 pl-5.5">4 hours ago</p>
                         </div>
                     </div>
                 </div>
@@ -169,35 +216,54 @@
     </div>
 
     <script>
-        // Basic Chart.js example for EDT Accuracy
-        const ctx = document.getElementById('edtAccuracyChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                datasets: [{
-                    label: 'MAE Improvement (%)',
-                    data: [10, 15, 25, 30, 38, 40, 42],
-                    borderColor: 'rgb(34, 197, 94)',
-                    backgroundColor: 'rgba(34, 197, 94, 0.1)',
-                    tension: 0.3,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 50
-                    }
+        // Chart.js for EDT Accuracy Mini-Chart
+        const edtCtx = document.getElementById('edtAccuracyChart')?.getContext('2d');
+        if (edtCtx) {
+            const gradient = edtCtx.createLinearGradient(0, 0, 0, 80);
+            gradient.addColorStop(0, 'rgba(34, 197, 94, 0.5)');
+            gradient.addColorStop(1, 'rgba(34, 197, 94, 0)');
+
+            new Chart(edtCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'MAE Improvement (%)',
+                        data: [10, 15, 25, 30, 38, 40, 42],
+                        borderColor: 'rgb(22, 163, 74)', // Darker Green
+                        backgroundColor: gradient,
+                        tension: 0.4,
+                        fill: true,
+                        borderWidth: 2,
+                        pointRadius: 0, // Hide points
+                        pointHoverRadius: 0
+                    }]
                 },
-                plugins: {
-                    legend: { display: false }
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { display: false, beginAtZero: true, max: 50 },
+                        x: { display: false }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { enabled: false } // Disable tooltips for mini chart
+                    },
+                    layout: { padding: { top: 5 } }
                 }
-            }
-        });
+            });
+        }
+
+        // Basic animation for uptime circle (can be enhanced)
+        const uptimeCircle = document.querySelector('.progress-ring__circle');
+        if (uptimeCircle) {
+             const radius = uptimeCircle.r.baseVal.value;
+             const circumference = 2 * Math.PI * radius;
+             const offset = circumference - (99.92 / 100) * circumference;
+             uptimeCircle.style.strokeDashoffset = offset;
+        }
+
     </script>
 
 </body>

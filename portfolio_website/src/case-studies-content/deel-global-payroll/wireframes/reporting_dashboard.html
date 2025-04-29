@@ -3,30 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deel Reporting Dashboard - Wireframe</title>
+    <title>Deel Reporting Dashboard - High Fidelity Mockup</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Include a charting library (e.g., Chart.js) - Placeholder for now -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* Mimic shadcn/ui styles (Same as other pages) */
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
-        .card { background-color: white; border-radius: 0.5rem; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1); transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; }
-        .card:hover { transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1); }
-        .nav-item { display: flex; align-items: center; padding: 0.75rem 1rem; border-radius: 0.375rem; color: #475569; transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out; font-weight: 500; cursor: pointer; text-decoration: none; }
-        .nav-item:hover { background-color: #f1f5f9; color: #0f172a; }
-        .nav-item.active { background-color: #e2e8f0; color: #0f172a; font-weight: 600; }
-        .nav-icon { margin-right: 0.75rem; width: 1.25rem; height: 1.25rem; }
-        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.5rem 1rem; border-radius: 0.375rem; font-weight: 600; font-size: 0.875rem; transition: background-color 0.2s ease-in-out, opacity 0.2s ease-in-out; cursor: pointer; }
-        .btn-primary { background-color: #2563eb; color: white; }
-        .btn-primary:hover { background-color: #1d4ed8; }
-        .btn-secondary { background-color: #e2e8f0; color: #0f172a; border: 1px solid #cbd5e1; }
-        .btn-secondary:hover { background-color: #cbd5e1; }
-        .placeholder-chart { background-color: #e2e8f0; border: 1px dashed #cbd5e1; display: flex; align-items: center; justify-content: center; color: #64748b; font-style: italic; height: 200px; border-radius: 0.375rem; }
-        /* Fade in for cards */
-        @keyframes cardFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .animated-card { animation: cardFadeIn 0.4s ease-out forwards; opacity: 0; }
+         /* Mimic shadcn/ui variables & base styles (Inherited) */
+        :root {
+            --background: 0 0% 100%;
+            --foreground: 222.2 84% 4.9%;
+            --card: 0 0% 100%;
+            --card-foreground: 222.2 84% 4.9%;
+            --primary: 221.2 83.2% 53.3%;
+            --primary-foreground: 210 40% 98%;
+            --secondary: 210 40% 96.1%;
+            --secondary-foreground: 222.2 47.4% 11.2%;
+            --muted: 210 40% 96.1%;
+            --muted-foreground: 215.4 16.3% 46.9%;
+            --accent: 210 40% 96.1%;
+            --accent-foreground: 222.2 47.4% 11.2%;
+            --destructive: 0 84.2% 60.2%;
+            --destructive-foreground: 210 40% 98%;
+            --border: 214.3 31.8% 91.4%;
+            --input: 214.3 31.8% 91.4%;
+            --ring: 221.2 83.2% 53.3%;
+            --radius: 0.5rem;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: hsl(0 0% 98%);
+            color: hsl(var(--foreground));
+        }
+        .card {
+            background-color: hsl(var(--card));
+            color: hsl(var(--card-foreground));
+            border-radius: var(--radius);
+            border: 1px solid hsl(var(--border));
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+         .card:hover {
+             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+             /* transform: translateY(-1px); Optional subtle lift */
+        }
+        /* Sidebar Styles */
+        .sidebar { background-color: hsl(var(--card)); border-right: 1px solid hsl(var(--border)); }
+        .sidebar-header { font-size: 1.75rem; font-weight: 700; color: hsl(var(--foreground)); padding: 1.5rem 1rem; border-bottom: 1px solid hsl(var(--border)); margin-bottom: 1rem; }
+        .user-profile { border-top: 1px solid hsl(var(--border)); padding-top: 1rem; margin-top: 1rem; }
+        .nav-item { display: flex; align-items: center; padding: 0.75rem 1rem; border-radius: calc(var(--radius) - 2px); color: hsl(var(--muted-foreground)); transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.1s ease; font-weight: 500; cursor: pointer; text-decoration: none; }
+        .nav-item:hover { background-color: hsl(var(--accent)); color: hsl(var(--accent-foreground)); transform: translateX(2px); }
+        .nav-item.active { background-color: hsl(var(--primary) / 0.1); color: hsl(var(--primary)); font-weight: 600; }
+        .nav-icon { margin-right: 0.75rem; width: 1.125rem; height: 1.125rem; opacity: 0.8; }
+        .nav-item.active .nav-icon { opacity: 1; }
+
+        /* Button Styles */
+        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.625rem 1.125rem; border-radius: var(--radius); font-weight: 500; font-size: 0.875rem; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; border: 1px solid transparent; outline: none; }
+        .btn:focus-visible { box-shadow: 0 0 0 2px hsl(0 0% 98%), 0 0 0 4px hsl(var(--ring)); }
+        .btn-primary { background-color: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
+        .btn-primary:hover { background-color: hsl(var(--primary) / 0.9); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); }
+        .btn-primary:active { transform: scale(0.98); }
+        .btn-secondary { background-color: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); border-color: hsl(var(--border)); }
+        .btn-secondary:hover { background-color: hsl(var(--secondary) / 0.8); }
+        .btn-secondary:active { transform: scale(0.98); }
+        .btn-sm { padding: 0.375rem 0.75rem; font-size: 0.75rem; }
+
+        /* Chart Placeholder Style */
+        .chart-container {
+            position: relative;
+            height: 280px; /* Adjusted height */
+            width: 100%;
+        }
+
+        /* Report List Item Style */
+        .report-item {
+            transition: background-color 0.15s ease-in-out;
+        }
+        .report-item:hover {
+            background-color: hsl(var(--accent));
+        }
+
+        /* Fade in animation */
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(15px) scale(0.98); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .fade-in {
+            animation: fadeIn 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+            opacity: 0;
+        }
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.15s; }
+        .stagger-3 { animation-delay: 0.2s; }
+        .stagger-4 { animation-delay: 0.25s; }
+        .stagger-5 { animation-delay: 0.3s; }
+
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,49 +105,55 @@
 <body class="text-slate-800">
     <div class="flex h-screen">
         <!-- Sidebar -->
-        <aside class="w-64 bg-white border-r border-slate-200 flex flex-col p-4 flex-shrink-0">
-            <div class="text-2xl font-bold text-slate-900 mb-8">deel.</div>
-            <nav class="flex-grow space-y-1">
+        <aside class="w-64 sidebar flex flex-col flex-shrink-0">
+            <div class="sidebar-header">deel.</div>
+             <nav class="flex-grow space-y-1 px-4">
                 <a href="./admin_dashboard.html" class="nav-item">
                     <i class="fas fa-home nav-icon"></i> Home
                 </a>
                 <a href="./payroll_run_list.html" class="nav-item">
-                   <i class="fas fa-file-contract nav-icon"></i> Payroll Runs
+                   <i class="fas fa-file-invoice-dollar nav-icon"></i> Payroll Runs
                 </a>
                  <a href="./people_list.html" class="nav-item">
                    <i class="fas fa-users nav-icon"></i> People
                 </a>
                 <a href="./compliance_center.html" class="nav-item">
-                    <i class="fas fa-shield-alt nav-icon"></i> Compliance Center
+                    <i class="fas fa-shield-halved nav-icon"></i> Compliance Center
                 </a>
                  <a href="./reporting_dashboard.html" class="nav-item active"> <!-- Active state -->
-                    <i class="fas fa-chart-bar nav-icon"></i> Reporting
+                    <i class="fas fa-chart-pie nav-icon"></i> Reporting
                 </a>
-                <a href="./settings_page.html" class="nav-item">
+                 <a href="./settings_page.html" class="nav-item">
                     <i class="fas fa-cog nav-icon"></i> Settings
                 </a>
             </nav>
-            <div class="mt-auto border-t border-slate-200 pt-4">
+            <div class="user-profile p-4">
                  <div class="flex items-center">
-                    <div class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-semibold mr-3">JD</div>
+                    <span class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 text-white flex items-center justify-center font-semibold mr-3 text-sm shadow-md">
+                        <i class="fas fa-user"></i>
+                    </span>
                     <div>
-                        <div class="text-sm font-semibold text-slate-800">John Doe</div>
+                        <div class="text-sm font-medium text-slate-800">John Doe</div>
                         <div class="text-xs text-slate-500">Payroll Specialist</div>
                     </div>
+                    <i class="fas fa-chevron-down text-xs text-slate-400 ml-auto cursor-pointer hover:text-slate-600"></i>
                 </div>
             </div>
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 overflow-y-auto p-8">
-            <header class="flex justify-between items-center mb-6">
-                <h1 class="text-3xl font-bold text-slate-900">Reporting Dashboard</h1>
+        <main class="flex-1 overflow-y-auto p-8 bg-slate-50">
+            <header class="flex flex-wrap justify-between items-center mb-8 gap-4">
+                <div>
+                    <h1 class="text-2xl font-semibold text-slate-900">Reporting Dashboard</h1>
+                     <p class="text-sm text-slate-500">Analyze payroll trends and generate reports.</p>
+                </div>
                 <div class="flex space-x-2">
-                    <button class="btn btn-secondary">
-                        <i class="fas fa-calendar-alt mr-2"></i> Date Range: Last 90 Days
+                    <button class="btn btn-secondary shadow-sm">
+                        <i class="fas fa-calendar-alt mr-2 text-xs"></i> Date Range: Last 90 Days <i class="fas fa-chevron-down text-xs ml-2"></i>
                     </button>
-                    <button class="btn btn-primary">
-                        <i class="fas fa-plus mr-2"></i> Create Custom Report
+                    <button class="btn btn-primary shadow-sm hover:shadow-md">
+                        <i class="fas fa-plus mr-2 text-xs"></i> Create Custom Report
                     </button>
                 </div>
             </header>
@@ -85,160 +161,222 @@
             <!-- Reporting Widgets/Charts -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                 <!-- Chart 1: Payroll Cost Trend -->
-                <div class="card p-4 animated-card" style="animation-delay: 0.1s;">
-                    <h3 class="text-lg font-semibold text-slate-700 mb-3">Payroll Cost Trend (Monthly)</h3>
-                    <div class="relative h-64">
+                <div class="card p-5 fade-in stagger-1">
+                    <h3 class="text-base font-semibold text-slate-700 mb-3">Payroll Cost Trend (Monthly)</h3>
+                    <div class="chart-container">
                         <canvas id="payrollCostChart"></canvas>
                     </div>
-                    <!-- Actual chart would be rendered here -->
                 </div>
 
                 <!-- Chart 2: Headcount by Country -->
-                <div class="card p-4 animated-card" style="animation-delay: 0.15s;">
-                    <h3 class="text-lg font-semibold text-slate-700 mb-3">Headcount by Country</h3>
-                    <div class="relative h-64">
+                <div class="card p-5 fade-in stagger-2">
+                    <h3 class="text-base font-semibold text-slate-700 mb-3">Headcount by Country</h3>
+                    <div class="chart-container">
                         <canvas id="headcountChart"></canvas>
                     </div>
-                    <!-- Actual chart would be rendered here -->
                 </div>
 
                 <!-- Chart 3: Compliance Status -->
-                 <div class="card p-4 animated-card" style="animation-delay: 0.2s;">
-                    <h3 class="text-lg font-semibold text-slate-700 mb-3">Compliance Status Overview</h3>
-                     <div class="relative h-64">
+                 <div class="card p-5 fade-in stagger-3">
+                    <h3 class="text-base font-semibold text-slate-700 mb-3">Compliance Status Overview</h3>
+                     <div class="chart-container">
                          <canvas id="complianceChart"></canvas>
                      </div>
-                    <!-- Actual chart would be rendered here -->
                 </div>
 
                  <!-- Chart 4: Employee Turnover Rate -->
-                <div class="card p-4 animated-card" style="animation-delay: 0.25s;">
-                     <h3 class="text-lg font-semibold text-slate-700 mb-3">Employee Turnover Rate</h3>
-                    <div class="relative h-64">
+                <div class="card p-5 fade-in stagger-4">
+                     <h3 class="text-base font-semibold text-slate-700 mb-3">Employee Turnover Rate (Quarterly)</h3>
+                    <div class="chart-container">
                         <canvas id="turnoverChart"></canvas>
                     </div>
-                    <!-- Actual chart would be rendered here -->
                  </div>
             </div>
 
             <!-- Report List/Generation Section -->
             <h2 class="text-xl font-semibold text-slate-800 mb-4">Standard Reports</h2>
-            <div class="card p-4 animated-card" style="animation-delay: 0.3s;">
-                 <ul class="divide-y divide-slate-200">
-                    <li class="py-3 flex justify-between items-center">
+            <div class="card overflow-hidden shadow-sm fade-in stagger-5">
+                 <ul class="divide-y divide-slate-100">
+                    <li class="p-4 flex justify-between items-center report-item">
                         <div>
-                            <p class="font-medium text-slate-800">Payroll Register Summary</p>
-                            <p class="text-sm text-slate-500">Detailed breakdown of earnings, deductions, and taxes per payroll run.</p>
+                            <p class="font-medium text-sm text-slate-800">Payroll Register Summary</p>
+                            <p class="text-xs text-slate-500">Detailed breakdown of earnings, deductions, and taxes per payroll run.</p>
                         </div>
-                        <button class="btn btn-secondary btn-sm text-xs"><i class="fas fa-download mr-1"></i> Download</button>
+                        <button class="btn btn-secondary btn-sm"><i class="fas fa-download mr-1.5"></i> Download CSV</button>
                     </li>
-                     <li class="py-3 flex justify-between items-center">
+                     <li class="p-4 flex justify-between items-center report-item">
                         <div>
-                            <p class="font-medium text-slate-800">Benefits Enrollment Report</p>
-                            <p class="text-sm text-slate-500">List of employees enrolled in various benefit plans.</p>
+                            <p class="font-medium text-sm text-slate-800">Benefits Enrollment Report</p>
+                            <p class="text-xs text-slate-500">List of employees enrolled in various benefit plans, including tiers and costs.</p>
                         </div>
-                         <button class="btn btn-secondary btn-sm text-xs"><i class="fas fa-download mr-1"></i> Download</button>
+                         <button class="btn btn-secondary btn-sm"><i class="fas fa-download mr-1.5"></i> Download PDF</button>
                     </li>
-                    <li class="py-3 flex justify-between items-center">
+                    <li class="p-4 flex justify-between items-center report-item">
                         <div>
-                             <p class="font-medium text-slate-800">New Hires Report</p>
-                            <p class="text-sm text-slate-500">List of employees hired within the selected period.</p>
+                             <p class="font-medium text-sm text-slate-800">New Hires & Departures Report</p>
+                            <p class="text-xs text-slate-500">Employees onboarded or offboarded within the selected period.</p>
                         </div>
-                         <button class="btn btn-secondary btn-sm text-xs"><i class="fas fa-download mr-1"></i> Download</button>
+                         <button class="btn btn-secondary btn-sm"><i class="fas fa-download mr-1.5"></i> Download CSV</button>
                     </li>
-                    <li class="py-3 flex justify-between items-center">
+                    <li class="p-4 flex justify-between items-center report-item">
                         <div>
-                            <p class="font-medium text-slate-800">Compliance Audit Log</p>
-                            <p class="text-sm text-slate-500">Record of compliance-related activities and changes.</p>
+                            <p class="font-medium text-sm text-slate-800">Compliance Audit Log</p>
+                            <p class="text-xs text-slate-500">Record of compliance-related activities, changes, and document uploads.</p>
                         </div>
-                        <button class="btn btn-secondary btn-sm text-xs"><i class="fas fa-download mr-1"></i> Download</button>
+                        <button class="btn btn-secondary btn-sm"><i class="fas fa-download mr-1.5"></i> Download CSV</button>
                     </li>
-                    <!-- Add more standard reports -->
+                     <li class="p-4 flex justify-between items-center report-item">
+                        <div>
+                            <p class="font-medium text-sm text-slate-800">Year-to-Date Payroll Summary</p>
+                            <p class="text-xs text-slate-500">Aggregated payroll totals for the current calendar year.</p>
+                        </div>
+                        <button class="btn btn-secondary btn-sm"><i class="fas fa-download mr-1.5"></i> Download PDF</button>
+                    </li>
                 </ul>
             </div>
         </main>
     </div>
-    <!-- Placeholder for Chart.js initialization script -->
-    <!-- <script>
-        // Example Chart.js setup (would need actual data)
-        // const ctx1 = document.getElementById('chart1').getContext('2d');
-        // const myChart1 = new Chart(ctx1, { type: 'line', data: {...}, options: {...} });
-    </script> -->
+
     <script>
-        // Sample Data
+        // Chart.js Configuration
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.plugins.legend.position = 'bottom';
+        Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+        Chart.defaults.plugins.tooltip.titleFont = { weight: 'bold' };
+        Chart.defaults.plugins.tooltip.bodyFont = { weight: 'normal' };
+        Chart.defaults.plugins.tooltip.padding = 10;
+        Chart.defaults.plugins.tooltip.cornerRadius = 4;
+
+        // Define Colors from CSS Variables (Approximate HSL values)
+        const primaryColor = 'hsl(221, 83%, 53%)';
+        const primaryColorLight = 'hsla(221, 83%, 53%, 0.1)';
+        const borderColor = 'hsl(214, 32%, 91%)';
+        const backgroundColor = 'hsl(0, 0%, 100%)';
+        const mutedForegroundColor = 'hsl(215, 16%, 47%)';
+        const foregroundColor = 'hsl(222, 84%, 5%)';
+
+        // Colors for specific charts
+        const blueColor = 'hsl(221, 83%, 60%)';
+        const pinkRedColor = 'hsl(347, 77%, 66%)';
+        const redColor = 'hsl(0, 72%, 60%)';
+        const amberColor = 'hsl(45, 80%, 60%)';
+        const purpleColor = 'hsl(260, 60%, 65%)';
+        const greenColor = 'hsl(145, 63%, 50%)';
+        const orangeColor = 'hsl(25, 85%, 60%)';
+        const orangeColorLight = 'hsla(25, 85%, 60%, 0.1)';
+
+        // Sample Data (aligned with previous examples)
         const payrollCostData = {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
             datasets: [{
-                label: 'Total Payroll Cost',
-                data: [120000, 125000, 130000, 128000, 135000, 140000],
-                borderColor: '#2563eb',
-                tension: 0.1
+                label: 'Total Payroll Cost ($USD Equiv.)',
+                data: [650000, 685000, 710000, 705000, 740000, 780000, 750000], // Sample cost data
+                borderColor: primaryColor,
+                backgroundColor: primaryColorLight,
+                tension: 0.3, // Smoother curve
+                fill: true,
+                pointBackgroundColor: primaryColor,
+                pointBorderColor: '#fff',
+                pointHoverRadius: 6,
+                pointHoverBackgroundColor: primaryColor,
+                pointHoverBorderColor: '#fff'
             }]
         };
         const headcountData = {
-            labels: ['USA 🇺🇸', 'UK 🇬🇧', 'Canada 🇨🇦', 'Germany 🇩🇪', 'France 🇫🇷'],
+            labels: ['USA 🇺🇸', 'UK 🇬🇧', 'Canada 🇨🇦', 'Germany 🇩🇪', 'France 🇫🇷', 'Brazil 🇧🇷'],
             datasets: [{
                 label: 'Headcount',
-                data: [45, 30, 25, 15, 10],
+                data: [45, 112, 23, 88, 55, 15], // From payroll list example
                 backgroundColor: [
-                    'rgba(59, 130, 246, 0.7)', // blue
-                    'rgba(239, 68, 68, 0.7)',  // red
-                    'rgba(245, 158, 11, 0.7)', // amber
-                    'rgba(16, 185, 129, 0.7)', // emerald
-                    'rgba(139, 92, 246, 0.7)', // violet
-                ]
+                    blueColor,
+                    pinkRedColor,
+                    redColor,
+                    amberColor,
+                    purpleColor,
+                    greenColor,
+                ],
+                borderColor: borderColor,
+                borderWidth: 1,
+                borderRadius: 4, // Rounded bars
             }]
         };
         const complianceData = {
-            labels: ['Compliant', 'Pending', 'Overdue'],
+            labels: ['Compliant', 'Pending Review', 'Action Required'],
             datasets: [{
-                data: [150, 25, 8],
+                label: 'Compliance Status',
+                data: [215, 25, 12], // Sample numbers
                 backgroundColor: [
-                    'rgba(16, 185, 129, 0.7)', // emerald
-                    'rgba(245, 158, 11, 0.7)', // amber
-                    'rgba(239, 68, 68, 0.7)',  // red
+                    greenColor,
+                    amberColor,
+                    redColor,
                 ],
-                hoverOffset: 4
+                borderColor: backgroundColor,
+                borderWidth: 3, // Creates spacing effect
+                hoverOffset: 8
             }]
         };
         const turnoverData = {
-            labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+            labels: ['Q4 2023', 'Q1 2024', 'Q2 2024', 'Q3 2024 (Est.)'],
             datasets: [{
                 label: 'Turnover Rate (%)',
                 data: [5.2, 4.8, 5.5, 5.1],
-                borderColor: '#ef4444',
-                tension: 0.1
+                borderColor: orangeColor,
+                backgroundColor: orangeColorLight,
+                tension: 0.3,
+                fill: true,
+                pointBackgroundColor: orangeColor,
+                pointBorderColor: '#fff',
+                pointHoverRadius: 6,
+                pointHoverBackgroundColor: orangeColor,
+                pointHoverBorderColor: '#fff'
             }]
         };
 
-        // Chart Configuration Options (Basic)
-        const commonOptions = {
+        // Chart Configuration Options
+        const lineChartOptions = {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false // Hide legend for cleaner look in dashboard
-                }
-            },
             scales: {
-                y: {
-                    beginAtZero: true
-                }
+                y: { beginAtZero: false, grid: { color: borderColor }, ticks: { color: mutedForegroundColor } },
+                x: { grid: { display: false }, ticks: { color: mutedForegroundColor } }
+            },
+            plugins: {
+                legend: { labels: { color: foregroundColor } }
+            }
+        };
+        const barChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y', // Horizontal bars for better label readability
+            scales: {
+                y: { grid: { display: false }, ticks: { color: mutedForegroundColor } },
+                x: { grid: { color: borderColor }, ticks: { color: mutedForegroundColor } }
+            },
+             plugins: {
+                legend: { display: false } // Usually hide legend for single dataset bars
+            }
+        };
+        const doughnutChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '65%', // Make it thinner
+            plugins: {
+                legend: { labels: { color: foregroundColor } }
             }
         };
 
         // Render Charts
-        const payrollCostCtx = document.getElementById('payrollCostChart').getContext('2d');
-        new Chart(payrollCostCtx, { type: 'line', data: payrollCostData, options: commonOptions });
+        const payrollCostCtx = document.getElementById('payrollCostChart')?.getContext('2d');
+        if (payrollCostCtx) new Chart(payrollCostCtx, { type: 'line', data: payrollCostData, options: lineChartOptions });
 
-        const headcountCtx = document.getElementById('headcountChart').getContext('2d');
-        new Chart(headcountCtx, { type: 'bar', data: headcountData, options: commonOptions });
+        const headcountCtx = document.getElementById('headcountChart')?.getContext('2d');
+        if (headcountCtx) new Chart(headcountCtx, { type: 'bar', data: headcountData, options: barChartOptions });
 
-        const complianceCtx = document.getElementById('complianceChart').getContext('2d');
-        new Chart(complianceCtx, { type: 'doughnut', data: complianceData, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } } });
+        const complianceCtx = document.getElementById('complianceChart')?.getContext('2d');
+        if (complianceCtx) new Chart(complianceCtx, { type: 'doughnut', data: complianceData, options: doughnutChartOptions });
 
-        const turnoverCtx = document.getElementById('turnoverChart').getContext('2d');
-        new Chart(turnoverCtx, { type: 'line', data: turnoverData, options: commonOptions });
+        const turnoverCtx = document.getElementById('turnoverChart')?.getContext('2d');
+        if (turnoverCtx) new Chart(turnoverCtx, { type: 'line', data: turnoverData, options: lineChartOptions });
 
     </script>
 </body>
