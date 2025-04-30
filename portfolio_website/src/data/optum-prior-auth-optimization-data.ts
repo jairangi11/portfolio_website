@@ -230,9 +230,9 @@ export const optumCaseStudyDetails: OptumCaseStudyDetails = {
     primaryResearch: {
       simulationSummary: "Simulated interviews with three core personas (Authorization Coordinator, Busy Physician, Optum Review Nurse) to pinpoint key frustrations.",
       personasDefined: [
-        "Authorization Coordinator Annie (Office Mgr/Auth Specialist @ Multi-Specialty Clinic)",
-        "Busy Physician Dr. Ben Carter (Cardiologist @ Hospital-Affiliated Practice)",
-        "Optum Review Nurse Rachel (Clinical Review Nurse @ Optum)"
+        "Authorization Coordinator (Office Mgr/Auth Specialist @ Multi-Specialty Clinic)",
+        "Busy Physician (Cardiologist @ Hospital-Affiliated Practice)",
+        "Optum Review Nurse (Clinical Review Nurse @ Optum)"
       ],
       synthesizedFindings: [
         "Time Consumption: Excessive provider staff time on portals/submissions.",

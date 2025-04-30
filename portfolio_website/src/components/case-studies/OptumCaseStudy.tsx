@@ -256,9 +256,9 @@ const OptumCaseStudy: React.FC<OptumCaseStudyProps> = ({ study }) => {
                   <TableHeader>
                     <TableRow>
                       <TableHead className="text-gray-600">Attribute</TableHead>
-                      <TableHead className="text-gray-600">Auth Coordinator Annie</TableHead>
-                      <TableHead className="text-gray-600">Busy Physician Dr. Carter</TableHead>
-                      <TableHead className="text-gray-600">Optum Review Nurse Rachel</TableHead>
+                      <TableHead className="text-gray-600">Auth Coordinator</TableHead>
+                      <TableHead className="text-gray-600">Busy Physician</TableHead>
+                      <TableHead className="text-gray-600">Optum Review Nurse</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody className="[&>tr:nth-child(odd)]:bg-gray-50/50">
