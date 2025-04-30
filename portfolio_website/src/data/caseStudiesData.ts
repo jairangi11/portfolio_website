@@ -3,6 +3,7 @@ import { FlipkartCaseStudyDetails } from './flipkart-logistics-optimization-data
 import { AwsLambdaCaseStudyDetails, awsLambdaCaseStudyDetails } from './aws-lambda-developer-ux-data';
 import { GooglePayCaseStudyDetails, googlePayCaseStudyDetails } from './google-pay-merchant-onboarding-data';
 import { MagicBricksCaseStudyDetails } from './magicbricks-property-recommendation-data';
+import { OptumCaseStudyDetails } from './optum-prior-auth-optimization-data';
 
 export interface CaseStudy {
   id: string;
@@ -17,14 +18,15 @@ export interface CaseStudy {
   whimsicalLink?: string;
   sheetsLink?: string;
 
-  // Field for detailed content, add Google Pay & MagicBricks types to union
-  detailedData?: DeelCaseStudyDetails | FlipkartCaseStudyDetails | AwsLambdaCaseStudyDetails | GooglePayCaseStudyDetails | MagicBricksCaseStudyDetails;
+  // Field for detailed content, add Optum type to union
+  detailedData?: DeelCaseStudyDetails | FlipkartCaseStudyDetails | AwsLambdaCaseStudyDetails | GooglePayCaseStudyDetails | MagicBricksCaseStudyDetails | OptumCaseStudyDetails;
 }
 
 // Import the detailed data
 import { deelCaseStudyDetails } from './deel-global-payroll-data';
 import { flipkartCaseStudyDetails } from './flipkart-logistics-optimization-data';
 import { magicBricksCaseStudyDetails } from './magicbricks-property-recommendation-data';
+import { optumCaseStudyDetails } from './optum-prior-auth-optimization-data';
 
 export const caseStudies: CaseStudy[] = [
   {
@@ -112,8 +114,9 @@ export const caseStudies: CaseStudy[] = [
     tags: ["Health Tech", "Enterprise Software", "AI/ML", "Workflow Automation", "HIPAA Compliance", "Payer Solutions"],
     coverImage: "/images/case-studies/optum.png",
     thumbnailImage: "/images/case-studies/optum.png",
-    wireframeLink: "https://www.google.com",
-    whimsicalLink: "https://www.google.com",
-    sheetsLink: "https://www.google.com"
+    wireframeLink: "https://jairangi11.github.io/portfolio_website/case-studies-content/optum-prior-auth-optimization/wireframes/provider_dashboard.html",
+    whimsicalLink: "https://whimsical.com/portfolio-case-study-SWF4dwiPDQzafhAw97XLgD@26TL6NGLXm18M44WpXaXRa6Ywmeyp19",
+    sheetsLink: "https://docs.google.com/spreadsheets/d/1Nqn2k7C8GJCAOzVRX31kaVKC3rPTjaSm_-fzO8g4EBE/edit?usp=sharing",
+    detailedData: optumCaseStudyDetails
   }
 ]; 

@@ -20,6 +20,7 @@ import GenericCaseStudy from '@/components/case-studies/GenericCaseStudy';
 import AWSLambdaDeveloperUX from '@/components/case-studies/AWSLambdaDeveloperUX';
 import GooglePayCaseStudy from '@/components/case-studies/GooglePayCaseStudy';
 import MagicBricksCaseStudy from '@/components/case-studies/MagicBricksCaseStudy';
+import OptumCaseStudy from '@/components/case-studies/OptumCaseStudy';
 
 // Import specific detail types
 import { DeelCaseStudyDetails } from '@/data/deel-global-payroll-data';
@@ -27,6 +28,7 @@ import { AwsLambdaCaseStudyDetails } from '@/data/aws-lambda-developer-ux-data';
 import { FlipkartCaseStudyDetails } from '@/data/flipkart-logistics-optimization-data';
 import { GooglePayCaseStudyDetails } from '@/data/google-pay-merchant-onboarding-data';
 import { MagicBricksCaseStudyDetails } from '@/data/magicbricks-property-recommendation-data';
+import { OptumCaseStudyDetails } from '@/data/optum-prior-auth-optimization-data';
 
 const sectionVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -86,6 +88,8 @@ export default function CaseStudyPage() {
         return <GooglePayCaseStudy study={study as CaseStudy & { detailedData: GooglePayCaseStudyDetails }} />;
       case 'magicbricks-property-recommendation':
         return <MagicBricksCaseStudy study={study as CaseStudy & { detailedData: MagicBricksCaseStudyDetails }} />;
+      case 'optum-prior-auth-optimization':
+        return <OptumCaseStudy study={study as CaseStudy & { detailedData: OptumCaseStudyDetails }} />;
       // Add cases for other specific studies here...
       default:
         // Check if detailedData exists conceptually, even if not rendered specifically
