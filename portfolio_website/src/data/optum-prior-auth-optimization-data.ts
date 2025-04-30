@@ -1,5 +1,3 @@
-import { CaseStudy } from './caseStudiesData'; // Assuming CaseStudy might be needed if extending base props
-
 // Interface Definitions based on final_solution.md and sheets.md structure
 
 interface Introduction {
